@@ -1,0 +1,81 @@
+use std::sync::Arc;
+
+use axum::{
+    Router,
+    extract::State,
+    response::{IntoResponse, Redirect},
+    routing::{delete, get},
+};
+use axum_extra::extract::{
+    CookieJar, Query,
+    cookie::{self, Cookie},
+};
+use reqwest::StatusCode;
+use serde::Deserialize;
+
+use crate::{
+    AppState,
+    infrastructure::{
+        auth::{OAuthProvider, google::GoogleOAuth},
+        jwt::{JwtService, user_claims::UserClaims},
+    },
+};
+
+pub fn routes() -> Router<Arc<AppState>> {
+    Router::new()
+        .route("/auth/google", get(signin_with_google))
+        .route("/auth/google/callback", get(google_callback))
+        .route("/auth/signout", delete(signout))
+}
+
+#[derive(Debug, Deserialize)]
+struct AuthRequest {
+    code: String,
+}
+
+async fn signin_with_google() -> impl IntoResponse {
+    Redirect::to(GoogleOAuth::default().get_auth_url().as_str())
+}
+
+async fn google_callback(
+    State(state): State<Arc<AppState>>,
+    Query(params): Query<AuthRequest>,
+    cookies: CookieJar,
+) -> Result<impl IntoResponse, StatusCode> {
+    let user = GoogleOAuth::default()
+        .exchange_code_for_user(&params.code)
+        .await?;
+
+    let user = match state.user_service.find_by_email(&user.email).await {
+        Ok(Some(user)) => user,
+        Ok(None) => state
+            .user_service
+            .create(user)
+            .await
+            .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?,
+        Err(_) => return Err(StatusCode::INTERNAL_SERVER_ERROR),
+    };
+
+    let token = JwtService::generate(&UserClaims::from(user))
+        .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
+
+    let auth_cookie = Cookie::build(("auth_token", token))
+        .path("/")
+        .http_only(true)
+        .same_site(cookie::SameSite::None)
+        .secure(true);
+
+    let cookies = cookies.add(auth_cookie);
+
+    Ok((cookies, Redirect::to("/")))
+}
+
+async fn signout(State(_state): State<Arc<AppState>>, cookies: CookieJar) -> impl IntoResponse {
+    let cookies = cookies.remove(
+        Cookie::build(("auth_token", ""))
+            .path("/")
+            .http_only(true)
+            .same_site(cookie::SameSite::Strict),
+    );
+    (cookies, Redirect::to("/")).into_response()
+}

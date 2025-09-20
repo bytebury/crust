@@ -1,0 +1,13 @@
+CREATE TABLE users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    email TEXT NOT NULL UNIQUE,
+    verified BOOLEAN NOT NULL DEFAULT 0,
+    first_name TEXT NOT NULL,
+    last_name TEXT,
+    full_name TEXT NOT NULL,
+    image_url TEXT NOT NULL,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+create index idx_users_email on users(email);

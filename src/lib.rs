@@ -9,8 +9,13 @@ use tower_http::{
     compression::CompressionLayer, services::ServeDir, set_header::SetResponseHeaderLayer,
 };
 
-use crate::infrastructure::db::Database;
+use crate::{
+    application::user_service::UserService,
+    infrastructure::db::{Database, UserRepository},
+};
 
+pub mod application;
+pub mod domain;
 pub mod infrastructure;
 pub mod routes;
 
@@ -42,6 +47,7 @@ async fn initialize() -> Router {
     Router::new()
         .merge(serve_static)
         .merge(routes::homepage::routes())
+        .merge(routes::auth::routes())
         .with_state(state)
         .layer(CompressionLayer::new())
 }
@@ -62,10 +68,13 @@ impl AppInfo {
 
 pub struct AppState {
     pub app_info: AppInfo,
+    pub user_service: UserService,
 }
-
 impl AppState {
-    pub fn new(_db: &Arc<Pool<Sqlite>>, app_info: AppInfo) -> Self {
-        Self { app_info }
+    pub fn new(db: &Arc<Pool<Sqlite>>, app_info: AppInfo) -> Self {
+        Self {
+            app_info,
+            user_service: UserService::new(UserRepository::new(db)),
+        }
     }
 }
