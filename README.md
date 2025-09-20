@@ -15,3 +15,13 @@ This is the template that we use at bytebury. Our primary stack is [Axum](https:
 3. Run the development server `cd ./cust && ./dev.sh` in your terminal
 
 This will run all of your migrations as well as generate a `.env` file in your root directory. Open it up and change the environment variables to your liking. After that, you should be ready to start development.
+
+## Creating a Migration
+> [!NOTE]
+> You will need sqlx installed locally to create migrations.
+
+```sh
+sqlx migrate add create_my_table
+```
+
+The next time the server runs, it will pick up the migration and automatically run it. Therefore, you should try to avoid running the application until you are ready to run the migration.
