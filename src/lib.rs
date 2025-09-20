@@ -16,6 +16,7 @@ use crate::{
 
 pub mod application;
 pub mod domain;
+pub mod filter;
 pub mod infrastructure;
 pub mod routes;
 
