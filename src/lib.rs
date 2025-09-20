@@ -1,6 +1,18 @@
-use axum::Router;
-use std::{env, net::SocketAddr};
+use axum::{
+    Router,
+    http::{HeaderValue, header::CACHE_CONTROL},
+};
+use sqlx::{Pool, Sqlite};
+use std::{env, net::SocketAddr, sync::Arc};
 use tokio::net::TcpListener;
+use tower_http::{
+    compression::CompressionLayer, services::ServeDir, set_header::SetResponseHeaderLayer,
+};
+
+use crate::infrastructure::db::Database;
+
+pub mod infrastructure;
+pub mod routes;
 
 pub async fn start() {
     let app = initialize().await;
@@ -17,5 +29,43 @@ pub async fn start() {
 }
 
 async fn initialize() -> Router {
+    let db = Arc::new(Database::initialize().await);
+    let app_info = AppInfo::new();
+    let state = Arc::new(AppState::new(&db, app_info));
+    let serve_static = Router::new()
+        .nest_service("/assets", ServeDir::new("public"))
+        .layer(SetResponseHeaderLayer::if_not_present(
+            CACHE_CONTROL,
+            HeaderValue::from_static("public, max-age=31536000"),
+        ));
+
     Router::new()
+        .merge(serve_static)
+        .merge(routes::homepage::routes())
+        .with_state(state)
+        .layer(CompressionLayer::new())
+}
+
+#[derive(Clone)]
+pub struct AppInfo {
+    pub name: String,
+    pub version: String,
+}
+impl AppInfo {
+    pub fn new() -> Self {
+        Self {
+            name: env::var("APP_NAME").unwrap_or("Crust App".to_string()),
+            version: env::var("APP_VERSION").unwrap_or("0".to_string()),
+        }
+    }
+}
+
+pub struct AppState {
+    pub app_info: AppInfo,
+}
+
+impl AppState {
+    pub fn new(_db: &Arc<Pool<Sqlite>>, app_info: AppInfo) -> Self {
+        Self { app_info }
+    }
 }
