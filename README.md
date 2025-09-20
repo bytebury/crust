@@ -7,7 +7,8 @@ Build like bytebury. The official template that we use for our websites, skip al
 This is the template that we use at bytebury. Our primary stack is [Axum](https://github.com/tokio-rs/axum), [Askama](https://github.com/askama-rs/askama), [HTMX](https://github.com/bigskysoftware/htmx), and [SQLite](https://sqlite.org/) through [SQLx](https://github.com/launchbadge/sqlx). We run all of our servers on [DigitalOcean](https://www.digitalocean.com/) on various server sizes, so you'll notice some deployment workflows for DigitalOcean (feel free to change that to your liking). We use [Stripe](https://stripe.com) as our payment partner and [Google](https://google.com) for our OAuth (extensible).
 
 ## Getting Started
-> [!NOTE] Running `./dev` will run the application in watch mode for you.
+> [!NOTE]
+> Running `./dev` will run the application in watch mode for you.
 
 1. You'll need Rust and Cargo installed
 2. Clone the repository `git clone git@github.com:bytebury/crust.git`
