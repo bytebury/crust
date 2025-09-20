@@ -10,7 +10,7 @@ use tower_http::{
 };
 
 use crate::{
-    application::user_service::UserService,
+    application::UserService,
     infrastructure::db::{Database, UserRepository},
 };
 
