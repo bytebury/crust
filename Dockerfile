@@ -1,7 +1,7 @@
 ARG RUN_ID
 
 # ---------- Stage 1: Build Rust ----------
-FROM rust:1.88-bullseye AS builder
+FROM rust:1.90-bullseye AS builder
 ARG RUN_ID
 
 # Install SQLite headers and OpenSSL dev for sqlx with TLS
