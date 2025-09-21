@@ -5,11 +5,12 @@
     <title>{{ shared.app_info.name }}</title>
     <meta name="description" content="A template application." />
     <link rel="canonical" href="https://APP_NAME.com/" />
+    <script src="/assets/htmx@2.0.7.min.js" defer></script>
 </head>
 
 <body>
-    <h1>Basic Template!</h1>
-    <a href="/auth/google">Login with Google</a>
+    <h1>Welcome, {{ current_user.full_name | title }}</h1>
+    <button hx-delete="/auth/signout" hx-swap="none">Sign out</button>
 </body>
 
 </html>

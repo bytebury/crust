@@ -20,6 +20,7 @@ pub mod extract;
 pub mod filter;
 pub mod infrastructure;
 pub mod routes;
+pub mod util;
 
 pub async fn start() {
     let app = initialize().await;

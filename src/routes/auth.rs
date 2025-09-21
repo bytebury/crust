@@ -1,4 +1,4 @@
-use std::sync::Arc;
+use std::{borrow::Cow, sync::Arc};
 
 use axum::{
     Router,
@@ -19,6 +19,7 @@ use crate::{
         auth::{OAuthProvider, google::GoogleOAuth},
         jwt::{JwtService, user_claims::UserClaims},
     },
+    util::htmx::HTMX,
 };
 
 pub fn routes() -> Router<Arc<AppState>> {
@@ -77,5 +78,5 @@ async fn signout(State(_state): State<Arc<AppState>>, cookies: CookieJar) -> imp
             .http_only(true)
             .same_site(cookie::SameSite::Strict),
     );
-    (cookies, Redirect::to("/")).into_response()
+    (cookies, HTMX::redirect(Cow::Borrowed("/"))).into_response()
 }

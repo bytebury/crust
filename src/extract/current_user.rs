@@ -1,25 +1,25 @@
 use crate::domain::User;
 use crate::{AppState, extract::BaseUser};
-use axum::http::StatusCode;
+use axum::response::{IntoResponse, Redirect, Response};
 use axum::{extract::FromRequestParts, http::request::Parts};
 use std::sync::Arc;
 
 pub struct CurrentUser(pub User);
 
 impl FromRequestParts<Arc<AppState>> for CurrentUser {
-    type Rejection = StatusCode;
+    type Rejection = Response;
 
     async fn from_request_parts(
         parts: &mut Parts,
         state: &Arc<AppState>,
-    ) -> Result<Self, StatusCode> {
+    ) -> Result<Self, Self::Rejection> {
         let user = BaseUser::from_request_parts(parts, state)
             .await
-            .map_err(|_| StatusCode::FORBIDDEN)?;
+            .map_err(|_| Redirect::to("/").into_response())?;
 
         match user {
             BaseUser::User(user) => Ok(CurrentUser(user)),
-            _ => Err(StatusCode::FORBIDDEN),
+            _ => Err(Redirect::to("/").into_response()),
         }
     }
 }
