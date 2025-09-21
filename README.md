@@ -12,7 +12,7 @@ This is the template that we use at bytebury. Our primary stack is [Axum](https:
 
 1. You'll need Rust and Cargo installed
 2. Clone the repository `git clone git@github.com:bytebury/crust.git`
-3. Run the development server `cd ./cust && ./dev.sh` in your terminal
+3. Run the development server `cd ./crust && ./dev.sh` in your terminal
 
 This will run all of your migrations as well as generate a `.env` file in your root directory. Open it up and change the environment variables to your liking. After that, you should be ready to start development.
 
