@@ -14,6 +14,10 @@ body {
     min-height: 100dvh;
 }
 
+h1 {
+    font-size: 1.5rem;
+}
+
 .container {
     width: 100%;
     max-width: 800px;
