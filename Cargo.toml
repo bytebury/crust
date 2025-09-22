@@ -21,7 +21,7 @@ sqlx = { version = "0.8.6", features = [
   "runtime-tokio-native-tls",
   "sqlite",
 ] }
-stripe-webhooks = "0.1.0"
+stripe-webhooks = "0.1.1"
 thiserror = "2.0.16"
 tokio = { version = "1.47.1", features = ["full"] }
 tower-http = { version = "0.6.6", features = [

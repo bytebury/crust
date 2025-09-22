@@ -2689,9 +2689,9 @@ dependencies = [
 
 [[package]]
 name = "stripe-webhooks"
-version = "0.1.0"
+version = "0.1.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4f4a24ab438a770dadb8594ca45f31fabe62e465d8c9b2cac918a8c6497ae6e1"
+checksum = "b0bf22339955fd7659f29cfba8b4c168a4ac1aee012b17cb293c765ce67a2e2b"
 dependencies = [
  "anyhow",
  "chrono",
