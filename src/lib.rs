@@ -48,11 +48,12 @@ async fn initialize() -> Router {
         .merge(serve_static)
         .merge(routes::homepage::routes())
         .merge(routes::auth::routes())
+        .merge(routes::webhooks::routes())
         .with_state(state)
         .layer(CompressionLayer::new())
 }
 
-#[derive(Clone)]
+#[derive(Clone, Default)]
 pub struct AppInfo {
     pub name: String,
     pub version: String,

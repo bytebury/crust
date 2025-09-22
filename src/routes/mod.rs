@@ -2,6 +2,7 @@ use crate::AppInfo;
 
 pub mod auth;
 pub mod homepage;
+pub mod webhooks;
 
 pub struct SharedContext {
     pub app_info: AppInfo,
