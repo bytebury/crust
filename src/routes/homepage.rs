@@ -1,8 +1,7 @@
-use std::sync::Arc;
-
 use askama::Template;
 use askama_web::WebTemplate;
-use axum::{Router, extract::State, response::IntoResponse, routing::get};
+use axum::{Router, extract::State, routing::get};
+use std::sync::Arc;
 
 use crate::{
     AppState,
@@ -30,20 +29,18 @@ struct DashboardTemplate {
     current_user: User,
 }
 
-async fn homepage(State(state): State<Arc<AppState>>, NoUser: NoUser) -> impl IntoResponse {
+async fn homepage(State(state): State<Arc<AppState>>, NoUser: NoUser) -> HomepageTemplate {
     HomepageTemplate {
         shared: SharedContext::new(&state.app_info),
     }
-    .into_response()
 }
 
 async fn dashboard(
     State(state): State<Arc<AppState>>,
     CurrentUser(current_user): CurrentUser,
-) -> impl IntoResponse {
+) -> DashboardTemplate {
     DashboardTemplate {
         shared: SharedContext::new(&state.app_info),
         current_user,
     }
-    .into_response()
 }
