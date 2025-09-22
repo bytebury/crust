@@ -9,10 +9,7 @@ use tower_http::{
     compression::CompressionLayer, services::ServeDir, set_header::SetResponseHeaderLayer,
 };
 
-use crate::{
-    application::UserService,
-    infrastructure::db::{Database, UserRepository},
-};
+use crate::{application::UserService, infrastructure::db::Database};
 
 pub mod application;
 pub mod domain;
@@ -80,7 +77,7 @@ impl AppState {
     pub fn new(db: &Arc<Pool<Sqlite>>, app_info: AppInfo) -> Self {
         Self {
             app_info,
-            user_service: UserService::new(UserRepository::new(db)),
+            user_service: UserService::new(db),
         }
     }
 }

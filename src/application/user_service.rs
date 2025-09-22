@@ -1,11 +1,17 @@
+use std::sync::Arc;
+
+use sqlx::SqlitePool;
+
 use crate::{domain::User, infrastructure::db::UserRepository};
 
 pub struct UserService {
     user_repository: UserRepository,
 }
 impl UserService {
-    pub fn new(user_repository: UserRepository) -> Self {
-        Self { user_repository }
+    pub fn new(db: &Arc<SqlitePool>) -> Self {
+        Self {
+            user_repository: UserRepository::new(db),
+        }
     }
 
     pub async fn find_by_id(&self, user_id: i64) -> Result<User, sqlx::Error> {
