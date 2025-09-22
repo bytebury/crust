@@ -1,7 +1,7 @@
 use chrono::NaiveDateTime;
 use sqlx::prelude::FromRow;
 
-use crate::infrastructure::auth::google::GoogleUser;
+use crate::infrastructure::auth::GoogleUser;
 
 #[derive(FromRow, Clone)]
 pub struct User {
