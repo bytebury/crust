@@ -6,6 +6,7 @@ edition = "2024"
 [dependencies]
 askama = "0.14.0"
 askama_web = { version = "0.14.6", features = ["axum-0.8"] }
+async-stripe = { version = "0.41.0", features = ["runtime-tokio-hyper"] }
 axum = { version = "0.8.4", features = ["multipart"] }
 axum-extra = { version = "0.10.1", features = ["cookie", "form", "query"] }
 chrono = { version = "0.4.42", features = ["clock"] }

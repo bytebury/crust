@@ -1,23 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <title>{{ shared.app_info.name }} | Dashboard</title>
-    <meta name="description" content="A template application." />
-
-    {% include "_partials/meta.html" %}
-    {% include "_partials/scripts.html" %}
-</head>
-
-<body>
-    {% include "_partials/navbar.html" %}
-
-    <main class="container">
-        <h1>Welcome, {{ current_user.full_name | title }}</h1>
-        <button hx-delete="/auth/signout" hx-swap="none">Sign out</button>
-    </main>
-
-    {% include "_partials/footer.html" %}
-</body>
-
+    <head>
+        <title>{{ shared.app_info.name }} | Dashboard</title>
+        <meta name="description" content="A template application." />
+        {% include "_partials/meta.html" %}
+        {% include "_partials/scripts.html" %}
+    </head>
+    <body>
+        {% include "_partials/navbar.html" %}
+        <main class="container">
+            <h1>Welcome, {{ current_user.full_name | title }}</h1>
+            <ul>
+                <li>
+                    <a href="/manage-subscription">Manage Subscription</a>
+                </li>
+                <li>
+                    <a href="/checkout">Purchase Pro</a>
+                </li>
+                <li>
+                    <button hx-delete="/auth/signout" hx-swap="none">Sign out</button>
+                </li>
+            </ul>
+        </main>
+        {% include "_partials/footer.html" %}
+    </body>
 </html>
+

@@ -12,6 +12,7 @@ pub struct User {
     pub last_name: Option<String>,
     pub full_name: String,
     pub image_url: String,
+    pub stripe_customer_id: Option<String>,
     pub created_at: NaiveDateTime,
     pub updated_at: NaiveDateTime,
 }
@@ -34,6 +35,7 @@ impl From<GoogleUser> for User {
             last_name: google_user.family_name,
             full_name: google_user.name,
             image_url: google_user.picture,
+            stripe_customer_id: None,
             created_at: chrono::Utc::now().naive_utc(),
             updated_at: chrono::Utc::now().naive_utc(),
         }

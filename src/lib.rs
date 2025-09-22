@@ -9,7 +9,10 @@ use tower_http::{
     compression::CompressionLayer, services::ServeDir, set_header::SetResponseHeaderLayer,
 };
 
-use crate::{application::UserService, infrastructure::db::Database};
+use crate::{
+    application::UserService,
+    infrastructure::{db::Database, payment::stripe::Stripe},
+};
 
 pub mod application;
 pub mod domain;
@@ -36,7 +39,7 @@ pub async fn start() {
 async fn initialize() -> Router {
     let db = Arc::new(Database::initialize().await);
     let app_info = AppInfo::new();
-    let state = Arc::new(AppState::new(&db, app_info));
+    let state = Arc::new(AppState::new(&db, app_info.clone()));
     let serve_static = Router::new()
         .nest_service("/assets", ServeDir::new("public"))
         .layer(SetResponseHeaderLayer::if_not_present(
@@ -49,6 +52,7 @@ async fn initialize() -> Router {
         .merge(routes::homepage::routes())
         .merge(routes::auth::routes())
         .merge(routes::webhooks::routes())
+        .merge(routes::payments::routes())
         .with_state(state)
         .layer(CompressionLayer::new())
 }
@@ -72,13 +76,15 @@ impl AppInfo {
 
 pub struct AppState {
     pub app_info: AppInfo,
+    pub stripe: Stripe,
     pub user_service: UserService,
 }
 impl AppState {
     pub fn new(db: &Arc<Pool<Sqlite>>, app_info: AppInfo) -> Self {
         Self {
-            app_info,
+            app_info: app_info.clone(),
             user_service: UserService::new(db),
+            stripe: Stripe::new(app_info, db),
         }
     }
 }

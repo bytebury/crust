@@ -30,7 +30,7 @@ pub async fn stripe_webhook_listener(
             eprintln!("Error processing Stripe Event: {:?}", e);
             return (
                 StatusCode::BAD_REQUEST,
-                format!("error processing event: {e}"),
+                format!("Error processing event: {e}"),
             )
                 .into_response();
         }
