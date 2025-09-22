@@ -1,5 +1,3 @@
-use std::{borrow::Cow, sync::Arc};
-
 use axum::{
     Router,
     extract::State,
@@ -12,6 +10,7 @@ use axum_extra::extract::{
 };
 use reqwest::StatusCode;
 use serde::Deserialize;
+use std::sync::Arc;
 
 use crate::{
     AppState,
@@ -78,5 +77,5 @@ async fn signout(State(_state): State<Arc<AppState>>, cookies: CookieJar) -> imp
             .http_only(true)
             .same_site(cookie::SameSite::Strict),
     );
-    (cookies, HTMX::redirect(Cow::Borrowed("/"))).into_response()
+    (cookies, HTMX::redirect("/")).into_response()
 }
