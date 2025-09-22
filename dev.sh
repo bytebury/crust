@@ -35,21 +35,5 @@ else
   echo "✅ database file found."
 fi
 
-# Copy and rename files in public/styles and public/scripts
-for dir in public/styles public/scripts; do
-  if [ -d "$dir" ]; then
-    echo "🤖 Processing files in $dir..."
-    for file in "$dir"/*; do
-      [ -f "$file" ] || continue
-      filename=$(basename -- "$file")
-      name="${filename%.*}"
-      ext="${filename##*.}"
-      cp "$file" "$dir/$name.local.$ext"
-      echo "✅ Copied $filename → $name.local.$ext"
-    done
-  fi
-done
-
 # Start the development server with cargo watch
-echo "🍕 Starting development server with cargo watch..."
 cargo watch -x run
