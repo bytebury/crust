@@ -2,7 +2,8 @@
 if [ ! -f .env ]; then
   echo "🤖 .env not found. Generating..."
   cat >.env <<EOF
-APP_DISPLAY_NAME="Crust Application"
+APP_NAME="Crust"
+APP_WEBSITE_URL="http://localhost:8080" # or https://yourdomain.com
 APP_PORT="8080"
 
 DATABASE_URL="sqlite://db/database.db"
@@ -13,7 +14,6 @@ GOOGLE_CLIENT_ID="ADD_YOUR_CLIENT_ID"
 GOOGLE_CLIENT_SECRET="ADD_YOUR_SECRET"
 GOOGLE_CALLBACK_URL="http://localhost:8080/auth/google/callback"
 
-WEBSITE_URL="http://localhost:8080" # or https://yourdomain.com
 COOKIE_URL="localhost:8080" # or .yourdomain.com
 
 STRIPE_SECRET="ADD_YOUR_STRIPE_SECRET"
@@ -34,6 +34,21 @@ if [ ! -f ./db/database.db ]; then
 else
   echo "✅ database file found."
 fi
+
+# Copy and rename files in public/styles and public/scripts
+for dir in public/styles public/scripts; do
+  if [ -d "$dir" ]; then
+    echo "🤖 Processing files in $dir..."
+    for file in "$dir"/*; do
+      [ -f "$file" ] || continue
+      filename=$(basename -- "$file")
+      name="${filename%.*}"
+      ext="${filename##*.}"
+      cp "$file" "$dir/$name.local.$ext"
+      echo "✅ Copied $filename → $name.local.$ext"
+    done
+  fi
+done
 
 # Start the development server with cargo watch
 echo "🍕 Starting development server with cargo watch..."

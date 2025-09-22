@@ -23,6 +23,8 @@ target
 *.env
 db/*
 
+public/**/*.local.*
+
 
 # Added by cargo
 
