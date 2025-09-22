@@ -5,10 +5,10 @@ use axum::{
     response::IntoResponse,
     routing::post,
 };
-use std::{env, sync::Arc};
-use stripe_webhooks::{StripeEvent, StripeListener};
+use std::sync::Arc;
+use stripe_webhooks::StripeEvent;
 
-use crate::AppState;
+use crate::{AppState, infrastructure::payment::stripe::Stripe};
 
 pub fn routes() -> Router<Arc<AppState>> {
     Router::new().route("/webhooks/stripe", post(stripe_webhook_listener))
@@ -19,13 +19,14 @@ pub async fn stripe_webhook_listener(
     headers: HeaderMap,
     body: String,
 ) -> impl IntoResponse {
-    let stripe = StripeListener::new(
-        env::var("STRIPE_WEBHOOK_SECRET")
-            .expect("Missing STRIPE_WEBHOOK_SECRET environment variable"),
-    );
-
-    let events = match stripe.process(&headers, &body) {
-        Ok(events) => events,
+    match Stripe::process_webhook_request(&headers, &body) {
+        Ok(event) => {
+            match event {
+                StripeEvent::CheckoutSessionCompleted(value) => println!("{:?}", value),
+                StripeEvent::CustomerSubscriptionDeleted(value) => println!("{:?}", value),
+                StripeEvent::Unknown(value) => println!("{:?}", value),
+            };
+        }
         Err(e) => {
             eprintln!("Error processing Stripe Event: {:?}", e);
             return (
@@ -34,12 +35,6 @@ pub async fn stripe_webhook_listener(
             )
                 .into_response();
         }
-    };
-
-    match events {
-        StripeEvent::CheckoutSessionCompleted(value) => println!("{:?}", value),
-        StripeEvent::CustomerSubscriptionDeleted(value) => println!("{:?}", value),
-        StripeEvent::Unknown(value) => println!("{:?}", value),
     };
 
     StatusCode::OK.into_response()

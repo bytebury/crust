@@ -1,5 +1,6 @@
 use std::{collections::HashMap, env, str::FromStr};
 
+use axum::http::HeaderMap;
 use sqlx::SqlitePool;
 use stripe::{
     BillingPortalSession, CheckoutSession, CheckoutSessionBillingAddressCollection,
@@ -7,6 +8,7 @@ use stripe::{
     CreateCheckoutSessionCustomerUpdate, CreateCheckoutSessionCustomerUpdateAddress,
     CreateCustomer, CustomerId,
 };
+use stripe_webhooks::{StripeEvent, StripeListener};
 
 use crate::{AppInfo, domain::User};
 
@@ -26,6 +28,16 @@ impl Stripe {
             app_info,
             db: db.clone(),
         }
+    }
+
+    pub fn process_webhook_request(headers: &HeaderMap, body: &str) -> Result<StripeEvent, String> {
+        let stripe = StripeListener::new(
+            env::var("STRIPE_WEBHOOK_SECRET")
+                .expect("Missing STRIPE_WEBHOOK_SECRET environment variable"),
+        );
+        stripe
+            .process(headers, body)
+            .map_err(|e| format!("Error processing event: {e}"))
     }
 
     pub async fn checkout(
