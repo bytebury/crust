@@ -1,6 +1,5 @@
 use axum::{
     Router,
-    extract::State,
     http::{HeaderMap, StatusCode},
     response::IntoResponse,
     routing::post,
@@ -14,11 +13,7 @@ pub fn routes() -> Router<Arc<AppState>> {
     Router::new().route("/webhooks/stripe", post(stripe_webhook_listener))
 }
 
-pub async fn stripe_webhook_listener(
-    State(_): State<Arc<AppState>>,
-    headers: HeaderMap,
-    body: String,
-) -> impl IntoResponse {
+pub async fn stripe_webhook_listener(headers: HeaderMap, body: String) -> impl IntoResponse {
     match Stripe::process_webhook_request(&headers, &body) {
         Ok(event) => {
             match event {
