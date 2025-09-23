@@ -16,6 +16,7 @@ pub struct User {
     pub country: Option<String>,
     pub country_code: Option<String>,
     pub region: Option<String>,
+    pub locked: bool,
     pub created_at: NaiveDateTime,
     pub updated_at: NaiveDateTime,
 }
@@ -42,6 +43,7 @@ impl From<GoogleUser> for User {
             country: None,
             country_code: None,
             region: None,
+            locked: false,
             created_at: chrono::Utc::now().naive_utc(),
             updated_at: chrono::Utc::now().naive_utc(),
         }

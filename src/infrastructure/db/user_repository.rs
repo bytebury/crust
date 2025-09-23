@@ -30,8 +30,8 @@ impl UserRepository {
     pub async fn create(&self, user: User) -> Result<User, sqlx::Error> {
         query_as(
             r#"
-            INSERT INTO users (email, full_name, first_name, last_name, image_url, verified, country, country_code, region) 
-            VALUES (LOWER(?), LOWER(?), LOWER(?), LOWER(?), ?, ?, ?, ?, ?)
+            INSERT INTO users (email, full_name, first_name, last_name, image_url, country, country_code, region, verified, locked) 
+            VALUES (LOWER(?), LOWER(?), LOWER(?), LOWER(?), ?, ?, ?, ?, ?, ?)
             RETURNING *
         "#,
         )
@@ -40,10 +40,11 @@ impl UserRepository {
         .bind(user.first_name)
         .bind(user.last_name)
         .bind(user.image_url)
-        .bind(user.verified)
         .bind(user.country)
         .bind(user.country_code)
         .bind(user.region)
+        .bind(user.verified)
+        .bind(user.locked)
         .fetch_one(self.db.as_ref())
         .await
     }
