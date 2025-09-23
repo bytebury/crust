@@ -4,9 +4,7 @@ use sqlx::SqlitePool;
 
 use crate::{
     domain::Country,
-    infrastructure::{
-        audit::geolocation::CountryDetails, db::country_repository::CountryRepository,
-    },
+    infrastructure::{audit::geolocation::CountryDetails, db::CountryRepository},
 };
 
 pub struct CountryService {
