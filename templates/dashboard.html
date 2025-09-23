@@ -9,7 +9,19 @@
     <body>
         {% include "_partials/navbar.html" %}
         <main class="container">
-            <h1>Welcome, {{ current_user.full_name | title }}</h1>
+            {% if let Some(user) = shared.current_user %}
+                <h1>
+                    Welcome, {{ user.full_name | title }}
+                    {% if let Some(country_name) = user.country_name %}
+                        {% if let Some(country_code) = user.country_code %}
+                            <img width="48"
+                                 height="16"
+                                 src="/assets/images/flags/{{ country_code | lower }}.svg"
+                                 alt="{{ country_name }}" />
+                        {% endif %}
+                    {% endif %}
+                </h1>
+            {% endif %}
             <ul>
                 <li>
                     <a href="/manage-subscription">Manage Subscription</a>
@@ -25,4 +37,3 @@
         {% include "_partials/footer.html" %}
     </body>
 </html>
-

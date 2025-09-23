@@ -5,7 +5,6 @@ use std::sync::Arc;
 
 use crate::{
     AppState,
-    domain::User,
     extract::{current_user::CurrentUser, no_user::NoUser},
     routes::SharedContext,
 };
@@ -26,12 +25,11 @@ struct HomepageTemplate {
 #[template(path = "dashboard.html")]
 struct DashboardTemplate {
     shared: SharedContext,
-    current_user: User,
 }
 
 async fn homepage(State(state): State<Arc<AppState>>, NoUser: NoUser) -> HomepageTemplate {
     HomepageTemplate {
-        shared: SharedContext::new(&state.app_info),
+        shared: SharedContext::new(&state.app_info, None),
     }
 }
 
@@ -40,7 +38,6 @@ async fn dashboard(
     CurrentUser(current_user): CurrentUser,
 ) -> DashboardTemplate {
     DashboardTemplate {
-        shared: SharedContext::new(&state.app_info),
-        current_user: *current_user,
+        shared: SharedContext::new(&state.app_info, Some(*current_user)),
     }
 }

@@ -2,7 +2,7 @@
 if [ ! -f .env ]; then
   echo "🤖 .env not found. Generating..."
   cat >.env <<EOF
-APP_NAME="Crust"
+APP_NAME="🍕 crust"
 APP_WEBSITE_URL="http://localhost:8080" # or https://yourdomain.com
 APP_PORT="8080"
 
@@ -37,3 +37,4 @@ fi
 
 # Start the development server with cargo watch
 cargo watch -x run
+
