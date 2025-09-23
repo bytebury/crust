@@ -31,6 +31,14 @@ impl CountryService {
         self.country_repository.find_by_code(code).await
     }
 
+    pub async fn lock(&self, id: i64) -> Result<(), sqlx::Error> {
+        self.country_repository.lock(id).await
+    }
+
+    pub async fn unlock(&self, id: i64) -> Result<(), sqlx::Error> {
+        self.country_repository.unlock(id).await
+    }
+
     pub async fn create(&self, country: &CountryDetails) -> Result<Country, sqlx::Error> {
         self.country_repository.create(country).await
     }

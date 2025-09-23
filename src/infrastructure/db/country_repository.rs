@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use sqlx::{SqlitePool, query_as};
+use sqlx::{SqlitePool, query, query_as};
 
 use crate::{domain::Country, infrastructure::audit::geolocation::CountryDetails};
 
@@ -24,6 +24,22 @@ impl CountryRepository {
             .bind(name)
             .fetch_one(self.db.as_ref())
             .await
+    }
+
+    pub async fn lock(&self, id: i64) -> Result<(), sqlx::Error> {
+        let _ = query(r#"UPDATE countries SET locked = 1 WHERE id = ?"#)
+            .bind(id)
+            .execute(self.db.as_ref())
+            .await?;
+        Ok(())
+    }
+
+    pub async fn unlock(&self, id: i64) -> Result<(), sqlx::Error> {
+        let _ = query(r#"UPDATE countries SET locked = 0 WHERE id = ?"#)
+            .bind(id)
+            .execute(self.db.as_ref())
+            .await?;
+        Ok(())
     }
 
     pub async fn find_by_code(&self, code: &str) -> Result<Country, sqlx::Error> {
