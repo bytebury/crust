@@ -54,6 +54,7 @@ async fn google_callback(
 
     if let Ok(country) = state.country_service.create(&country_details).await {
         user.country_id = Some(country.id);
+        user.locked = country.locked;
     }
 
     user.region = country_details.region;

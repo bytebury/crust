@@ -50,8 +50,12 @@ impl CountryRepository {
     }
 
     pub async fn create(&self, country: &CountryDetails) -> Result<Country, sqlx::Error> {
-        query_as(r#"INSERT INTO countries (name, code) VALUES (?, ?) RETURNING *"#)
+        let _ = query(r#"INSERT INTO countries (name, code) VALUES (?, ?)"#)
             .bind(&country.name)
+            .bind(&country.code)
+            .fetch_one(self.db.as_ref())
+            .await;
+        query_as(r#"SELECT * FROM countries WHERE code = ?"#)
             .bind(&country.code)
             .fetch_one(self.db.as_ref())
             .await
