@@ -57,6 +57,15 @@ command in a separate terminal:
 stripe listen --forward-to localhost:8080/webhooks/stripe
 ```
 
+## Creating a Server from Scratch
+
+When you are creating a server from scratch, you'll typically need to configure
+your Nginx, or at least, we do at bytebury. So, we've included a script that
+does the set up we use: SSL + HTTP/2 enabled via `server-setup.sh`. This is
+a one-time command. Once you have your server already configured, you won't
+need this again. However, we've included it so it can streamline those who use
+it.
+
 ## Our Philosophy
 
 - Focus on what matters &mdash; off-load often
