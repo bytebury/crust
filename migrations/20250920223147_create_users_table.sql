@@ -1,7 +1,6 @@
 CREATE TABLE users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     email TEXT NOT NULL UNIQUE,
-    verified BOOLEAN NOT NULL DEFAULT 0,
     first_name TEXT NOT NULL,
     last_name TEXT,
     full_name TEXT NOT NULL,
@@ -10,6 +9,7 @@ CREATE TABLE users (
     country TEXT DEFAULT NULL,
     country_code TEXT DEFAULT NULL,
     region TEXT DEFAULT NULL,
+    verified BOOLEAN NOT NULL DEFAULT 0,
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
