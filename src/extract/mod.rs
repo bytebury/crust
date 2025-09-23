@@ -17,7 +17,7 @@ pub mod real_ip;
 
 #[derive(Clone)]
 pub enum BaseUser {
-    User(User),
+    User(Box<User>),
     None,
 }
 
@@ -46,7 +46,7 @@ impl FromRequestParts<Arc<AppState>> for BaseUser {
                 .flatten();
 
             if let Some(user) = user {
-                return Ok(BaseUser::User(user));
+                return Ok(BaseUser::User(Box::new(user)));
             }
         }
 

@@ -4,7 +4,7 @@ use axum::response::{IntoResponse, Redirect, Response};
 use axum::{extract::FromRequestParts, http::request::Parts};
 use std::sync::Arc;
 
-pub struct CurrentUser(pub User);
+pub struct CurrentUser(pub Box<User>);
 
 impl FromRequestParts<Arc<AppState>> for CurrentUser {
     type Rejection = Response;

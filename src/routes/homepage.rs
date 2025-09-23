@@ -41,6 +41,6 @@ async fn dashboard(
 ) -> DashboardTemplate {
     DashboardTemplate {
         shared: SharedContext::new(&state.app_info),
-        current_user,
+        current_user: *current_user,
     }
 }
