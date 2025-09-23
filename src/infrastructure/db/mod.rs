@@ -1,5 +1,6 @@
 use sqlx::{Connection, SqlitePool, migrate::Migrator, sqlite::SqlitePoolOptions};
 
+pub mod country_repository;
 pub mod user_repository;
 
 pub use user_repository::UserRepository;

@@ -1,0 +1,43 @@
+use std::sync::Arc;
+
+use sqlx::{SqlitePool, query_as};
+
+use crate::{domain::Country, infrastructure::audit::geolocation::CountryDetails};
+
+pub struct CountryRepository {
+    db: Arc<SqlitePool>,
+}
+impl CountryRepository {
+    pub fn new(db: &Arc<SqlitePool>) -> Self {
+        Self { db: db.clone() }
+    }
+
+    pub async fn find_by_id(&self, id: i64) -> Result<Country, sqlx::Error> {
+        query_as(r#"SELECT * FROM countries WHERE id = ?"#)
+            .bind(id)
+            .fetch_one(self.db.as_ref())
+            .await
+    }
+
+    pub async fn find_by_name(&self, name: &str) -> Result<Country, sqlx::Error> {
+        query_as(r#"SELECT * FROM countries WHERE LOWER(name) = LOWER(?)"#)
+            .bind(name)
+            .fetch_one(self.db.as_ref())
+            .await
+    }
+
+    pub async fn find_by_code(&self, code: &str) -> Result<Country, sqlx::Error> {
+        query_as(r#"SELECT * FROM countries WHERE LOWER(code) = LOWER(?)"#)
+            .bind(code)
+            .fetch_one(self.db.as_ref())
+            .await
+    }
+
+    pub async fn create(&self, country: &CountryDetails) -> Result<Country, sqlx::Error> {
+        query_as(r#"INSERT INTO countries (name, code) VALUES (?, ?) RETURNING *"#)
+            .bind(&country.name)
+            .bind(&country.code)
+            .fetch_one(self.db.as_ref())
+            .await
+    }
+}

@@ -6,8 +6,7 @@ CREATE TABLE users (
     full_name TEXT NOT NULL,
     image_url TEXT NOT NULL,
     stripe_customer_id TEXT UNIQUE DEFAULT NULL,
-    country TEXT DEFAULT NULL,
-    country_code TEXT DEFAULT NULL,
+    country_id INTEGER REFERENCES countries(id) DEFAULT NULL,
     region TEXT DEFAULT NULL,
     verified BOOLEAN NOT NULL DEFAULT 0,
     locked BOOLEAN NOT NULL DEFAULT 0,
@@ -16,3 +15,13 @@ CREATE TABLE users (
 );
 
 create index idx_users_email on users(email);
+
+-- view that we will use when retrieving users.
+CREATE VIEW v_users AS
+SELECT u.*,
+       c.name as "country_name",
+       c.code as "country_code",
+       c.locked as "country_locked"
+  FROM users u
+  LEFT JOIN countries c ON u.country_id = c.id;
+

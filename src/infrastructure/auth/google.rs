@@ -7,7 +7,7 @@ use reqwest::Client;
 use serde::Deserialize;
 use std::env;
 
-use crate::{domain::User, infrastructure::auth::OAuthProvider};
+use crate::{domain::user::NewUser, infrastructure::auth::OAuthProvider};
 
 #[derive(Deserialize)]
 pub struct GoogleUser {
@@ -86,7 +86,7 @@ impl OAuthProvider for GoogleOAuth {
         authorize_url.as_str().to_string()
     }
 
-    async fn exchange_code_for_user(&self, code: &str) -> Result<User, StatusCode> {
+    async fn exchange_code_for_user(&self, code: &str) -> Result<NewUser, StatusCode> {
         let http_client = oauth2::reqwest::ClientBuilder::new()
             .redirect(oauth2::reqwest::redirect::Policy::none())
             .build()
@@ -104,6 +104,6 @@ impl OAuthProvider for GoogleOAuth {
             .await
             .map_err(|_| StatusCode::BAD_GATEWAY)?;
 
-        Ok(User::from(google_user))
+        Ok(NewUser::from(google_user))
     }
 }

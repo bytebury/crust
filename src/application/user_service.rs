@@ -2,7 +2,10 @@ use std::sync::Arc;
 
 use sqlx::SqlitePool;
 
-use crate::{domain::User, infrastructure::db::UserRepository};
+use crate::{
+    domain::{User, user::NewUser},
+    infrastructure::db::UserRepository,
+};
 
 pub struct UserService {
     user_repository: UserRepository,
@@ -22,7 +25,7 @@ impl UserService {
         self.user_repository.find_by_email(email).await
     }
 
-    pub async fn create(&self, user: User) -> Result<User, sqlx::Error> {
+    pub async fn create(&self, user: &NewUser) -> Result<User, sqlx::Error> {
         self.user_repository.create(user).await
     }
 }

@@ -10,7 +10,7 @@ use tower_http::{
 };
 
 use crate::{
-    application::UserService,
+    application::{CountryService, UserService},
     infrastructure::{db::Database, payment::stripe::Stripe},
 };
 
@@ -78,12 +78,14 @@ pub struct AppState {
     pub app_info: AppInfo,
     pub stripe: Stripe,
     pub user_service: UserService,
+    pub country_service: CountryService,
 }
 impl AppState {
     pub fn new(db: &Arc<Pool<Sqlite>>, app_info: AppInfo) -> Self {
         Self {
             app_info: app_info.clone(),
             user_service: UserService::new(db),
+            country_service: CountryService::new(db),
             stripe: Stripe::new(app_info, db),
         }
     }

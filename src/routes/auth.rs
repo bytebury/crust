@@ -50,18 +50,26 @@ async fn google_callback(
         .await?;
 
     let ip: IpAddr = ip.parse().unwrap();
-    let country = audit::geolocation::get_country_details(ip).unwrap_or_default();
+    let country_details = audit::geolocation::get_country_details(ip).unwrap_or_default();
 
-    user.country = country.name;
-    user.country_code = country.code;
-    user.region = country.region;
+    if let Ok(country) = state.country_service.create(&country_details).await {
+        user.country_id = Some(country.id);
+    }
+
+    user.region = country_details.region;
 
     let user = match state.user_service.find_by_email(&user.email).await {
         Ok(Some(user)) => user,
         Ok(None) => state
             .user_service
-            .create(user)
+            .create(&user)
             .await
+            .inspect_err(|e| {
+                eprintln!(
+                    "Something happened while creating user ({}): {e}",
+                    user.email
+                )
+            })
             .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?,
         Err(_) => return Err(StatusCode::INTERNAL_SERVER_ERROR),
     };
