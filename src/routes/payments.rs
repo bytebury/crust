@@ -27,7 +27,7 @@ async fn checkout(
     State(state): State<Arc<AppState>>,
     CurrentUser(user): CurrentUser,
 ) -> Result<Redirect, (StatusCode, String)> {
-    let price_id = env::var("PRO_SUBSCRIPTION_ID").expect("PRO_SUBSCRIPTION_ID must be set");
+    let price_id = env::var("STRIPE_PRICE_ID").expect("STRIPE_PRICE_ID must be set");
     let session = state
         .stripe
         .checkout(&user, &price_id)
