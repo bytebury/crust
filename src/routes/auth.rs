@@ -10,11 +10,13 @@ use axum_extra::extract::{
 };
 use reqwest::StatusCode;
 use serde::Deserialize;
-use std::sync::Arc;
+use std::{net::IpAddr, sync::Arc};
 
 use crate::{
     AppState,
+    extract::real_ip::RealIp,
     infrastructure::{
+        audit,
         auth::{OAuthProvider, google::GoogleOAuth},
         jwt::{JwtService, user_claims::UserClaims},
     },
@@ -40,11 +42,19 @@ async fn signin_with_google() -> impl IntoResponse {
 async fn google_callback(
     State(state): State<Arc<AppState>>,
     Query(params): Query<AuthRequest>,
+    RealIp(ip): RealIp,
     cookies: CookieJar,
 ) -> Result<impl IntoResponse, StatusCode> {
-    let user = GoogleOAuth::default()
+    let mut user = GoogleOAuth::default()
         .exchange_code_for_user(&params.code)
         .await?;
+
+    let ip: IpAddr = ip.parse().unwrap();
+    let country = audit::geolocation::get_country_details(ip).unwrap_or_default();
+
+    user.country = country.name;
+    user.country_code = country.code;
+    user.region = country.region;
 
     let user = match state.user_service.find_by_email(&user.email).await {
         Ok(Some(user)) => user,

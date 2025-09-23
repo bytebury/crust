@@ -7,6 +7,9 @@ CREATE TABLE users (
     full_name TEXT NOT NULL,
     image_url TEXT NOT NULL,
     stripe_customer_id TEXT UNIQUE DEFAULT NULL,
+    country TEXT DEFAULT NULL,
+    country_code TEXT DEFAULT NULL,
+    region TEXT DEFAULT NULL,
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );

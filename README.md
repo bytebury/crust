@@ -57,6 +57,19 @@ command in a separate terminal:
 stripe listen --forward-to localhost:8080/webhooks/stripe
 ```
 
+## IP Services
+
+We use [IP2Location LITE](https://lite.ip2location.com/database-download) for
+our IP services. If you plan on following suite, know that they require
+you to attribute them by adding the following HTML to your website.
+
+```html
+<p>
+  {{ shared.app_info.name }} uses the IP2Location LITE database for
+  <a class="underline" href="https://lite.ip2location.com" target="_blank">IP geolocation</a>.
+</p>
+```
+
 ## Creating a Server from Scratch
 
 When you are creating a server from scratch, you'll typically need to configure
