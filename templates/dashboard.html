@@ -11,7 +11,7 @@
         <main class="container">
             {% if let Some(user) = shared.current_user %}
                 <h1>
-                    Welcome, {{ user.full_name | title }}
+                    Welcome, {{ user.first_name | title }}!
                     {% if let Some(country_name) = user.country_name %}
                         {% if let Some(country_code) = user.country_code %}
                             <img width="48"

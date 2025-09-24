@@ -20,3 +20,9 @@
 	transition-duration: 300ms;
 	background: #fff;
 }
+
+#app_drawer ul {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
