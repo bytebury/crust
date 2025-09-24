@@ -1,0 +1,22 @@
+#app_drawer_underlay {
+	position: fixed;
+	z-index: 40;
+	background: #22222250;
+	height: 100%;
+	width: 100%;
+}
+
+#app_drawer {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+	height: 100%;
+	width: 80%;
+	max-width: 396px;
+	padding: 16px;
+	border-top-left-radius: 16px;
+	border-bottom-left-radius: 16px;
+	z-index: 50;
+	transition-duration: 300ms;
+	background: #fff;
+}

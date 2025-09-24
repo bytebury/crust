@@ -45,6 +45,18 @@ nav#navbar a {
 	text-decoration: none;
 }
 
+nav#navbar .container {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+#app_drawer {
+	position: fixed;
+	top: 0;
+	right: 0;
+}
+
 footer#footer {
 	margin-top: auto;
 	text-align: center;
