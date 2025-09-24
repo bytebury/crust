@@ -4,6 +4,7 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
+anyhow = "1.0.100"
 askama = "0.14.0"
 askama_web = { version = "0.14.6", features = ["axum-0.8"] }
 async-stripe = { version = "0.41.0", features = ["runtime-tokio-hyper"] }
