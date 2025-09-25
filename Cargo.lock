@@ -543,6 +543,7 @@ dependencies = [
  "dotenv",
  "ip2location",
  "jsonwebtoken",
+ "log",
  "oauth2",
  "reqwest",
  "serde",

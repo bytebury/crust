@@ -1,6 +1,7 @@
 use std::{collections::HashMap, env, str::FromStr};
 
 use axum::http::HeaderMap;
+use log::{error, warn};
 use sqlx::SqlitePool;
 use stripe::{
     BillingPortalSession, CheckoutSession, CheckoutSessionBillingAddressCollection,
@@ -37,6 +38,7 @@ impl Stripe {
         );
         stripe
             .process(headers, body)
+            .inspect_err(|e| warn!("Error processing Stripe Webhook: {e}"))
             .map_err(|e| format!("Error processing event: {e}"))
     }
 
@@ -88,6 +90,7 @@ impl Stripe {
 
         BillingPortalSession::create(&self.client, params)
             .await
+            .inspect_err(|e| error!("Unable to manage Stripe Subscription({}): {e}", user.email))
             .map_err(|e| e.to_string())
     }
 
@@ -111,6 +114,7 @@ impl Stripe {
             },
         )
         .await
+        .inspect_err(|e| error!("Unable to create Stripe Customer: {e}"))
         .map_err(|e| e.to_string())?;
 
         let customer_id = customer.id.to_string();
@@ -120,6 +124,7 @@ impl Stripe {
             .bind(user.id)
             .execute(&self.db)
             .await
+            .inspect_err(|e| error!("Unable to set Stripe Customer ID({}): {e}", user.email))
             .map_err(|e| e.to_string())?;
 
         Ok(customer.id)
