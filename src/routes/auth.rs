@@ -73,10 +73,7 @@ async fn google_callback(
             })
             .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?,
         Err(e) => {
-            error!(
-                "Unable to find email({}) due to database error: {e}",
-                user.email
-            );
+            error!("Unable to find email({}): {e}", user.email);
             return Err(StatusCode::INTERNAL_SERVER_ERROR);
         }
     };

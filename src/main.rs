@@ -5,6 +5,8 @@ use std::{fs, path::Path};
 async fn main() {
     dotenv().ok();
 
+    env_logger::init();
+
     if is_dev() {
         println!("🍕 Running in development mode...");
         copy_assets();
