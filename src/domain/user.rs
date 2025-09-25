@@ -68,7 +68,7 @@ pub struct AuditUser {
     pub country_name: Option<String>,
     pub country_locked: bool,
     pub region_id: Option<i64>,
-    pub region_name: Option<String>,
+    pub country_region: Option<String>,
     pub locked: bool,
     pub created_at: NaiveDateTime,
     pub updated_at: NaiveDateTime,

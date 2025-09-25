@@ -21,7 +21,7 @@ CREATE VIEW audit_users AS
 SELECT u.*,
        c.name as "country_name",
        c.code as "country_code",
-       r.name as "region_name",
+       r.name as "country_region",
        c.locked as "country_locked"
   FROM users u
   LEFT JOIN countries c ON u.country_id = c.id
