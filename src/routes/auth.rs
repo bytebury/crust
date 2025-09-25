@@ -8,6 +8,7 @@ use axum_extra::extract::{
     CookieJar, Query,
     cookie::{self, Cookie},
 };
+use log::error;
 use reqwest::StatusCode;
 use serde::Deserialize;
 use std::{net::IpAddr, sync::Arc};
@@ -65,16 +66,23 @@ async fn google_callback(
             .create(&user)
             .await
             .inspect_err(|e| {
-                eprintln!(
+                error!(
                     "Something happened while creating user ({}): {e}",
                     user.email
                 )
             })
             .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?,
-        Err(_) => return Err(StatusCode::INTERNAL_SERVER_ERROR),
+        Err(e) => {
+            error!(
+                "Unable to find email({}) due to database error: {e}",
+                user.email
+            );
+            return Err(StatusCode::INTERNAL_SERVER_ERROR);
+        }
     };
 
     let token = JwtService::generate(&UserClaims::from(user))
+        .inspect_err(|e| error!("Unable to generate JWT: {e}"))
         .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
 
     let auth_cookie = Cookie::build(("auth_token", token))
