@@ -5,7 +5,6 @@
     <h1>Navigation</h1>
     {% if let Some(user) = shared.current_user %}
         <ul>
-            {% if user.is_admin() %}HELLO WORLD!{% endif %}
             <li>
                 <a href="/manage-subscription">Manage Subscription</a>
             </li>
