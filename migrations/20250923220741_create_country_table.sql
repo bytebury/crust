@@ -9,3 +9,10 @@ CREATE TABLE countries (
 );
 
 create index idx_countries_code on countries(code);
+
+create TABLE country_regions (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL UNIQUE,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+);

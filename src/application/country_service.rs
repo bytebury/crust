@@ -3,7 +3,7 @@ use std::sync::Arc;
 use sqlx::SqlitePool;
 
 use crate::{
-    domain::Country,
+    domain::{Country, country::CountryWithRegion},
     infrastructure::{audit::geolocation::CountryDetails, db::CountryRepository},
 };
 
@@ -37,7 +37,10 @@ impl CountryService {
         self.country_repository.unlock(id).await
     }
 
-    pub async fn create(&self, country: &CountryDetails) -> Result<Country, sqlx::Error> {
+    pub async fn create_or_get(
+        &self,
+        country: &CountryDetails,
+    ) -> Result<CountryWithRegion, sqlx::Error> {
         self.country_repository.create(country).await
     }
 }

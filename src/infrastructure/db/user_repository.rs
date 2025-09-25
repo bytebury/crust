@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use sqlx::{SqlitePool, query_as, query_scalar};
+use sqlx::{SqlitePool, query_as};
 
 use crate::domain::{User, user::NewUser};
 
@@ -13,27 +13,27 @@ impl UserRepository {
     }
 
     pub async fn find_by_id(&self, id: i64) -> Result<User, sqlx::Error> {
-        query_as(r#"SELECT * FROM v_users WHERE id = ?"#)
+        query_as(r#"SELECT * FROM users WHERE id = ?"#)
             .bind(id)
             .fetch_one(self.db.as_ref())
             .await
     }
 
     pub async fn find_by_email(&self, email: &str) -> Result<Option<User>, sqlx::Error> {
-        query_as(r#"SELECT * FROM v_users WHERE email = ?"#)
+        query_as(r#"SELECT * FROM users WHERE email = LOWER(?)"#)
             .bind(email)
             .fetch_optional(self.db.as_ref())
             .await
     }
 
     pub async fn create(&self, user: &NewUser) -> Result<User, sqlx::Error> {
-        let user_id: i64 = query_scalar(
+        query_as(
             r#"
         INSERT INTO users (
-            email, full_name, first_name, last_name, image_url, country_id, region, verified, locked
+            email, full_name, first_name, last_name, image_url, country_id, region_id, verified, locked
         )
         VALUES (LOWER(?), LOWER(?), LOWER(?), LOWER(?), ?, ?, ?, ?, ?)
-        RETURNING id
+        RETURNING *
         "#,
         )
         .bind(&user.email)
@@ -42,15 +42,10 @@ impl UserRepository {
         .bind(&user.last_name)
         .bind(&user.image_url)
         .bind(user.country_id)
-        .bind(&user.region)
+        .bind(user.region_id)
         .bind(user.verified)
         .bind(user.locked)
         .fetch_one(self.db.as_ref())
-        .await?;
-
-        query_as(r#"SELECT * FROM v_users WHERE id = ?"#)
-            .bind(user_id)
-            .fetch_one(self.db.as_ref())
-            .await
+        .await
     }
 }

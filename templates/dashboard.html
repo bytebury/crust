@@ -9,19 +9,7 @@
     <body>
         {% include "_partials/navbar.html" %}
         <main class="container">
-            {% if let Some(user) = shared.current_user %}
-                <h1>
-                    Welcome, {{ user.first_name | title }}!
-                    {% if let Some(country_name) = user.country_name %}
-                        {% if let Some(country_code) = user.country_code %}
-                            <img width="48"
-                                 height="16"
-                                 src="/assets/images/flags/{{ country_code | lower }}.svg"
-                                 alt="{{ country_name }}" />
-                        {% endif %}
-                    {% endif %}
-                </h1>
-            {% endif %}
+            {% if let Some(user) = shared.current_user %}<h1>Welcome, {{ user.first_name | title }}!</h1>{% endif %}
         </main>
         {% include "_partials/footer.html" %}
     </body>

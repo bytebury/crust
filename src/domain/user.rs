@@ -1,5 +1,5 @@
 use chrono::NaiveDateTime;
-use sqlx::prelude::FromRow;
+use sqlx::FromRow;
 
 use crate::infrastructure::auth::GoogleUser;
 
@@ -11,9 +11,8 @@ pub struct NewUser {
     pub last_name: Option<String>,
     pub full_name: String,
     pub image_url: String,
-    pub stripe_customer_id: Option<String>,
     pub country_id: Option<i64>,
-    pub region: Option<String>,
+    pub region_id: Option<i64>,
     pub locked: bool,
     pub created_at: NaiveDateTime,
     pub updated_at: NaiveDateTime,
@@ -28,9 +27,8 @@ impl From<GoogleUser> for NewUser {
             last_name: google_user.family_name,
             full_name: google_user.name,
             image_url: google_user.picture,
-            stripe_customer_id: None,
             country_id: None,
-            region: None,
+            region_id: None,
             locked: false,
             created_at: chrono::Utc::now().naive_utc(),
             updated_at: chrono::Utc::now().naive_utc(),
@@ -48,10 +46,29 @@ pub struct User {
     pub full_name: String,
     pub image_url: String,
     pub stripe_customer_id: Option<String>,
+    pub country_id: Option<i64>,
+    pub region_id: Option<i64>,
+    pub locked: bool,
+    pub created_at: NaiveDateTime,
+    pub updated_at: NaiveDateTime,
+}
+
+#[derive(FromRow, Clone)]
+pub struct AuditUser {
+    pub id: i64,
+    pub email: String,
+    pub verified: bool,
+    pub first_name: String,
+    pub last_name: Option<String>,
+    pub full_name: String,
+    pub image_url: String,
+    pub stripe_customer_id: Option<String>,
+    pub country_id: Option<i64>,
     pub country_code: Option<String>,
     pub country_name: Option<String>,
     pub country_locked: bool,
-    pub region: Option<String>,
+    pub region_id: Option<i64>,
+    pub region_name: Option<String>,
     pub locked: bool,
     pub created_at: NaiveDateTime,
     pub updated_at: NaiveDateTime,

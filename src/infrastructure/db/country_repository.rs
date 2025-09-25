@@ -2,7 +2,10 @@ use std::sync::Arc;
 
 use sqlx::{SqlitePool, query, query_as};
 
-use crate::{domain::Country, infrastructure::audit::geolocation::CountryDetails};
+use crate::{
+    domain::{Country, country::CountryWithRegion},
+    infrastructure::audit::geolocation::CountryDetails,
+};
 
 pub struct CountryRepository {
     db: Arc<SqlitePool>,
@@ -49,15 +52,25 @@ impl CountryRepository {
             .await
     }
 
-    pub async fn create(&self, country: &CountryDetails) -> Result<Country, sqlx::Error> {
+    pub async fn create(&self, country: &CountryDetails) -> Result<CountryWithRegion, sqlx::Error> {
         let _ = query(r#"INSERT INTO countries (name, code) VALUES (?, ?)"#)
             .bind(&country.name)
             .bind(&country.code)
             .fetch_one(self.db.as_ref())
             .await;
-        query_as(r#"SELECT * FROM countries WHERE code = ?"#)
+        let _ = query(r#"INSERT INTO country_regions (name) VALUES (?)"#)
+            .bind(&country.region)
+            .fetch_one(self.db.as_ref())
+            .await;
+        let region = query_as(r#"SELECT * FROM country_regions WHERE name = ?"#)
+            .bind(&country.region)
+            .fetch_one(self.db.as_ref())
+            .await?;
+        let country: Country = query_as(r#"SELECT * FROM countries WHERE code = ?"#)
             .bind(&country.code)
             .fetch_one(self.db.as_ref())
-            .await
+            .await?;
+
+        Ok(CountryWithRegion { country, region })
     }
 }
