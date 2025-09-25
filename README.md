@@ -71,6 +71,7 @@ you to attribute them by adding the following HTML to your website.
 ```
 
 ## RBAC
+
 > Keep in mind, when dealing with RBAC,
 you almost always want to go based off the permission, not necessarily
 the role.
@@ -103,8 +104,8 @@ it.
 
 ## Our Philosophy
 
-- Focus on what matters &mdash; off-load often
-- Be close with the browser &mdash; it probably already does it
-- Simple cloud architecture &mdash; your server can handle it
-- Simple dev experience &mdash; doesn't mean "cool"
-- If people don't ask for it &mdash; they probably don't want it
+* Focus on what matters &mdash; off-load often
+* Be close with the browser &mdash; it probably already does it
+* Simple cloud architecture &mdash; your server can handle it
+* Simple dev experience &mdash; doesn't mean "cool"
+* If people don't ask for it &mdash; they probably don't want it
