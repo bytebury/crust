@@ -14,7 +14,7 @@ CREATE TABLE users (
     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-create index idx_users_email on users(email);
+CREATE INDEX idx_users_email ON users(email);
 
 -- view that we will use when auditing users.
 CREATE VIEW audit_users AS

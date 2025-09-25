@@ -8,9 +8,9 @@ CREATE TABLE countries (
     UNIQUE (name, code)
 );
 
-create index idx_countries_code on countries(code);
+CREATE INDEX idx_countries_code ON countries(code);
 
-create TABLE country_regions (
+CREATE TABLE country_regions (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL UNIQUE,
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
