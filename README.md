@@ -82,10 +82,7 @@ solution for permissions, and we think the overhead of adding it
 is worth it in the long-haul; as most apps will require some sort of
 permissions and role-based logic.
 
-The first user that registers will be given the `Role::Admin` role.
-This will allow them to configure the application to their liking
-without needing to do manual inserts into the database. By default,
-there are two roles created as part of the initial migration:
+By default, there are two roles created as part of the initial migration:
 
 * `Role::User`
 * `Role::Admin`
