@@ -70,6 +70,28 @@ you to attribute them by adding the following HTML to your website.
 </p>
 ```
 
+## RBAC
+> Keep in mind, when dealing with RBAC,
+you almost always want to go based off the permission, not necessarily
+the role.
+
+We utilize RBAC (Role Based Access Control) for our applications. This
+let's us finely-tune permissions for certain users. It's a time-tested
+solution for permissions, and we think the overhead of adding it
+is worth it in the long-haul; as most apps will require some sort of
+permissions and role-based logic.
+
+The first user that registers will be given the `Role::Admin` role.
+This will allow them to configure the application to their liking
+without needing to do manual inserts into the database. By default,
+there are two roles created as part of the initial migration:
+
+* `Role::User`
+* `Role::Admin`
+
+If you want to add roles or permissions, you should create a migration
+for them.
+
 ## Creating a Server from Scratch
 
 When you are creating a server from scratch, you'll typically need to configure
