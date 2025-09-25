@@ -20,7 +20,7 @@ impl Default for Pagination {
 
 #[derive(Serialize)]
 pub struct PaginatedResponse<T> {
-    pub data: Vec<T>,
+    pub items: Vec<T>,
     pub total: i64,
     pub start: i64,
     pub end: i64,
@@ -30,15 +30,15 @@ pub struct PaginatedResponse<T> {
     pub has_prev: bool,
 }
 impl<T> PaginatedResponse<T> {
-    pub fn new(data: Vec<T>, total: i64, page: i64, page_size: i64) -> Self {
+    pub fn new(items: Vec<T>, total: i64, page: i64, page_size: i64) -> Self {
         let offset = (page - 1) * page_size;
         let has_prev = page > 1;
-        let has_next = offset + (data.len() as i64) < total;
+        let has_next = offset + (items.len() as i64) < total;
         let start = (page - 1) * page_size + 1;
         let end = min(page * page_size, total);
 
         Self {
-            data,
+            items,
             total,
             start,
             end,
@@ -52,7 +52,7 @@ impl<T> PaginatedResponse<T> {
 impl<T> Default for PaginatedResponse<T> {
     fn default() -> Self {
         Self {
-            data: vec![],
+            items: vec![],
             total: 0,
             page: 1,
             start: 1,
