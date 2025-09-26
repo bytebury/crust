@@ -5,7 +5,7 @@ use sqlx::SqlitePool;
 use crate::{
     domain::{
         User,
-        user::{AuditUser, NewUser},
+        user::{AuditUser, NewUser, UpdateUser},
     },
     infrastructure::db::UserRepository,
     util::pagination::{PaginatedResponse, Pagination},
@@ -21,12 +21,16 @@ impl UserService {
         }
     }
 
-    pub async fn find_by_id(&self, user_id: i64) -> Result<User, sqlx::Error> {
+    pub async fn find_by_id(&self, user_id: i64) -> Result<AuditUser, sqlx::Error> {
         self.user_repository.find_by_id(user_id).await
     }
 
     pub async fn find_by_email(&self, email: &str) -> Result<Option<User>, sqlx::Error> {
         self.user_repository.find_by_email(email).await
+    }
+
+    pub async fn update(&self, user: &UpdateUser) -> Result<AuditUser, sqlx::Error> {
+        self.user_repository.update(user).await
     }
 
     pub async fn search(

@@ -27,6 +27,62 @@
 	gap: 8px;
 }
 
+#modal_wrapper {
+	position: fixed;
+	top: 0;
+	left: 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	animation-name: fadeIn;
+	animation-duration: 150ms;
+	animation-timing-function: ease;
+	width: 100%;
+}
+
+#modal_wrapper.closing {
+	animation-name: fadeOut;
+	animation-duration: 150ms;
+	animation-timing-function: ease;
+}
+
+#modal_wrapper.closing > #modal {
+	animation-name: zoomOut;
+	animation-duration: 150ms;
+	animation-timing-function: ease;
+}
+
+#modal_wrapper .underlay {
+	position: fixed;
+	background: #22222250;
+	height: 100%;
+	width: 100%;
+	z-index: -1;
+}
+
+#modal_wrapper #modal {
+	margin: 48px 16px;
+	padding: 20px;
+	width: calc(100% - 32px);
+	max-width: 480px;
+	overflow-x: hidden;
+	overflow-y: auto;
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+	z-index: 1000;
+	max-height: calc(100% - 6rem);
+	background: white;
+}
+
+#modal-content header {
+	margin-bottom: 8px;
+}
+
+#modal_wrapper #modal header h1 {
+	font-size: 1.5rem;
+}
+
 .line-clamp-2 {
 	display: -webkit-box;
 	-webkit-box-orient: vertical;
@@ -64,16 +120,16 @@
 	border: 1px solid #eee;
 }
 
+img.avatar {
+	border-radius: 100%;
+	border: 1px solid #111;
+}
+
 table {
 	max-width: 100%;
 	width: 100%;
 	border-collapse: collapse;
 	cursor: default;
-}
-
-table img.avatar {
-	border-radius: 100%;
-	border: 1px solid #111;
 }
 
 table thead {
@@ -92,4 +148,44 @@ table thead tr th {
 
 table tbody tr td {
 	border-bottom: 1px solid #aaa;
+}
+
+@keyframes fadeIn {
+	0% {
+		opacity: 0;
+	}
+
+	100% {
+		opacity: 1;
+	}
+}
+
+@keyframes fadeOut {
+	0% {
+		opacity: 1;
+	}
+
+	100% {
+		opacity: 0;
+	}
+}
+
+@keyframes zoomIn {
+	0% {
+		transform: scale(0.9);
+	}
+
+	100% {
+		transform: scale(1);
+	}
+}
+
+@keyframes zoomOut {
+	0% {
+		transform: scale(1);
+	}
+
+	100% {
+		transform: scale(0.9);
+	}
 }

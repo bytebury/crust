@@ -20,7 +20,7 @@
                     </thead>
                     <tbody>
                         {% for user in users.items %}
-                            <tr>
+                            <tr hx-get="/admin/users/{{ user.id }}" hx-target="#modal">
                                 <td>
                                     <div class="flex-row items-center gap-4">
                                         <div class="flex-col items-center gap-1">
@@ -32,7 +32,7 @@
                                             {% if let Some(country_code) = user.country_code %}
                                                 <img class="flag"
                                                      src="/assets/images/flags/{{ country_code | lower }}.svg"
-                                                     width="20"
+                                                     width="24"
                                                      height="20"
                                                      alt="Country Flag" />
                                             {% endif %}
@@ -41,6 +41,7 @@
                                             <div class="flex-row items-center gap-1">
                                                 <strong class="line-clamp-2">{{ user.full_name | title }}</strong>
                                                 {% if user.role == Role::Admin %}<span class="pill admin">Admin</span>{% endif %}
+                                                {% if user.locked %}<span class="pill">Locked</span>{% endif %}
                                             </div>
                                             <a style="margin: 2px 0" href="mailto:{{ user.email }}">{{ user.email }}</a>
                                             {% if let Some(country_name) = user.country_name %}

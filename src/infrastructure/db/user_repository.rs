@@ -1,6 +1,7 @@
+use crate::domain::user::UpdateUser;
 use crate::domain::{User, user::AuditUser, user::NewUser};
 use crate::util::pagination::{Paginatable, PaginatedResponse, Pagination};
-use sqlx::{SqlitePool, query_as};
+use sqlx::{SqlitePool, query, query_as};
 use std::sync::Arc;
 
 pub struct UserRepository {
@@ -11,8 +12,8 @@ impl UserRepository {
         Self { db: db.clone() }
     }
 
-    pub async fn find_by_id(&self, id: i64) -> Result<User, sqlx::Error> {
-        query_as(r#"SELECT * FROM users WHERE id = ?"#)
+    pub async fn find_by_id(&self, id: i64) -> Result<AuditUser, sqlx::Error> {
+        query_as(r#"SELECT * FROM audit_users WHERE id = ?"#)
             .bind(id)
             .fetch_one(self.db.as_ref())
             .await
@@ -23,6 +24,17 @@ impl UserRepository {
             .bind(email)
             .fetch_optional(self.db.as_ref())
             .await
+    }
+
+    pub async fn update(&self, user: &UpdateUser) -> Result<AuditUser, sqlx::Error> {
+        let _ = query(r#"UPDATE users SET role = ?, locked = ? WHERE id = ?"#)
+            .bind(&user.role)
+            .bind(user.locked)
+            .bind(user.id)
+            .execute(self.db.as_ref())
+            .await?;
+
+        self.find_by_id(user.id).await
     }
 
     pub async fn search(

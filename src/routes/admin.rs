@@ -1,14 +1,18 @@
-use crate::domain::rbac::Role;
+use crate::{
+    domain::{rbac::Role, user::UpdateUser},
+    util::htmx::HTMX,
+};
 use std::sync::Arc;
 
 use askama::Template;
 use askama_web::WebTemplate;
 use axum::{
-    Router,
-    extract::{Query, State},
+    Form, Router,
+    extract::{Path, Query, State},
     response::IntoResponse,
-    routing::get,
+    routing::{get, patch},
 };
+use reqwest::StatusCode;
 use serde::Deserialize;
 
 use crate::{
@@ -20,7 +24,10 @@ use crate::{
 };
 
 pub fn routes() -> Router<Arc<AppState>> {
-    Router::new().route("/admin/users", get(users))
+    Router::new()
+        .route("/admin/users", get(users))
+        .route("/admin/users/{id}", get(view_user))
+        .route("/admin/users/{id}", patch(edit_user))
 }
 
 #[derive(Deserialize)]
@@ -35,6 +42,17 @@ struct UserSearch {
 struct AdminUsersTemplate {
     shared: SharedContext,
     users: PaginatedResponse<AuditUser>,
+}
+
+#[derive(Template, WebTemplate)]
+#[template(path = "admin/view_user.html")]
+struct AdminViewUserTemplate {
+    user: AuditUser,
+}
+
+#[derive(Deserialize)]
+struct UpdateUserForm {
+    locked: Option<String>,
 }
 
 async fn users(
@@ -52,5 +70,36 @@ async fn users(
             .user_service
             .search(&pagination, &params.q.unwrap_or_default())
             .await,
+    }
+}
+
+async fn view_user(
+    State(state): State<Arc<AppState>>,
+    AdminUser(_): AdminUser,
+    Path(user_id): Path<i64>,
+) -> impl IntoResponse {
+    match state.user_service.find_by_id(user_id).await {
+        Ok(user) => AdminViewUserTemplate { user }.into_response(),
+        Err(_) => StatusCode::NOT_FOUND.into_response(),
+    }
+}
+
+async fn edit_user(
+    State(state): State<Arc<AppState>>,
+    AdminUser(_): AdminUser,
+    Path(user_id): Path<i64>,
+    Form(form): Form<UpdateUserForm>,
+) -> impl IntoResponse {
+    let user = match state.user_service.find_by_id(user_id).await {
+        Ok(user) => user,
+        Err(_) => return StatusCode::NOT_FOUND.into_response(),
+    };
+
+    let mut user = UpdateUser::from(user);
+    user.locked = form.locked.is_some();
+
+    match state.user_service.update(&user).await {
+        Ok(_) => HTMX::refresh().into_response(),
+        Err(_) => StatusCode::NOT_FOUND.into_response(),
     }
 }

@@ -5,6 +5,21 @@ use sqlx::FromRow;
 
 use crate::{domain::rbac::Role, infrastructure::auth::GoogleUser, util::pagination::Paginatable};
 
+pub struct UpdateUser {
+    pub id: i64,
+    pub locked: bool,
+    pub role: Role,
+}
+impl From<AuditUser> for UpdateUser {
+    fn from(user: AuditUser) -> Self {
+        Self {
+            id: user.id,
+            locked: user.locked,
+            role: user.role,
+        }
+    }
+}
+
 pub struct NewUser {
     pub id: i64,
     pub email: String,

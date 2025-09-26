@@ -101,3 +101,20 @@ a {
 .items-center {
 	align-items: center;
 }
+
+.muted {
+	color: #777;
+}
+
+p {
+	margin: 0;
+	padding: 0;
+}
+
+h1,
+h2,
+h3 {
+	font-weight: 900;
+	margin: 0;
+	padding: 0;
+}
