@@ -1,7 +1,8 @@
 use chrono::NaiveDateTime;
+use serde::Serialize;
 use sqlx::FromRow;
 
-use crate::infrastructure::auth::GoogleUser;
+use crate::{infrastructure::auth::GoogleUser, util::pagination::Paginatable};
 
 pub struct NewUser {
     pub id: i64,
@@ -53,7 +54,7 @@ pub struct User {
     pub updated_at: NaiveDateTime,
 }
 
-#[derive(FromRow, Clone)]
+#[derive(Serialize, FromRow, Clone)]
 pub struct AuditUser {
     pub id: i64,
     pub email: String,
@@ -72,4 +73,14 @@ pub struct AuditUser {
     pub locked: bool,
     pub created_at: NaiveDateTime,
     pub updated_at: NaiveDateTime,
+}
+
+impl Paginatable for AuditUser {
+    fn count_query() -> &'static str {
+        r#"SELECT COUNT(*) FROM audit_users"#
+    }
+
+    fn page_query() -> &'static str {
+        r#"SELECT * FROM audit_users"#
+    }
 }

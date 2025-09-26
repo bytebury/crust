@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>{{ shared.app_info.name }} | Control Panel</title>
+        <meta name="description" content="A template application." />
+        <link rel="canonical" href="{{ shared.app_info.website_url }}" />
+        {% include "_partials/meta.html" %}
+        {% include "_partials/scripts.html" %}
+    </head>
+    <body>
+        {% include "_partials/navbar.html" %}
+        <main class="container">
+            <h1>Manage Users</h1>
+            {% for user in users.items %}{{ user.email }}{% endfor %}
+        </main>
+        {% include "_partials/footer.html" %}
+    </body>
+</html>

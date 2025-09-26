@@ -1,5 +1,6 @@
 use crate::{AppInfo, domain::User};
 
+pub mod admin;
 pub mod auth;
 pub mod homepage;
 pub mod payments;

@@ -82,7 +82,7 @@ pub trait Paginatable:
         pool: &Arc<SqlitePool>,
         pagination: &Pagination,
         where_clause: Option<&str>,
-        args: Vec<String>,
+        args: Vec<&str>,
     ) -> Result<PaginatedResponse<Self>, sqlx::Error> {
         let page = pagination.page.unwrap_or(1);
         let page_size = pagination.page_size.unwrap_or(10);

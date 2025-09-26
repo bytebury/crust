@@ -1,8 +1,7 @@
-use std::sync::Arc;
-
+use crate::domain::{User, user::AuditUser, user::NewUser};
+use crate::util::pagination::{Paginatable, PaginatedResponse, Pagination};
 use sqlx::{SqlitePool, query_as};
-
-use crate::domain::{User, user::NewUser};
+use std::sync::Arc;
 
 pub struct UserRepository {
     db: Arc<SqlitePool>,
@@ -24,6 +23,23 @@ impl UserRepository {
             .bind(email)
             .fetch_optional(self.db.as_ref())
             .await
+    }
+
+    pub async fn search(
+        &self,
+        pagination: &Pagination,
+        search: &str,
+    ) -> PaginatedResponse<AuditUser> {
+        let pattern = &format!("%{}%", search.to_lowercase());
+
+        AuditUser::paginate(
+            &self.db,
+            pagination,
+            Some(r#"LOWER(full_name) LIKE ? OR LOWER(email) LIKE ? ORDER BY updated_at DESC"#),
+            vec![pattern, pattern],
+        )
+        .await
+        .unwrap()
     }
 
     pub async fn create(&self, user: &NewUser) -> Result<User, sqlx::Error> {
