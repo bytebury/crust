@@ -104,6 +104,9 @@ We decided to do this due to simplicity in our applications. We almost never
 need granular access through the database &mdash; most of the times, roles
 suffice for our use-cases.
 
+## Feature Toggles
+We are debating on including our implementation of feature toggles. We will update this document accordingly.
+
 ## Creating a Server from Scratch
 
 When you are creating a server from scratch, you'll typically need to configure
