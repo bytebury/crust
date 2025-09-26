@@ -1,14 +1,15 @@
 use dotenv::dotenv;
+use log::info;
 use std::{fs, path::Path};
 
 #[tokio::main]
 async fn main() {
     dotenv().ok();
 
-    env_logger::init();
+    simple_logger::init_with_level(log::Level::Info).unwrap();
 
     if is_dev() {
-        println!("🍕 Running in development mode...");
+        info!("🍕 Running in development mode...");
         copy_assets();
     }
 
@@ -28,7 +29,7 @@ fn copy_assets() {
         if !path.is_dir() {
             continue;
         }
-        println!("🤖 Processing files in {}...", dir);
+        info!("🤖 Processing files in {}...", dir);
         for entry in fs::read_dir(path).unwrap().flatten() {
             let path = entry.path();
             if path.is_file() {
@@ -50,7 +51,7 @@ fn copy_assets() {
                             .unwrap();
                 if do_copy {
                     fs::copy(&path, &target).unwrap();
-                    println!("✅ Copied {} → {}", filename, target.display());
+                    info!("✅ Copied {} → {}", filename, target.display());
                 }
             }
         }

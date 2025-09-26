@@ -1,3 +1,4 @@
+use log::info;
 use sqlx::{Connection, SqlitePool, migrate::Migrator, sqlite::SqlitePoolOptions};
 
 pub mod country_repository;
@@ -43,7 +44,7 @@ impl Database {
         // --- Run migrations ---
         MIGRATOR.run(&pool).await.expect("Failed to run migrations");
 
-        println!("🎉 Database connected and migrations run successfully.");
+        info!("🎉 Database connected and migrations run successfully.");
 
         pool
     }

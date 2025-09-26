@@ -4,6 +4,7 @@ use axum::{
     response::IntoResponse,
     routing::post,
 };
+use log::error;
 use std::sync::Arc;
 use stripe_webhooks::StripeEvent;
 
@@ -23,12 +24,8 @@ pub async fn stripe_webhook_listener(headers: HeaderMap, body: String) -> impl I
             };
         }
         Err(e) => {
-            eprintln!("Error processing Stripe Event: {:?}", e);
-            return (
-                StatusCode::BAD_REQUEST,
-                format!("Error processing event: {e}"),
-            )
-                .into_response();
+            error!("Error processing Stripe Event: {e:?}");
+            return (StatusCode::BAD_REQUEST, "Error processing event.").into_response();
         }
     };
 

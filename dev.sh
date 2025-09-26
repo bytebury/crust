@@ -37,4 +37,3 @@ fi
 
 # Start the development server with cargo watch
 cargo watch -x run
-
