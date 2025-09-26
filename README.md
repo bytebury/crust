@@ -88,6 +88,16 @@ impl Can<SomeResource> User {
     }
   }
 }
+
+// Usage:
+
+if user.can(Action::Delete, &article) {
+  // success
+}
+
+if user.cannot(Action::Delete, &article) {
+  // uh-oh you can't do that.
+}
 ```
 
 We decided to do this due to simplicity in our applications. We almost never
