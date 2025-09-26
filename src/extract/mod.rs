@@ -10,6 +10,7 @@ use axum::{
 use axum_extra::extract::CookieJar;
 use std::sync::Arc;
 
+pub mod admin_user;
 pub mod current_user;
 pub mod maybe_current_user;
 pub mod no_user;

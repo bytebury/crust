@@ -72,23 +72,27 @@ you to attribute them by adding the following HTML to your website.
 
 ## RBAC
 
-> Keep in mind, when dealing with RBAC,
-you almost always want to go based off the permission, not necessarily
-the role.
+At this time, we deal with Role Based Access Control (RBAC) through the `Can`
+trait. This trait has a singular function that you can implement like so:
 
-We utilize RBAC (Role Based Access Control) for our applications. This
-let's us finely-tune permissions for certain users. It's a time-tested
-solution for permissions, and we think the overhead of adding it
-is worth it in the long-haul; as most apps will require some sort of
-permissions and role-based logic.
+```rs
+impl Can<SomeResource> User {
+  fn can(&self, action: Action, resource: &SomeResource) -> bool {
+    match self.role {
+      Role::Admin => true, // Admins are super-users.
+      Role::User => match action {
+        Action::Read => true,
+        Action::Create => true,
+        Action::Update | Action::Delete => resource.user_id == self.id,
+      }
+    }
+  }
+}
+```
 
-By default, there are two roles created as part of the initial migration:
-
-* `Role::User`
-* `Role::Admin`
-
-If you want to add roles or permissions, you should create a migration
-for them.
+We decided to do this due to simplicity in our applications. We almost never
+need granular access through the database &mdash; most of the times, roles
+suffice for our use-cases.
 
 ## Creating a Server from Scratch
 

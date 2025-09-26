@@ -1,3 +1,4 @@
+use crate::domain::rbac::Role;
 use std::sync::Arc;
 
 use askama::Template;
@@ -13,7 +14,7 @@ use serde::Deserialize;
 use crate::{
     AppState,
     domain::user::AuditUser,
-    extract::current_user::CurrentUser,
+    extract::admin_user::AdminUser,
     routes::SharedContext,
     util::pagination::{PaginatedResponse, Pagination},
 };
@@ -38,7 +39,7 @@ struct AdminUsersTemplate {
 
 async fn users(
     State(state): State<Arc<AppState>>,
-    CurrentUser(user): CurrentUser,
+    AdminUser(user): AdminUser,
     Query(params): Query<UserSearch>,
 ) -> impl IntoResponse {
     let pagination = Pagination {

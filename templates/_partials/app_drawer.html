@@ -5,9 +5,11 @@
     <h1>Navigation</h1>
     {% if let Some(user) = shared.current_user %}
         <ul>
-            <li>
-                <a href="/admin/users">Manage Users</a>
-            </li>
+            {% if user.role == Role::Admin %}
+                <li>
+                    <a href="/admin/users">Manage Users</a>
+                </li>
+            {% endif %}
             <li>
                 <a href="/manage-subscription">Manage Subscription</a>
             </li>

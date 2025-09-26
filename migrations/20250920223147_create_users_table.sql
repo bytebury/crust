@@ -5,6 +5,7 @@ CREATE TABLE users (
     last_name TEXT,
     full_name TEXT NOT NULL,
     image_url TEXT NOT NULL,
+    role TEXT NOT NULL DEFAULT 'user',
     stripe_customer_id TEXT UNIQUE DEFAULT NULL,
     country_id INTEGER REFERENCES countries(id) DEFAULT NULL,
     region_id INTEGER REFERENCES country_regions(id) DEFAULT NULL,

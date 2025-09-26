@@ -1,8 +1,9 @@
+use crate::{domain::rbac::Action, util::rbac::Can};
 use chrono::NaiveDateTime;
 use serde::Serialize;
 use sqlx::FromRow;
 
-use crate::{infrastructure::auth::GoogleUser, util::pagination::Paginatable};
+use crate::{domain::rbac::Role, infrastructure::auth::GoogleUser, util::pagination::Paginatable};
 
 pub struct NewUser {
     pub id: i64,
@@ -46,12 +47,24 @@ pub struct User {
     pub last_name: Option<String>,
     pub full_name: String,
     pub image_url: String,
+    pub role: Role,
     pub stripe_customer_id: Option<String>,
     pub country_id: Option<i64>,
     pub region_id: Option<i64>,
     pub locked: bool,
     pub created_at: NaiveDateTime,
     pub updated_at: NaiveDateTime,
+}
+impl User {
+    pub fn is_admin(&self) -> bool {
+        self.role == Role::Admin
+    }
+}
+
+impl Can<AuditUser> for User {
+    fn can(&self, _: Action, _: &AuditUser) -> bool {
+        matches!(self.role, Role::Admin)
+    }
 }
 
 #[derive(Serialize, FromRow, Clone)]

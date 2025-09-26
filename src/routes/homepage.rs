@@ -1,3 +1,4 @@
+use crate::domain::rbac::Role;
 use askama::Template;
 use askama_web::WebTemplate;
 use axum::{Router, extract::State, routing::get};
