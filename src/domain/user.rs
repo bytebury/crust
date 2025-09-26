@@ -76,6 +76,7 @@ pub struct AuditUser {
     pub last_name: Option<String>,
     pub full_name: String,
     pub image_url: String,
+    pub role: Role,
     pub stripe_customer_id: Option<String>,
     pub country_id: Option<i64>,
     pub country_code: Option<String>,
