@@ -11,7 +11,50 @@
         {% include "_partials/navbar.html" %}
         <main class="container">
             <h1>Manage Users</h1>
-            {% for user in users.items %}{{ user.email }}{% endfor %}
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>User Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users.items %}
+                            <tr>
+                                <td>
+                                    <div class="flex-row items-center gap-4">
+                                        <div class="flex-col items-center gap-1">
+                                            <img class="avatar"
+                                                 src="{{ user.image_url }}"
+                                                 width="48"
+                                                 height="48"
+                                                 alt="Profile image" />
+                                            {% if let Some(country_code) = user.country_code %}
+                                                <img class="flag"
+                                                     src="/assets/images/flags/{{ country_code | lower }}.svg"
+                                                     width="20"
+                                                     height="20"
+                                                     alt="Country Flag" />
+                                            {% endif %}
+                                        </div>
+                                        <div class="flex-col">
+                                            <div class="flex-row items-center gap-1">
+                                                <strong class="line-clamp-2">{{ user.full_name | title }}</strong>
+                                                {% if user.role == Role::Admin %}<span class="pill admin">Admin</span>{% endif %}
+                                            </div>
+                                            <a style="margin: 2px 0" href="mailto:{{ user.email }}">{{ user.email }}</a>
+                                            {% if let Some(country_name) = user.country_name %}
+                                                {% if let Some(country_region) = user.country_region %}<div>{{ country_region }},</div>{% endif %}
+                                                <div>{{ country_name }}</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </main>
         {% include "_partials/footer.html" %}
     </body>

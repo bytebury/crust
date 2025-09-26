@@ -26,3 +26,70 @@
 	flex-direction: column;
 	gap: 8px;
 }
+
+.line-clamp-2 {
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
+	line-clamp: 2;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.pill {
+	display: inline-block;
+	padding: 2px 3px;
+	font-weight: 900;
+	font-size: 0.75rem;
+	border: 1px solid #00000020;
+}
+
+.pill.admin {
+	background: #e0ffc4;
+	color: #111;
+}
+
+.pill.pro {
+	background: #ffdbcf;
+	color: #111;
+}
+
+.table-responsive {
+	display: block;
+	width: 100%;
+	overflow-x: auto;
+}
+
+.flag {
+	border: 1px solid #eee;
+}
+
+table {
+	max-width: 100%;
+	width: 100%;
+	border-collapse: collapse;
+	cursor: default;
+}
+
+table img.avatar {
+	border-radius: 100%;
+	border: 1px solid #111;
+}
+
+table thead {
+	border-bottom: 2px solid black;
+}
+
+table tbody tr:hover {
+	background: #eee;
+}
+
+table tbody tr td,
+table thead tr th {
+	text-align: left;
+	padding: 8px 4px;
+}
+
+table tbody tr td {
+	border-bottom: 1px solid #aaa;
+}
