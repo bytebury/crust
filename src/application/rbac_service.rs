@@ -24,6 +24,14 @@ impl RbacService {
             .contains(&Role::Admin)
     }
 
+    pub async fn get_user_roles(&self, user_id: i64) -> Vec<Role> {
+        self.rbac_repository.get_user_roles(user_id).await
+    }
+
+    pub async fn get_user_permissions(&self, user_id: i64) -> Vec<Permission> {
+        self.rbac_repository.get_user_permissions(user_id).await
+    }
+
     pub async fn check_permission(&self, user_id: i64, permission: &Permission) -> bool {
         if self.is_admin(user_id).await {
             return true;

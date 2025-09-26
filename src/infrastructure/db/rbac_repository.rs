@@ -30,6 +30,27 @@ impl RbacRepository {
         }
     }
 
+    pub async fn get_user_permissions(&self, user_id: i64) -> Vec<Permission> {
+        let result: Result<Vec<(Permission,)>, sqlx::Error> = query_as(
+            r#"
+        SELECT p.name
+        FROM permissions p
+        INNER JOIN role_permissions rp ON rp.permission_id = p.id
+        INNER JOIN roles r ON r.id = rp.role_id
+        INNER JOIN user_roles ur ON ur.role_id = r.id
+        WHERE ur.user_id = ?
+        "#,
+        )
+        .bind(user_id)
+        .fetch_all(self.db.as_ref())
+        .await;
+
+        match result {
+            Ok(rows) => rows.into_iter().map(|(name,)| name).collect(),
+            Err(_) => Vec::new(),
+        }
+    }
+
     pub async fn check_user_permission(&self, user_id: i64, permission: &Permission) -> bool {
         let count: Result<(i64,), sqlx::Error> = query_as(
             r#"
