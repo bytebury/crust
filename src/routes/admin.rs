@@ -53,6 +53,7 @@ struct AdminViewUserTemplate {
 #[derive(Deserialize)]
 struct UpdateUserForm {
     locked: Option<String>,
+    role: Role,
 }
 
 async fn users(
@@ -97,6 +98,7 @@ async fn edit_user(
 
     let mut user = UpdateUser::from(user);
     user.locked = form.locked.is_some();
+    user.role = form.role;
 
     match state.user_service.update(&user).await {
         Ok(_) => HTMX::refresh().into_response(),
