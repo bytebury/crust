@@ -76,8 +76,8 @@ At this time, we deal with Role Based Access Control (RBAC) through the `Can`
 trait. This trait has a singular function that you can implement like so:
 
 ```rs
-impl Can<SomeResource> User {
-  fn can(&self, action: Action, resource: &SomeResource) -> bool {
+impl Can<Resource> for User {
+  fn can(&self, action: Action, resource: &Resource) -> bool {
     match self.role {
       Role::Admin => true, // Admins are super-users.
       Role::User => match action {
