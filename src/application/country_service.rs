@@ -29,6 +29,10 @@ impl CountryService {
         self.country_repository.find_by_code(code).await
     }
 
+    pub async fn search(&self, value: &str) -> Vec<Country> {
+        self.country_repository.search(value).await
+    }
+
     pub async fn lock(&self, id: i64) -> Result<(), sqlx::Error> {
         self.country_repository.lock(id).await
     }

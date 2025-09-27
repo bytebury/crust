@@ -52,6 +52,18 @@ impl CountryRepository {
             .await
     }
 
+    pub async fn search(&self, value: &str) -> Vec<Country> {
+        let value = &format!("%{value}%");
+        query_as(
+            r#"SELECT * FROM countries WHERE LOWER(name) LIKE LOWER(?) OR LOWER(code) LIKE LOWER(?) ORDER BY name ASC"#,
+        )
+        .bind(value)
+        .bind(value)
+        .fetch_all(self.db.as_ref())
+        .await
+        .unwrap_or_default()
+    }
+
     pub async fn create(&self, country: &CountryDetails) -> Result<CountryWithRegion, sqlx::Error> {
         let _ = query(r#"INSERT INTO countries (name, code) VALUES (?, ?)"#)
             .bind(&country.name)

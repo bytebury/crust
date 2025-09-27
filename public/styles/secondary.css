@@ -150,6 +150,14 @@ table tbody tr td {
 	border-bottom: 1px solid #aaa;
 }
 
+table caption {
+	padding: 4px 0;
+	caption-side: bottom;
+	text-align: right;
+	font-size: 0.9rem;
+	color: #555;
+}
+
 @keyframes fadeIn {
 	0% {
 		opacity: 0;
