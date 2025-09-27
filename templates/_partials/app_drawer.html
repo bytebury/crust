@@ -1,10 +1,10 @@
 <div id="app_drawer_underlay"
      style="display: none"
      onclick="closeAppDrawer()"></div>
-<section id="app_drawer" style="transform: translateX(100%)">
+<section id="app_drawer" class="flex-col" style="transform: translateX(100%)">
     <h1>Navigation</h1>
     {% if let Some(user) = shared.current_user %}
-        <ul>
+        <ul class="flex-col gap-2">
             {% if user.role == Role::Admin %}
                 <li>
                     <a href="/admin/users">Manage Users</a>
@@ -20,7 +20,7 @@
                 <a href="/checkout">Purchase Pro</a>
             </li>
             <li>
-                <button hx-delete="/auth/signout" hx-swap="none">Sign out</button>
+                <button class="link" hx-delete="/auth/signout" hx-swap="none">Sign out</button>
             </li>
         </ul>
     {% else %}

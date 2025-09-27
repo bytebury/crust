@@ -5,13 +5,13 @@
          width="64"
          height="64" />
     <div style="text-align: center">
-        <h1 class="flex-row gap-2 items-center">
+        <h1 class="flex gap-2 items-center">
             {{ user.full_name | title }}
             {% if user.role == Role::Admin %}<div class="pill admin">Admin</div>{% endif %}
         </h1>
         <p class="muted">Signed up at: {{ user.created_at }}</p>
     </div>
-    <div class="flex-row items-center gap-2">
+    <div class="flex items-center gap-2">
         {% if let Some(country_code) = user.country_code %}
             {% if let
                 Some(country_name) = user.country_name %}
@@ -19,7 +19,7 @@
                      src="/assets/images/flags/{{ country_code | lower }}.svg"
                      alt="{{ country_name }}'s flag"
                      width="24"
-                     height="20" />
+                     height="19" />
                 {% if let Some(region) = user.country_region %}{{ region }},{% endif %}
                 {{
                 country_name }}
@@ -28,6 +28,7 @@
     </div>
 </header>
 <form id="edit_user_form"
+      class="flex-col"
       hx-patch="/admin/users/{{ user.id }}"
       hx-select="#edit_user_form">
     <div class="form-control">
@@ -51,8 +52,8 @@
                 <option value="admin" {% if user.role == Role::Admin %}selected{% endif %}>Admin</option>
             </select>
         </div>
-        <div class="form-actions">
-            <button type="submit">Update</button>
-            <button type="reset" onclick="closeModal()">Close</button>
+        <div class="flex gap-2 form-actions">
+            <button class="btn success" type="submit">Update</button>
+            <button class="btn outline-hover" type="reset" onclick="closeModal()">Close</button>
         </div>
     </form>

@@ -1,30 +1,22 @@
 #app_drawer_underlay {
 	position: fixed;
-	z-index: 40;
-	background: #22222250;
 	height: 100%;
 	width: 100%;
+	background: var(--underlay);
+	z-index: 40;
 }
 
 #app_drawer {
 	display: flex;
-	flex-direction: column;
-	gap: 16px;
 	height: 100%;
 	width: 80%;
 	max-width: 396px;
 	padding: 16px;
-	border-top-left-radius: 16px;
-	border-bottom-left-radius: 16px;
+	border-top-left-radius: var(--radius);
+	border-bottom-left-radius: var(--radius);
 	z-index: 50;
 	transition-duration: 300ms;
-	background: #fff;
-}
-
-#app_drawer ul {
-	display: flex;
-	flex-direction: column;
-	gap: 8px;
+	background: var(--drawer-bg);
 }
 
 #modal_wrapper {
@@ -54,33 +46,24 @@
 
 #modal_wrapper .underlay {
 	position: fixed;
-	background: #22222250;
+	background: var(--underlay);
 	height: 100%;
 	width: 100%;
 	z-index: -1;
 }
 
 #modal_wrapper #modal {
-	margin: 48px 16px;
-	padding: 20px;
-	width: calc(100% - 32px);
+	margin: 32px var(--default-spacing);
+	width: calc(100% - var(--default-spacing));
 	max-width: 480px;
 	overflow-x: hidden;
 	overflow-y: auto;
-	display: flex;
-	flex-direction: column;
-	gap: 16px;
 	z-index: 1000;
 	max-height: calc(100% - 6rem);
-	background: white;
 }
 
 #modal-content header {
 	margin-bottom: 8px;
-}
-
-#modal_wrapper #modal header h1 {
-	font-size: 1.5rem;
 }
 
 .line-clamp-2 {
@@ -97,17 +80,17 @@
 	padding: 2px 3px;
 	font-weight: 900;
 	font-size: 0.75rem;
-	border: 1px solid #00000020;
+	border: var(--pill-border);
 }
 
 .pill.admin {
-	background: #e0ffc4;
-	color: #111;
+	background: var(--admin-color);
+	color: var(--foreground);
 }
 
 .pill.pro {
-	background: #ffdbcf;
-	color: #111;
+	background: var(--pro-color);
+	color: var(--foreground);
 }
 
 .table-responsive {
@@ -117,12 +100,12 @@
 }
 
 .flag {
-	border: 1px solid #eee;
+	border: var(--default-border);
 }
 
 img.avatar {
 	border-radius: 100%;
-	border: 1px solid #111;
+	border: var(--default-border);
 }
 
 table {
@@ -133,11 +116,12 @@ table {
 }
 
 table thead {
-	border-bottom: 2px solid black;
+	border-bottom: 2px solid var(--default-border-color);
 }
 
 table tbody tr:hover {
-	background: #eee;
+	transition: var(--transition);
+	background: var(--table-row-hover);
 }
 
 table tbody tr td,
@@ -147,7 +131,7 @@ table thead tr th {
 }
 
 table tbody tr td {
-	border-bottom: 1px solid #aaa;
+	border-bottom: var(--default-border);
 }
 
 table caption {

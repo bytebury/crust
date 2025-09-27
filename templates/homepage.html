@@ -9,8 +9,12 @@
     </head>
     <body>
         {% include "_partials/navbar.html" %}
-        <main class="container">
-            <h1>Welcome to {{ shared.app_info.name }}!</h1>
+        <main>
+            <div class="container">
+                <section class="card">
+                    <h1>Welcome to {{ shared.app_info.name }}!</h1>
+                </section>
+            </div>
         </main>
         {% include "_partials/footer.html" %}
     </body>
