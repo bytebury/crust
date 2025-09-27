@@ -1,17 +1,17 @@
 :root {
 	--foreground: #222;
 	--background: #fff1e2;
-	--success-bg: #548657;
+	--success-bg: #4a794c;
 	--success-bg-hover: #3c6c3f;
 	--success-fg: #fff;
-	--danger-bg: #a86565;
+	--danger-bg: #945454;
 	--danger-bg-hover: #874a4a;
 	--danger-fg: #fff;
 	--info-bg: #516e84;
 	--info-bg-hover: #385265;
 	--info-fg: #fff;
-	--warning-bg: #94724e;
-	--warning-bg-hover: #886745;
+	--warning-bg: #836342;
+	--warning-bg-hover: #6f5335;
 	--warning-fg: #fff;
 	--pro-color: #ffdbcf;
 	--admin-color: #e0ffc4;
