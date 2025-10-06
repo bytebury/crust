@@ -106,6 +106,10 @@ suffice for our use-cases.
 
 ## Creating a Server from Scratch
 
+> [!IMPORTANT]
+> Remember that you will need to create an empty file at `db/database.db`.
+> Otherwise, the application will panic and not run.
+
 When you are creating a server from scratch, you'll typically need to configure
 your Nginx, or at least, we do at bytebury. So, we've included a script that
 does the set up we use: SSL + HTTP/2 enabled via `server-setup.sh`. This is
