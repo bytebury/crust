@@ -11,10 +11,10 @@ use axum_extra::extract::{
 use log::error;
 use reqwest::StatusCode;
 use serde::Deserialize;
-use std::{net::IpAddr, sync::Arc};
+use std::net::IpAddr;
 
 use crate::{
-    AppState,
+    SharedState,
     extract::real_ip::RealIp,
     infrastructure::{
         audit,
@@ -24,7 +24,7 @@ use crate::{
     util::htmx::HTMX,
 };
 
-pub fn routes() -> Router<Arc<AppState>> {
+pub fn routes() -> Router<SharedState> {
     Router::new()
         .route("/auth/google", get(signin_with_google))
         .route("/auth/google/callback", get(google_callback))
@@ -41,7 +41,7 @@ async fn signin_with_google() -> impl IntoResponse {
 }
 
 async fn google_callback(
-    State(state): State<Arc<AppState>>,
+    State(state): State<SharedState>,
     Query(params): Query<AuthRequest>,
     RealIp(ip): RealIp,
     cookies: CookieJar,
@@ -93,7 +93,7 @@ async fn google_callback(
     Ok((cookies, Redirect::to("/")))
 }
 
-async fn signout(State(_state): State<Arc<AppState>>, cookies: CookieJar) -> impl IntoResponse {
+async fn signout(State(_state): State<SharedState>, cookies: CookieJar) -> impl IntoResponse {
     let cookies = cookies.remove(
         Cookie::build(("auth_token", ""))
             .path("/")

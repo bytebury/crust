@@ -1,13 +1,12 @@
-use std::env;
-use std::sync::Arc;
-
 use axum::http::StatusCode;
 use axum::response::Redirect;
 use axum::{Router, extract::State, routing::get};
+use std::env;
 
-use crate::{AppState, extract::current_user::CurrentUser};
+use crate::SharedState;
+use crate::extract::current_user::CurrentUser;
 
-pub fn routes() -> Router<Arc<AppState>> {
+pub fn routes() -> Router<SharedState> {
     Router::new()
         .route("/checkout", get(checkout))
         .route("/manage-subscription", get(manage_subscription))
@@ -24,7 +23,7 @@ async fn payment_cancelled() {
 }
 
 async fn checkout(
-    State(state): State<Arc<AppState>>,
+    State(state): State<SharedState>,
     CurrentUser(user): CurrentUser,
 ) -> Result<Redirect, (StatusCode, String)> {
     let price_id = env::var("STRIPE_PRICE_ID").expect("STRIPE_PRICE_ID must be set");
@@ -42,7 +41,7 @@ async fn checkout(
 }
 
 async fn manage_subscription(
-    State(state): State<Arc<AppState>>,
+    State(state): State<SharedState>,
     CurrentUser(user): CurrentUser,
 ) -> Result<Redirect, (StatusCode, String)> {
     let session = state

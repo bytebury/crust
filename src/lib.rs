@@ -75,6 +75,8 @@ impl AppInfo {
     }
 }
 
+type SharedState = Arc<AppState>;
+
 pub struct AppState {
     pub app_info: AppInfo,
     pub stripe: Stripe,

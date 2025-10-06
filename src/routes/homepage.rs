@@ -1,16 +1,14 @@
-use crate::domain::rbac::Role;
+use crate::{SharedState, domain::rbac::Role};
 use askama::Template;
 use askama_web::WebTemplate;
 use axum::{Router, extract::State, routing::get};
-use std::sync::Arc;
 
 use crate::{
-    AppState,
     extract::{current_user::CurrentUser, no_user::NoUser},
     routes::SharedContext,
 };
 
-pub fn routes() -> Router<Arc<AppState>> {
+pub fn routes() -> Router<SharedState> {
     Router::new()
         .route("/", get(homepage))
         .route("/dashboard", get(dashboard))
@@ -28,14 +26,14 @@ struct DashboardTemplate {
     shared: SharedContext,
 }
 
-async fn homepage(State(state): State<Arc<AppState>>, NoUser: NoUser) -> HomepageTemplate {
+async fn homepage(State(state): State<SharedState>, NoUser: NoUser) -> HomepageTemplate {
     HomepageTemplate {
         shared: SharedContext::new(&state.app_info, None),
     }
 }
 
 async fn dashboard(
-    State(state): State<Arc<AppState>>,
+    State(state): State<SharedState>,
     CurrentUser(current_user): CurrentUser,
 ) -> DashboardTemplate {
     DashboardTemplate {

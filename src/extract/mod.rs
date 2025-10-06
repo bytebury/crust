@@ -1,5 +1,5 @@
 use crate::{
-    AppState,
+    SharedState,
     domain::User,
     infrastructure::jwt::{JwtService, user_claims::UserClaims},
 };
@@ -22,12 +22,12 @@ pub enum BaseUser {
     None,
 }
 
-impl FromRequestParts<Arc<AppState>> for BaseUser {
+impl FromRequestParts<SharedState> for BaseUser {
     type Rejection = axum::http::StatusCode;
 
     async fn from_request_parts(
         parts: &mut Parts,
-        state: &Arc<AppState>,
+        state: &SharedState,
     ) -> Result<Self, axum::http::StatusCode> {
         let state = Arc::from_ref(state);
         let jar = CookieJar::from_headers(&parts.headers);

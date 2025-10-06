@@ -1,8 +1,8 @@
 use crate::{
+    SharedState,
     domain::{Country, rbac::Role, user::UpdateUser},
     util::htmx::HTMX,
 };
-use std::sync::Arc;
 
 use askama::Template;
 use askama_web::WebTemplate;
@@ -16,14 +16,13 @@ use reqwest::StatusCode;
 use serde::Deserialize;
 
 use crate::{
-    AppState,
     domain::user::AuditUser,
     extract::admin_user::AdminUser,
     routes::SharedContext,
     util::pagination::{PaginatedResponse, Pagination},
 };
 
-pub fn routes() -> Router<Arc<AppState>> {
+pub fn routes() -> Router<SharedState> {
     Router::new()
         .route("/admin/users", get(users))
         .route("/admin/users/{id}", get(view_user))
@@ -79,7 +78,7 @@ struct CountrySearchQuery {
 }
 
 async fn users(
-    State(state): State<Arc<AppState>>,
+    State(state): State<SharedState>,
     AdminUser(user): AdminUser,
     Query(params): Query<UserSearch>,
 ) -> impl IntoResponse {
@@ -97,7 +96,7 @@ async fn users(
 }
 
 async fn view_user(
-    State(state): State<Arc<AppState>>,
+    State(state): State<SharedState>,
     AdminUser(_): AdminUser,
     Path(user_id): Path<i64>,
 ) -> impl IntoResponse {
@@ -108,7 +107,7 @@ async fn view_user(
 }
 
 async fn edit_user(
-    State(state): State<Arc<AppState>>,
+    State(state): State<SharedState>,
     AdminUser(_): AdminUser,
     Path(user_id): Path<i64>,
     Form(form): Form<UpdateUserForm>,
@@ -129,7 +128,7 @@ async fn edit_user(
 }
 
 async fn countries(
-    State(state): State<Arc<AppState>>,
+    State(state): State<SharedState>,
     AdminUser(user): AdminUser,
     Query(params): Query<CountrySearchQuery>,
 ) -> impl IntoResponse {
@@ -143,7 +142,7 @@ async fn countries(
 }
 
 async fn lock_or_unlock_country(
-    State(state): State<Arc<AppState>>,
+    State(state): State<SharedState>,
     AdminUser(_): AdminUser,
     Path(id): Path<i64>,
     Form(form): Form<UpdateCountryForm>,
