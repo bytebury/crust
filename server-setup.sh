@@ -31,6 +31,9 @@ server {
         proxy_set_header X-Forwarded-Proto \$scheme;
 
         proxy_cache_bypass \$http_upgrade;
+
+        proxy_read_timeout 86400s;
+        proxy_send_timeout 86400s;
     }
 
     listen 80;
@@ -64,4 +67,4 @@ nginx -t || {
 # Reload nginx
 systemctl reload nginx
 
-echo "✅ Site $DOMAIN created, secured with SSL, and HTTP/2 enabled on port $PORT."
+echo "✅ Site $DOMAIN created, secured with SSL, WebSockets and HTTP/2 enabled on port $PORT."
