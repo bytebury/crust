@@ -85,7 +85,6 @@ impl Paginatable for User {
   }
 }
 ```
-```
 
 Once you do that, then you will be able to paginate your data like:
 
@@ -94,9 +93,6 @@ Once you do that, then you will be able to paginate your data like:
 User::paginate(db, Pagination::default())
 // paginate with a filter
 User::paginate(db, Pagination::default(), "role = ? ORDER BY created_at DESC", vec!["admin"])
-```
-```
-```
 ```
 
 ## RBAC
