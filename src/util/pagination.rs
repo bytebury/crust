@@ -68,8 +68,15 @@ impl<T> Default for PaginatedResponse<T> {
 pub trait Paginatable:
     Sized + Send + Unpin + for<'r> FromRow<'r, sqlx::sqlite::SqliteRow> + Serialize
 {
-    fn count_query() -> &'static str;
-    fn page_query() -> &'static str;
+    fn table_name() -> &'static str;
+
+    fn count_query() -> String {
+        format!("SELECT COUNT(*) FROM {}", Self::table_name())
+    }
+
+    fn page_query() -> String {
+        format!("SELECT * FROM {}", Self::table_name())
+    }
 
     /// Helps you paginate all things in the table without any kind of filtering.
     /// If you would like to include filtering, use the `paginate` function and

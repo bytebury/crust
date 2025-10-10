@@ -105,11 +105,7 @@ pub struct AuditUser {
 }
 
 impl Paginatable for AuditUser {
-    fn count_query() -> &'static str {
-        r#"SELECT COUNT(*) FROM audit_users"#
-    }
-
-    fn page_query() -> &'static str {
-        r#"SELECT * FROM audit_users"#
+    fn table_name() -> &'static str {
+        "audit_users"
     }
 }
