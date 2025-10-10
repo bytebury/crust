@@ -88,12 +88,7 @@ Once you do that, then you will be able to paginate your data like:
 // paginate everything, without any filtering
 User::paginate(db, Pagination::default())
 // paginate with a filter
-User::paginate_filter(
-  db, 
-  Pagination::default(),
-  "role = ? ORDER BY created_at DESC",
-  vec!["admin"],
-)
+User::paginate_filter(db, Pagination::default(), "role = ? ORDER BY created_at DESC", vec!["admin"])
 ```
 
 ## RBAC
