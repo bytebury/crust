@@ -44,7 +44,7 @@ impl UserRepository {
     ) -> PaginatedResponse<AuditUser> {
         let pattern = &format!("%{}%", search.to_lowercase());
 
-        AuditUser::paginate(
+        AuditUser::paginate_filter(
             &self.db,
             pagination,
             Some(r#"LOWER(full_name) LIKE ? OR LOWER(email) LIKE ? ORDER BY updated_at DESC"#),

@@ -70,6 +70,35 @@ you to attribute them by adding the following HTML to your website.
 </p>
 ```
 
+## How Pagination Works
+
+You'll need to implement the `Paginatable` trait for your entity.
+
+```rs
+impl Paginatable for User {
+  fn count_query() -> &'static str {
+    "SELECT COUNT(*) FROM users"
+  }
+
+  fn page_query() -> &'static str {
+    "SELECT * FROM users"
+  }
+}
+```
+```
+
+Once you do that, then you will be able to paginate your data like:
+
+```rs
+// paginate everything, without any filtering
+User::paginate(db, Pagination::default())
+// paginate with a filter
+User::paginate(db, Pagination::default(), "role = ? ORDER BY created_at DESC", vec!["admin"])
+```
+```
+```
+```
+
 ## RBAC
 
 At this time, we deal with Role Based Access Control (RBAC) through the `Can`

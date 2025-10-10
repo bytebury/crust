@@ -71,14 +71,30 @@ pub trait Paginatable:
     fn count_query() -> &'static str;
     fn page_query() -> &'static str;
 
-    /// Helps you paginate anything in the table. Do not include the "WHERE",
-    /// that will be automatically inserted before the query you send in.
+    /// Helps you paginate all things in the table without any kind of filtering.
+    /// If you would like to include filtering, use the `paginate` function and
+    /// include a `"WHERE"` clause.
     ///
     /// Example:
     /// ```
-    /// User::paginate(&db, &paging, "first_name LIKE ?", "%am%")
+    /// let data = User::paginate(&db, &paging).await;
     /// ```
     async fn paginate(
+        pool: &Arc<SqlitePool>,
+        pagination: &Pagination,
+    ) -> Result<PaginatedResponse<Self>, sqlx::Error> {
+        Paginatable::paginate_filter(pool, pagination, None, vec![]).await
+    }
+
+    /// Helps you paginate anything in the table, with a filter applied.
+    /// The filter is just a `"WHERE"` clause without the `"WHERE"` keyword.
+    /// See the example below for a sample usage.
+    ///
+    /// Example:
+    /// ```
+    /// let data = User::paginate_filter(&db, &paging, "first_name LIKE ?", vec!["%am%"]).await;
+    /// ```
+    async fn paginate_filter(
         pool: &Arc<SqlitePool>,
         pagination: &Pagination,
         where_clause: Option<&str>,
