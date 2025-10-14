@@ -128,8 +128,11 @@ suffice for our use-cases.
 ## Creating a Server from Scratch
 
 > [!IMPORTANT]
-> Remember that you will need to create an empty file at `db/database.db`.
+> You will need to create a folder called `APP_NAME` in the root of your server.
+> In addition, you will need to create an empty file at `db/database.db`.
 > Otherwise, the application will panic and not run.
+>
+> For using SSH as a connection, you will need to provide a working private key.
 
 When you are creating a server from scratch, you'll typically need to configure
 your Nginx, or at least, we do at bytebury. So, we've included a script that
