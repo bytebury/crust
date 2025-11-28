@@ -18,7 +18,8 @@ pub async fn stripe_webhook_listener(headers: HeaderMap, body: String) -> impl I
         Ok(event) => {
             match event {
                 StripeEvent::CheckoutSessionCompleted(value) => println!("{:?}", value),
-                StripeEvent::CustomerSubscriptionDeleted(value) => println!("{:?}", value),
+                StripeEvent::InvoicePaymentFailed(value)
+                | StripeEvent::CustomerSubscriptionDeleted(value) => println!("{:?}", value),
                 StripeEvent::Unknown(value) => println!("{:?}", value),
             };
         }
