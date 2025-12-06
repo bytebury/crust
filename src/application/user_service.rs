@@ -12,9 +12,9 @@ pub struct UserService {
     user_repository: UserRepository,
 }
 impl UserService {
-    pub fn new(db: &DbPool) -> Self {
+    pub fn new(db: DbPool) -> Self {
         Self {
-            user_repository: UserRepository::new(db),
+            user_repository: UserRepository::new(db.clone()),
         }
     }
 

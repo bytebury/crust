@@ -5,6 +5,7 @@ use crate::{
 };
 use axum::{
     extract::{FromRef, FromRequestParts},
+    http::StatusCode,
     http::request::Parts,
 };
 use axum_extra::extract::CookieJar;
@@ -23,12 +24,12 @@ pub enum BaseUser {
 }
 
 impl FromRequestParts<SharedState> for BaseUser {
-    type Rejection = axum::http::StatusCode;
+    type Rejection = StatusCode;
 
     async fn from_request_parts(
         parts: &mut Parts,
         state: &SharedState,
-    ) -> Result<Self, axum::http::StatusCode> {
+    ) -> Result<Self, StatusCode> {
         let state = Arc::from_ref(state);
         let jar = CookieJar::from_headers(&parts.headers);
 
@@ -37,16 +38,9 @@ impl FromRequestParts<SharedState> for BaseUser {
             None => return Ok(BaseUser::None),
         };
 
-        // Check to see if they are a user first
         if let Ok(token_data) = JwtService::verify::<UserClaims>(token) {
-            let user = state
-                .user_service
-                .find_by_email(&token_data.claims.sub)
-                .await
-                .ok()
-                .flatten();
-
-            if let Some(user) = user {
+            let email = token_data.claims.sub;
+            if let Ok(Some(user)) = state.user_service.find_by_email(&email).await {
                 return Ok(BaseUser::User(user));
             }
         }

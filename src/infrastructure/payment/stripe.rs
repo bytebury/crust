@@ -2,7 +2,6 @@ use std::{collections::HashMap, env, str::FromStr};
 
 use axum::http::HeaderMap;
 use log::{error, warn};
-use sqlx::SqlitePool;
 use stripe::{
     BillingPortalSession, CheckoutSession, CheckoutSessionBillingAddressCollection,
     CheckoutSessionMode, CreateBillingPortalSession, CreateCheckoutSessionAutomaticTax,
@@ -11,23 +10,27 @@ use stripe::{
 };
 use stripe_webhooks::{StripeEvent, StripeListener};
 
-use crate::{AppInfo, domain::User};
+use crate::{AppInfo, DbPool, domain::User};
 
 #[derive(Clone)]
 pub struct Stripe {
-    db: SqlitePool,
-    app_info: AppInfo,
+    db: DbPool,
     client: stripe::Client,
+    success_url: String,
+    cancel_url: String,
+    website_url: String,
 }
 impl Stripe {
-    pub fn new(app_info: AppInfo, db: &SqlitePool) -> Self {
+    pub fn new(app_info: &AppInfo, db: DbPool) -> Self {
         let secret_key = env::var("STRIPE_SECRET").expect("STRIPE_SECRET must be set");
         let client = stripe::Client::new(secret_key);
 
         Self {
             client,
-            app_info,
-            db: db.clone(),
+            db,
+            success_url: app_info.website_url.clone(),
+            cancel_url: app_info.website_url.clone(),
+            website_url: app_info.website_url.clone(),
         }
     }
 
@@ -49,8 +52,8 @@ impl Stripe {
     ) -> Result<stripe::CheckoutSession, String> {
         let customer_id = self.create_customer(user).await?;
 
-        let success_url = format!("{}/payments/successful", self.app_info.website_url);
-        let cancel_url = format!("{}/payments/cancelled", self.app_info.website_url);
+        let success_url = format!("{}/payments/successful", self.success_url);
+        let cancel_url = format!("{}/payments/cancelled", self.cancel_url);
 
         let checkout_session = {
             let mut params = stripe::CreateCheckoutSession::new();
@@ -83,7 +86,7 @@ impl Stripe {
 
     pub async fn manage_subscription(&self, user: &User) -> Result<BillingPortalSession, String> {
         let customer_id = self.create_customer(user).await?;
-        let return_url = format!("{}/dashboard", self.app_info.website_url);
+        let return_url = format!("{}/dashboard", self.website_url);
 
         let mut params = CreateBillingPortalSession::new(customer_id);
         params.return_url = Some(&return_url);
@@ -122,7 +125,7 @@ impl Stripe {
         sqlx::query(r#"UPDATE users SET stripe_customer_id = ? WHERE id = ?"#)
             .bind(customer_id)
             .bind(user.id)
-            .execute(&self.db)
+            .execute(self.db.as_ref())
             .await
             .inspect_err(|e| error!("Unable to set Stripe Customer ID({}): {e}", user.email))
             .map_err(|e| e.to_string())?;

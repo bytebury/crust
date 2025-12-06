@@ -10,7 +10,7 @@ pub struct CountryRepository {
     db: DbPool,
 }
 impl CountryRepository {
-    pub fn new(db: &DbPool) -> Self {
+    pub fn new(db: DbPool) -> Self {
         Self { db: db.clone() }
     }
 

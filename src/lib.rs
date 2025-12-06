@@ -39,7 +39,7 @@ pub async fn start() {
 async fn initialize() -> Router {
     let db = Arc::new(Database::initialize().await);
     let app_info = AppInfo::new();
-    let state = Arc::new(AppState::new(&db, app_info.clone()));
+    let state = Arc::new(AppState::new(db.clone(), app_info.clone()));
     let serve_static = Router::new()
         .nest_service("/assets", ServeDir::new("public"))
         .layer(SetResponseHeaderLayer::if_not_present(
@@ -86,12 +86,12 @@ pub struct AppState {
 }
 
 impl AppState {
-    pub fn new(db: &DbPool, app_info: AppInfo) -> Self {
+    pub fn new(db: DbPool, app_info: AppInfo) -> Self {
         Self {
-            app_info: app_info.clone(),
-            user_service: UserService::new(db),
-            country_service: CountryService::new(db),
-            stripe: Stripe::new(app_info, db),
+            stripe: Stripe::new(&app_info, db.clone()),
+            user_service: UserService::new(db.clone()),
+            country_service: CountryService::new(db.clone()),
+            app_info,
         }
     }
 }

@@ -8,9 +8,9 @@ pub struct CountryService {
     country_repository: CountryRepository,
 }
 impl CountryService {
-    pub fn new(db: &DbPool) -> Self {
+    pub fn new(db: DbPool) -> Self {
         Self {
-            country_repository: CountryRepository::new(db),
+            country_repository: CountryRepository::new(db.clone()),
         }
     }
 

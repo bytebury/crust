@@ -9,7 +9,7 @@ pub struct UserRepository {
 }
 
 impl UserRepository {
-    pub fn new(db: &DbPool) -> Self {
+    pub fn new(db: DbPool) -> Self {
         Self { db: db.clone() }
     }
 
