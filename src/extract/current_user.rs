@@ -4,7 +4,7 @@ use crate::extract::BaseUser;
 use axum::response::{IntoResponse, Redirect, Response};
 use axum::{extract::FromRequestParts, http::request::Parts};
 
-pub struct CurrentUser(pub Box<User>);
+pub struct CurrentUser(pub User);
 
 impl FromRequestParts<SharedState> for CurrentUser {
     type Rejection = Response;

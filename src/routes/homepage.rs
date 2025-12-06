@@ -1,17 +1,12 @@
-use crate::{SharedState, domain::rbac::Role};
+use crate::{SharedState, domain::rbac::Role, extract::maybe_current_user::MaybeCurrentUser};
 use askama::Template;
 use askama_web::WebTemplate;
-use axum::{Router, extract::State, routing::get};
+use axum::{Router, extract::State, response::IntoResponse, routing::get};
 
-use crate::{
-    extract::{current_user::CurrentUser, no_user::NoUser},
-    routes::SharedContext,
-};
+use crate::routes::SharedContext;
 
 pub fn routes() -> Router<SharedState> {
-    Router::new()
-        .route("/", get(homepage))
-        .route("/dashboard", get(dashboard))
+    Router::new().route("/", get(homepage))
 }
 
 #[derive(Template, WebTemplate)]
@@ -26,17 +21,18 @@ struct DashboardTemplate {
     shared: SharedContext,
 }
 
-async fn homepage(State(state): State<SharedState>, NoUser: NoUser) -> HomepageTemplate {
-    HomepageTemplate {
-        shared: SharedContext::new(&state.app_info, None),
-    }
-}
-
-async fn dashboard(
+async fn homepage(
     State(state): State<SharedState>,
-    CurrentUser(current_user): CurrentUser,
-) -> DashboardTemplate {
-    DashboardTemplate {
-        shared: SharedContext::new(&state.app_info, Some(*current_user)),
+    MaybeCurrentUser(user): MaybeCurrentUser,
+) -> impl IntoResponse {
+    match user {
+        Some(user) => DashboardTemplate {
+            shared: SharedContext::new(&state.app_info, Some(user)),
+        }
+        .into_response(),
+        None => HomepageTemplate {
+            shared: SharedContext::new(&state.app_info, None),
+        }
+        .into_response(),
     }
 }

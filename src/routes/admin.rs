@@ -87,7 +87,7 @@ async fn users(
         page_size: params.page_size,
     };
     AdminUsersTemplate {
-        shared: SharedContext::new(&state.app_info, Some(*user)),
+        shared: SharedContext::new(&state.app_info, Some(user)),
         users: state
             .user_service
             .search(&pagination, &params.q.unwrap_or_default())
@@ -137,7 +137,7 @@ async fn countries(
             .country_service
             .search(&params.q.unwrap_or_default())
             .await,
-        shared: SharedContext::new(&state.app_info, Some(*user)),
+        shared: SharedContext::new(&state.app_info, Some(user)),
     }
 }
 
