@@ -1,14 +1,8 @@
 <nav id="navbar">
 	<div class="container">
-		{% if let Some(user) = shared.current_user %}
-		<a href="/dashboard">
-			<h1 class="brand">{{ shared.app_info.name }}</h1>
-		</a>
-		{% else %}
 		<a href="/">
 			<h1 class="brand">{{ shared.app_info.name }}</h1>
 		</a>
-		{% endif %}
 		<button
 			data-tooltip="Open navigation menu"
 			onclick="openAppDrawer()"

@@ -1,5 +1,5 @@
 use crate::SharedState;
-use crate::domain::User;
+use crate::domain::user::User;
 use crate::extract::BaseUser;
 use axum::response::{IntoResponse, Redirect, Response};
 use axum::{extract::FromRequestParts, http::request::Parts};
@@ -17,14 +17,12 @@ impl FromRequestParts<SharedState> for AdminUser {
             .await
             .map_err(|_| Redirect::to("/").into_response())?;
 
-        match user {
-            BaseUser::User(user) => {
-                if user.is_admin() {
-                    return Ok(AdminUser(user));
-                }
-                Err(Redirect::to("/dashboard").into_response())
+        if let BaseUser::User(user) = user {
+            if user.is_admin() {
+                return Ok(AdminUser(user));
             }
-            _ => Err(Redirect::to("/").into_response()),
         }
+
+        Err(Redirect::to("/").into_response())
     }
 }

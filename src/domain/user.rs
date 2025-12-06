@@ -1,25 +1,50 @@
-use crate::{
-    domain::{AuditUser, rbac::Action},
-    util::rbac::Can,
-};
 use chrono::NaiveDateTime;
+use serde::Serialize;
 use sqlx::FromRow;
 
-use crate::{domain::rbac::Role, infrastructure::auth::GoogleUser};
+use crate::{
+    domain::rbac::{Action, Role},
+    infrastructure::auth::GoogleUser,
+    util::{pagination::Paginatable, rbac::Can},
+};
 
-pub struct UpdateUser {
+#[derive(Serialize, FromRow, Clone)]
+pub struct User {
     pub id: i64,
-    pub locked: bool,
+    pub email: String,
+    pub verified: bool,
+    pub first_name: String,
+    pub last_name: Option<String>,
+    pub full_name: String,
+    pub image_url: String,
     pub role: Role,
+    pub stripe_customer_id: Option<String>,
+    pub country_id: Option<i64>,
+    pub country_code: Option<String>,
+    pub country_name: Option<String>,
+    pub country_locked: bool,
+    pub region_id: Option<i64>,
+    pub region_name: Option<String>,
+    pub locked: bool,
+    pub created_at: NaiveDateTime,
+    pub updated_at: NaiveDateTime,
 }
 
-impl From<AuditUser> for UpdateUser {
-    fn from(user: AuditUser) -> Self {
-        Self {
-            id: user.id,
-            locked: user.locked,
-            role: user.role,
-        }
+impl User {
+    pub fn is_admin(&self) -> bool {
+        self.role == Role::Admin
+    }
+}
+
+impl Paginatable for User {
+    fn table_name() -> &'static str {
+        "users_view"
+    }
+}
+
+impl Can<User> for User {
+    fn can(&self, _: Action, _: &User) -> bool {
+        matches!(self.role, Role::Admin)
     }
 }
 
@@ -57,32 +82,18 @@ impl From<GoogleUser> for NewUser {
     }
 }
 
-#[derive(FromRow, Clone)]
-pub struct User {
+pub struct UpdateUser {
     pub id: i64,
-    pub email: String,
-    pub verified: bool,
-    pub first_name: String,
-    pub last_name: Option<String>,
-    pub full_name: String,
-    pub image_url: String,
-    pub role: Role,
-    pub stripe_customer_id: Option<String>,
-    pub country_id: Option<i64>,
-    pub region_id: Option<i64>,
     pub locked: bool,
-    pub created_at: NaiveDateTime,
-    pub updated_at: NaiveDateTime,
+    pub role: Role,
 }
 
-impl User {
-    pub fn is_admin(&self) -> bool {
-        self.role == Role::Admin
-    }
-}
-
-impl Can<AuditUser> for User {
-    fn can(&self, _: Action, _: &AuditUser) -> bool {
-        matches!(self.role, Role::Admin)
+impl From<User> for UpdateUser {
+    fn from(user: User) -> Self {
+        Self {
+            id: user.id,
+            locked: user.locked,
+            role: user.role,
+        }
     }
 }

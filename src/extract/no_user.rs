@@ -17,7 +17,7 @@ impl FromRequestParts<SharedState> for NoUser {
             .map_err(|_| Redirect::to("/").into_response())?;
 
         match user {
-            BaseUser::User(_) => Err(Redirect::to("/dashboard").into_response()),
+            BaseUser::User(_) => Err(Redirect::to("/").into_response()),
             _ => Ok(NoUser),
         }
     }

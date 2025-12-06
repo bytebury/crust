@@ -1,6 +1,6 @@
 use crate::{
     SharedState,
-    domain::User,
+    domain::user::User,
     infrastructure::jwt::{JwtService, user_claims::UserClaims},
 };
 use axum::{

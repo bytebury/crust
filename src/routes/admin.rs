@@ -1,6 +1,7 @@
 use crate::{
     SharedState,
-    domain::{Country, rbac::Role, user::UpdateUser},
+    domain::user::{UpdateUser, User},
+    domain::{Country, rbac::Role},
     util::htmx::HTMX,
 };
 
@@ -16,7 +17,6 @@ use reqwest::StatusCode;
 use serde::Deserialize;
 
 use crate::{
-    domain::AuditUser,
     extract::admin_user::AdminUser,
     routes::SharedContext,
     util::pagination::{PaginatedResponse, Pagination},
@@ -45,13 +45,13 @@ struct UserSearch {
 #[template(path = "admin/users.html")]
 struct AdminUsersTemplate {
     shared: SharedContext,
-    users: PaginatedResponse<AuditUser>,
+    users: PaginatedResponse<User>,
 }
 
 #[derive(Template, WebTemplate)]
 #[template(path = "admin/view_user.html")]
 struct AdminViewUserTemplate {
-    user: AuditUser,
+    user: User,
 }
 
 #[derive(Deserialize)]

@@ -17,14 +17,12 @@ CREATE TABLE users (
 
 CREATE INDEX idx_users_email ON users(email);
 
--- view that we will use when auditing users.
-CREATE VIEW audit_users AS
+CREATE VIEW users_view AS
 SELECT u.*,
-       c.name as "country_name",
-       c.code as "country_code",
-       r.name as "country_region",
-       c.locked as "country_locked"
+       c.name as country_name,
+       c.code as country_code,
+       r.name as region_name,
+       c.locked as country_locked
   FROM users u
   LEFT JOIN countries c ON u.country_id = c.id
   LEFT JOIN country_regions r ON u.region_id = r.id;
-

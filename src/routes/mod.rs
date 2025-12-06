@@ -1,4 +1,4 @@
-use crate::{AppInfo, domain::User};
+use crate::{AppInfo, domain::user::User};
 
 pub mod admin;
 pub mod auth;

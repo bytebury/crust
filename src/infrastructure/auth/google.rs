@@ -23,6 +23,7 @@ pub struct GoogleUser {
 
 #[derive(Default)]
 pub struct GoogleOAuth {}
+
 impl GoogleOAuth {
     pub fn new() -> Self {
         GoogleOAuth {}

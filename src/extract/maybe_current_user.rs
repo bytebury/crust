@@ -1,5 +1,5 @@
 use crate::SharedState;
-use crate::{domain::User, extract::BaseUser};
+use crate::{domain::user::User, extract::BaseUser};
 use axum::response::{IntoResponse, Redirect, Response};
 use axum::{extract::FromRequestParts, http::request::Parts};
 

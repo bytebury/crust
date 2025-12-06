@@ -1,7 +1,7 @@
 use chrono::{Duration, Utc};
 use serde::{Deserialize, Serialize};
 
-use crate::domain::User;
+use crate::domain::user::User;
 
 #[derive(Serialize, Deserialize)]
 pub struct UserClaims {

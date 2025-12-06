@@ -65,12 +65,6 @@ async fn google_callback(
             .user_service
             .create(&user)
             .await
-            .inspect_err(|e| {
-                error!(
-                    "Something happened while creating user ({}): {e}",
-                    user.email
-                )
-            })
             .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?,
         Err(e) => {
             error!("Unable to find email({}): {e}", user.email);
