@@ -1,6 +1,8 @@
+pub mod audit_user;
 pub mod country;
 pub mod rbac;
 pub mod user;
 
-pub use country::Country;
-pub use user::User;
+pub use audit_user::*;
+pub use country::*;
+pub use user::*;

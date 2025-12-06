@@ -16,11 +16,14 @@ use crate::{
 
 pub mod application;
 pub mod domain;
+pub mod error;
 pub mod extract;
 pub mod filters;
 pub mod infrastructure;
 pub mod routes;
 pub mod util;
+
+pub use error::*;
 
 pub async fn start() {
     let app = initialize().await;
@@ -58,6 +61,10 @@ async fn initialize() -> Router {
         .layer(CompressionLayer::new())
 }
 
+type SharedState = Arc<AppState>;
+type DbPool = Arc<SqlitePool>;
+type DbResult<T> = Result<T, DatabaseError>;
+
 #[derive(Clone, Default)]
 pub struct AppInfo {
     pub name: String,
@@ -74,9 +81,6 @@ impl AppInfo {
         }
     }
 }
-
-type SharedState = Arc<AppState>;
-type DbPool = Arc<SqlitePool>;
 
 pub struct AppState {
     pub app_info: AppInfo,

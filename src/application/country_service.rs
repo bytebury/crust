@@ -1,5 +1,5 @@
 use crate::{
-    DbPool,
+    DbPool, DbResult,
     domain::{Country, country::CountryWithRegion},
     infrastructure::{audit::geolocation::CountryDetails, db::CountryRepository},
 };
@@ -14,15 +14,15 @@ impl CountryService {
         }
     }
 
-    pub async fn find_by_id(&self, id: i64) -> Result<Country, sqlx::Error> {
+    pub async fn find_by_id(&self, id: i64) -> DbResult<Country> {
         self.country_repository.find_by_id(id).await
     }
 
-    pub async fn find_by_name(&self, name: &str) -> Result<Country, sqlx::Error> {
+    pub async fn find_by_name(&self, name: &str) -> DbResult<Country> {
         self.country_repository.find_by_name(name).await
     }
 
-    pub async fn find_by_code(&self, code: &str) -> Result<Country, sqlx::Error> {
+    pub async fn find_by_code(&self, code: &str) -> DbResult<Country> {
         self.country_repository.find_by_code(code).await
     }
 
@@ -30,18 +30,15 @@ impl CountryService {
         self.country_repository.search(value).await
     }
 
-    pub async fn lock(&self, id: i64) -> Result<(), sqlx::Error> {
+    pub async fn lock(&self, id: i64) -> DbResult<()> {
         self.country_repository.lock(id).await
     }
 
-    pub async fn unlock(&self, id: i64) -> Result<(), sqlx::Error> {
+    pub async fn unlock(&self, id: i64) -> DbResult<()> {
         self.country_repository.unlock(id).await
     }
 
-    pub async fn create_or_get(
-        &self,
-        country: &CountryDetails,
-    ) -> Result<CountryWithRegion, sqlx::Error> {
+    pub async fn create_or_get(&self, country: &CountryDetails) -> DbResult<CountryWithRegion> {
         self.country_repository.create(country).await
     }
 }

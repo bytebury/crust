@@ -1,7 +1,7 @@
 use sqlx::{query, query_as};
 
 use crate::{
-    DbPool,
+    DbPool, DbResult,
     domain::{Country, country::CountryWithRegion},
     infrastructure::audit::geolocation::CountryDetails,
 };
@@ -14,21 +14,23 @@ impl CountryRepository {
         Self { db: db.clone() }
     }
 
-    pub async fn find_by_id(&self, id: i64) -> Result<Country, sqlx::Error> {
+    pub async fn find_by_id(&self, id: i64) -> DbResult<Country> {
         query_as(r#"SELECT * FROM countries WHERE id = ?"#)
             .bind(id)
             .fetch_one(self.db.as_ref())
             .await
+            .map_err(Into::into)
     }
 
-    pub async fn find_by_name(&self, name: &str) -> Result<Country, sqlx::Error> {
+    pub async fn find_by_name(&self, name: &str) -> DbResult<Country> {
         query_as(r#"SELECT * FROM countries WHERE LOWER(name) = LOWER(?)"#)
             .bind(name)
             .fetch_one(self.db.as_ref())
             .await
+            .map_err(Into::into)
     }
 
-    pub async fn lock(&self, id: i64) -> Result<(), sqlx::Error> {
+    pub async fn lock(&self, id: i64) -> DbResult<()> {
         let _ = query(r#"UPDATE countries SET locked = 1 WHERE id = ?"#)
             .bind(id)
             .execute(self.db.as_ref())
@@ -36,7 +38,7 @@ impl CountryRepository {
         Ok(())
     }
 
-    pub async fn unlock(&self, id: i64) -> Result<(), sqlx::Error> {
+    pub async fn unlock(&self, id: i64) -> DbResult<()> {
         let _ = query(r#"UPDATE countries SET locked = 0 WHERE id = ?"#)
             .bind(id)
             .execute(self.db.as_ref())
@@ -44,11 +46,12 @@ impl CountryRepository {
         Ok(())
     }
 
-    pub async fn find_by_code(&self, code: &str) -> Result<Country, sqlx::Error> {
+    pub async fn find_by_code(&self, code: &str) -> DbResult<Country> {
         query_as(r#"SELECT * FROM countries WHERE LOWER(code) = LOWER(?)"#)
             .bind(code)
             .fetch_one(self.db.as_ref())
             .await
+            .map_err(Into::into)
     }
 
     pub async fn search(&self, value: &str) -> Vec<Country> {
@@ -63,7 +66,7 @@ impl CountryRepository {
         .unwrap_or_default()
     }
 
-    pub async fn create(&self, country: &CountryDetails) -> Result<CountryWithRegion, sqlx::Error> {
+    pub async fn create(&self, country: &CountryDetails) -> DbResult<CountryWithRegion> {
         let _ = query(r#"INSERT INTO countries (name, code) VALUES (?, ?)"#)
             .bind(&country.name)
             .bind(&country.code)

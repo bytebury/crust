@@ -16,7 +16,7 @@ use reqwest::StatusCode;
 use serde::Deserialize;
 
 use crate::{
-    domain::user::AuditUser,
+    domain::AuditUser,
     extract::admin_user::AdminUser,
     routes::SharedContext,
     util::pagination::{PaginatedResponse, Pagination},

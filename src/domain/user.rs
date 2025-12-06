@@ -1,15 +1,18 @@
-use crate::{domain::rbac::Action, util::rbac::Can};
+use crate::{
+    domain::{AuditUser, rbac::Action},
+    util::rbac::Can,
+};
 use chrono::NaiveDateTime;
-use serde::Serialize;
 use sqlx::FromRow;
 
-use crate::{domain::rbac::Role, infrastructure::auth::GoogleUser, util::pagination::Paginatable};
+use crate::{domain::rbac::Role, infrastructure::auth::GoogleUser};
 
 pub struct UpdateUser {
     pub id: i64,
     pub locked: bool,
     pub role: Role,
 }
+
 impl From<AuditUser> for UpdateUser {
     fn from(user: AuditUser) -> Self {
         Self {
@@ -34,6 +37,7 @@ pub struct NewUser {
     pub created_at: NaiveDateTime,
     pub updated_at: NaiveDateTime,
 }
+
 impl From<GoogleUser> for NewUser {
     fn from(google_user: GoogleUser) -> Self {
         Self {
@@ -70,6 +74,7 @@ pub struct User {
     pub created_at: NaiveDateTime,
     pub updated_at: NaiveDateTime,
 }
+
 impl User {
     pub fn is_admin(&self) -> bool {
         self.role == Role::Admin
@@ -79,33 +84,5 @@ impl User {
 impl Can<AuditUser> for User {
     fn can(&self, _: Action, _: &AuditUser) -> bool {
         matches!(self.role, Role::Admin)
-    }
-}
-
-#[derive(Serialize, FromRow, Clone)]
-pub struct AuditUser {
-    pub id: i64,
-    pub email: String,
-    pub verified: bool,
-    pub first_name: String,
-    pub last_name: Option<String>,
-    pub full_name: String,
-    pub image_url: String,
-    pub role: Role,
-    pub stripe_customer_id: Option<String>,
-    pub country_id: Option<i64>,
-    pub country_code: Option<String>,
-    pub country_name: Option<String>,
-    pub country_locked: bool,
-    pub region_id: Option<i64>,
-    pub country_region: Option<String>,
-    pub locked: bool,
-    pub created_at: NaiveDateTime,
-    pub updated_at: NaiveDateTime,
-}
-
-impl Paginatable for AuditUser {
-    fn table_name() -> &'static str {
-        "audit_users"
     }
 }
