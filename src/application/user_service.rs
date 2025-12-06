@@ -1,8 +1,5 @@
-use std::sync::Arc;
-
-use sqlx::SqlitePool;
-
 use crate::{
+    DbPool,
     domain::{
         User,
         user::{AuditUser, NewUser, UpdateUser},
@@ -15,7 +12,7 @@ pub struct UserService {
     user_repository: UserRepository,
 }
 impl UserService {
-    pub fn new(db: &Arc<SqlitePool>) -> Self {
+    pub fn new(db: &DbPool) -> Self {
         Self {
             user_repository: UserRepository::new(db),
         }

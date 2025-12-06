@@ -10,6 +10,7 @@ pub use user_repository::UserRepository;
 static MIGRATOR: Migrator = sqlx::migrate!("./migrations");
 
 pub struct Database {}
+
 impl Database {
     pub async fn initialize() -> SqlitePool {
         let database_url = "sqlite://db/database.db";

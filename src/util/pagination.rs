@@ -1,8 +1,8 @@
-use std::{cmp::min, sync::Arc};
-
 use async_trait::async_trait;
 use serde::{Deserialize, Serialize};
-use sqlx::{FromRow, SqlitePool};
+use sqlx::FromRow;
+
+use crate::DbPool;
 
 #[derive(Deserialize)]
 pub struct Pagination {
@@ -35,7 +35,7 @@ impl<T> PaginatedResponse<T> {
         let has_prev = page > 1;
         let has_next = offset + (items.len() as i64) < total;
         let start = (page - 1) * page_size + 1;
-        let end = min(page * page_size, total);
+        let end = std::cmp::min(page * page_size, total);
 
         Self {
             items,
@@ -87,7 +87,7 @@ pub trait Paginatable:
     /// let data = User::paginate(&db, &paging).await;
     /// ```
     async fn paginate(
-        pool: &Arc<SqlitePool>,
+        pool: &DbPool,
         pagination: &Pagination,
     ) -> Result<PaginatedResponse<Self>, sqlx::Error> {
         Paginatable::paginate_filter(pool, pagination, None, vec![]).await
@@ -102,7 +102,7 @@ pub trait Paginatable:
     /// let data = User::paginate_filter(&db, &paging, "first_name LIKE ?", vec!["%am%"]).await;
     /// ```
     async fn paginate_filter(
-        pool: &Arc<SqlitePool>,
+        pool: &DbPool,
         pagination: &Pagination,
         where_clause: Option<&str>,
         args: Vec<&str>,

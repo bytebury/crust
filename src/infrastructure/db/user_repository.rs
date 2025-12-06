@@ -1,14 +1,15 @@
+use crate::DbPool;
 use crate::domain::user::UpdateUser;
 use crate::domain::{User, user::AuditUser, user::NewUser};
 use crate::util::pagination::{Paginatable, PaginatedResponse, Pagination};
-use sqlx::{SqlitePool, query, query_as};
-use std::sync::Arc;
+use sqlx::{query, query_as};
 
 pub struct UserRepository {
-    db: Arc<SqlitePool>,
+    db: DbPool,
 }
+
 impl UserRepository {
-    pub fn new(db: &Arc<SqlitePool>) -> Self {
+    pub fn new(db: &DbPool) -> Self {
         Self { db: db.clone() }
     }
 

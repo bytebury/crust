@@ -1,8 +1,5 @@
-use std::sync::Arc;
-
-use sqlx::SqlitePool;
-
 use crate::{
+    DbPool,
     domain::{Country, country::CountryWithRegion},
     infrastructure::{audit::geolocation::CountryDetails, db::CountryRepository},
 };
@@ -11,7 +8,7 @@ pub struct CountryService {
     country_repository: CountryRepository,
 }
 impl CountryService {
-    pub fn new(db: &Arc<SqlitePool>) -> Self {
+    pub fn new(db: &DbPool) -> Self {
         Self {
             country_repository: CountryRepository::new(db),
         }

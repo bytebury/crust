@@ -2,7 +2,7 @@ use axum::{
     Router,
     http::{HeaderValue, header::CACHE_CONTROL},
 };
-use sqlx::{Pool, Sqlite};
+use sqlx::SqlitePool;
 use std::{env, net::SocketAddr, sync::Arc};
 use tokio::net::TcpListener;
 use tower_http::{
@@ -76,6 +76,7 @@ impl AppInfo {
 }
 
 type SharedState = Arc<AppState>;
+type DbPool = Arc<SqlitePool>;
 
 pub struct AppState {
     pub app_info: AppInfo,
@@ -83,8 +84,9 @@ pub struct AppState {
     pub user_service: UserService,
     pub country_service: CountryService,
 }
+
 impl AppState {
-    pub fn new(db: &Arc<Pool<Sqlite>>, app_info: AppInfo) -> Self {
+    pub fn new(db: &DbPool, app_info: AppInfo) -> Self {
         Self {
             app_info: app_info.clone(),
             user_service: UserService::new(db),

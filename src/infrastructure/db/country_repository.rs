@@ -1,17 +1,16 @@
-use std::sync::Arc;
-
-use sqlx::{SqlitePool, query, query_as};
+use sqlx::{query, query_as};
 
 use crate::{
+    DbPool,
     domain::{Country, country::CountryWithRegion},
     infrastructure::audit::geolocation::CountryDetails,
 };
 
 pub struct CountryRepository {
-    db: Arc<SqlitePool>,
+    db: DbPool,
 }
 impl CountryRepository {
-    pub fn new(db: &Arc<SqlitePool>) -> Self {
+    pub fn new(db: &DbPool) -> Self {
         Self { db: db.clone() }
     }
 

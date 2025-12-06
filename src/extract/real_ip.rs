@@ -15,12 +15,9 @@ where
         parts: &mut axum::http::request::Parts,
         _state: &Arc<S>,
     ) -> Result<Self, Self::Rejection> {
-        // Get TCP peer address
         let connect_info = ConnectInfo::<SocketAddr>::from_request_parts(parts, _state)
             .await
             .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
-
-        // Check for X-Forwarded-For
         let ip = if let Some(forwarded) = parts.headers.get("x-forwarded-for") {
             match forwarded.to_str() {
                 Ok(forwarded) => forwarded.split(',').next().unwrap().trim().to_string(),
