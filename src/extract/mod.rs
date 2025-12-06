@@ -19,7 +19,7 @@ pub mod real_ip;
 
 #[derive(Clone)]
 pub enum BaseUser {
-    User(User),
+    User(Box<User>),
     None,
 }
 
@@ -41,7 +41,7 @@ impl FromRequestParts<SharedState> for BaseUser {
         if let Ok(token_data) = JwtService::verify::<UserClaims>(token) {
             let email = token_data.claims.sub;
             if let Ok(Some(user)) = state.user_service.find_by_email(&email).await {
-                return Ok(BaseUser::User(user));
+                return Ok(BaseUser::User(Box::new(user)));
             }
         }
 

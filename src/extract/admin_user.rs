@@ -17,10 +17,10 @@ impl FromRequestParts<SharedState> for AdminUser {
             .await
             .map_err(|_| Redirect::to("/").into_response())?;
 
-        if let BaseUser::User(user) = user {
-            if user.is_admin() {
-                return Ok(AdminUser(user));
-            }
+        if let BaseUser::User(user) = user
+            && user.is_admin()
+        {
+            return Ok(AdminUser(*user));
         }
 
         Err(Redirect::to("/").into_response())

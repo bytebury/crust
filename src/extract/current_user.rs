@@ -18,7 +18,7 @@ impl FromRequestParts<SharedState> for CurrentUser {
             .map_err(|_| Redirect::to("/").into_response())?;
 
         match user {
-            BaseUser::User(user) => Ok(CurrentUser(user)),
+            BaseUser::User(user) => Ok(CurrentUser(*user)),
             _ => Err(Redirect::to("/").into_response()),
         }
     }

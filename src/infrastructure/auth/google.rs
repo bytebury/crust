@@ -3,9 +3,7 @@ use oauth2::{
     AuthUrl, AuthorizationCode, ClientId, ClientSecret, CsrfToken, EndpointNotSet, EndpointSet,
     RedirectUrl, RevocationUrl, Scope, TokenResponse, TokenUrl, basic::BasicClient,
 };
-use reqwest::Client;
 use serde::Deserialize;
-use std::env;
 
 use crate::{domain::user::NewUser, infrastructure::auth::OAuthProvider};
 
@@ -33,19 +31,20 @@ impl GoogleOAuth {
         &self,
     ) -> BasicClient<EndpointSet, EndpointNotSet, EndpointNotSet, EndpointSet, EndpointSet> {
         let client_id = ClientId::new(
-            env::var("GOOGLE_CLIENT_ID")
+            std::env::var("GOOGLE_CLIENT_ID")
                 .expect("Missing the GOOGLE_CLIENT_ID environment variables."),
         );
         let client_secret = ClientSecret::new(
-            env::var("GOOGLE_CLIENT_SECRET")
+            std::env::var("GOOGLE_CLIENT_SECRET")
                 .expect("Missing the GOOGLE_CLIENT_SECRET environment variable."),
         );
         let auth_url = AuthUrl::new("https://accounts.google.com/o/oauth2/v2/auth".to_string())
             .expect("Invalid auth endpoint URL.");
         let token_url = TokenUrl::new("https://www.googleapis.com/oauth2/v3/token".to_string())
             .expect("Invalid token endpoint URL.");
-        let redirect_url = RedirectUrl::new(env::var("GOOGLE_CALLBACK_URL").unwrap().to_string())
-            .expect("Invalid redirect URL");
+        let redirect_url =
+            RedirectUrl::new(std::env::var("GOOGLE_CALLBACK_URL").unwrap().to_string())
+                .expect("Invalid redirect URL");
         let revocation_url = RevocationUrl::new("https://oauth2.googleapis.com/revoke".to_string())
             .expect("Invalid revocation endpoint URL");
 
@@ -58,7 +57,7 @@ impl GoogleOAuth {
     }
 
     async fn fetch_google_user_info(&self, token: &str) -> Result<GoogleUser, reqwest::Error> {
-        let client = Client::new();
+        let client = reqwest::Client::new();
         let google_user = client
             .get("https://www.googleapis.com/oauth2/v3/userinfo")
             .bearer_auth(token)

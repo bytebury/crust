@@ -16,11 +16,9 @@ impl FromRequestParts<SharedState> for MaybeCurrentUser {
             .await
             .map_err(|_| Redirect::to("/").into_response())?;
 
-        let user = match user {
-            BaseUser::User(user) => Some(user),
-            _ => None,
-        };
-
-        Ok(MaybeCurrentUser(user))
+        match user {
+            BaseUser::User(user) => Ok(MaybeCurrentUser(Some(*user))),
+            _ => Ok(MaybeCurrentUser(None)),
+        }
     }
 }

@@ -86,10 +86,9 @@ impl Stripe {
 
     pub async fn manage_subscription(&self, user: &User) -> Result<BillingPortalSession, String> {
         let customer_id = self.create_customer(user).await?;
-        let return_url = format!("{}", self.website_url);
 
         let mut params = CreateBillingPortalSession::new(customer_id);
-        params.return_url = Some(&return_url);
+        params.return_url = Some(&self.website_url);
 
         BillingPortalSession::create(&self.client, params)
             .await
