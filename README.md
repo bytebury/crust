@@ -102,8 +102,7 @@ impl Can<Resource> for User {
     match self.role {
       Role::Admin => true, // Admins are super-users.
       Role::User => match action {
-        Action::Read => true,
-        Action::Create => true,
+        Action::Read | Action::Create => true,
         Action::Update | Action::Delete => resource.user_id == self.id,
       }
     }
