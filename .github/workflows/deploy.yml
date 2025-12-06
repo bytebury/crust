@@ -38,6 +38,8 @@
 #           username: ${{ secrets.DO_USERNAME }}
 #           key: ${{ secrets.DO_SSH_KEY }}
 #           script: |
+#							mkdir -p ~/APP_NAME
+
 #             docker load -i ~/APP_NAME/APP_NAME.tar
 #             rm ~/APP_NAME/APP_NAME.tar
 
@@ -45,12 +47,15 @@
 #             docker container prune -f
 
 #             cd ~/APP_NAME
+#
+# 						mkdir -p db
+#							touch db/database.db
 
 #             docker run -d \
 #                 -p 8080:8080 \
 #                 -v $(pwd)/db:/app/db \
 #                 -v $(pwd)/.env:/app/.env \
 #                 -e APP_VERSION=${{ github.run_id }} \
-#                 --name APP_NAME_container APP_NAME  
+#                 --name APP_NAME_container APP_NAME
 
 #             docker system prune -a --volumes -f

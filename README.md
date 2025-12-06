@@ -129,8 +129,6 @@ suffice for our use-cases.
 
 > [!IMPORTANT]
 > You will need to create a folder called `APP_NAME` in the root of your server.
-> In addition, you will need to create an empty file at `db/database.db`.
-> Otherwise, the application will panic and not run.
 >
 > For using SSH as a connection, you will need to provide a working private key.
 
