@@ -8,7 +8,6 @@ CREATE TABLE users (
     role TEXT NOT NULL DEFAULT 'user',
     stripe_customer_id TEXT UNIQUE DEFAULT NULL,
     country_id INTEGER REFERENCES countries(id) DEFAULT NULL,
-    region_id INTEGER REFERENCES country_regions(id) DEFAULT NULL,
     verified BOOLEAN NOT NULL DEFAULT 0,
     locked BOOLEAN NOT NULL DEFAULT 0,
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -21,8 +20,6 @@ CREATE VIEW users_view AS
 SELECT u.*,
        c.name as country_name,
        c.code as country_code,
-       r.name as region_name,
        c.locked as country_locked
   FROM users u
-  LEFT JOIN countries c ON u.country_id = c.id
-  LEFT JOIN country_regions r ON u.region_id = r.id;
+  LEFT JOIN countries c ON u.country_id = c.id;

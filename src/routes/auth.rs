@@ -53,10 +53,9 @@ async fn google_callback(
     let ip: IpAddr = ip.parse().unwrap();
     let country_details = audit::geolocation::get_country_details(ip).unwrap_or_default();
 
-    if let Ok(location) = state.country_service.create_or_get(&country_details).await {
-        user.country_id = Some(location.country.id);
-        user.region_id = Some(location.region.id);
-        user.locked = location.country.locked;
+    if let Ok(country) = state.country_service.create_or_get(&country_details).await {
+        user.country_id = Some(country.id);
+        user.locked = country.locked;
     }
 
     let user = match state.user_service.find_by_email(&user.email).await {

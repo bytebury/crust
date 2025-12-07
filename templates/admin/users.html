@@ -77,9 +77,6 @@
 													>{{ user.email }}</a
 												>
 												{% if let Some(country_name) = user.country_name %}
-												{% if let Some(country_region) = user.region_name %}
-												<div>{{ country_region }},</div>
-												{% endif %}
 												<div>{{ country_name }}</div>
 												{% endif %}
 											</div>

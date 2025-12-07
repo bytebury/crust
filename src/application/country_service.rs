@@ -1,7 +1,5 @@
 use crate::{
-    DbPool, DbResult,
-    domain::{Country, country::CountryWithRegion},
-    infrastructure::audit::geolocation::CountryDetails,
+    DbPool, DbResult, domain::Country, infrastructure::audit::geolocation::CountryDetails,
 };
 
 pub struct CountryService {
@@ -65,25 +63,16 @@ impl CountryService {
         Ok(())
     }
 
-    pub async fn create_or_get(&self, country: &CountryDetails) -> DbResult<CountryWithRegion> {
+    pub async fn create_or_get(&self, country: &CountryDetails) -> DbResult<Country> {
         let _ = sqlx::query(r#"INSERT INTO countries (name, code) VALUES (?, ?)"#)
             .bind(&country.name)
             .bind(&country.code)
             .fetch_one(self.db.as_ref())
             .await;
-        let _ = sqlx::query(r#"INSERT INTO country_regions (name) VALUES (?)"#)
-            .bind(&country.region)
-            .fetch_one(self.db.as_ref())
-            .await;
-        let region = sqlx::query_as(r#"SELECT * FROM country_regions WHERE name = ?"#)
-            .bind(&country.region)
-            .fetch_one(self.db.as_ref())
-            .await?;
-        let country: Country = sqlx::query_as(r#"SELECT * FROM countries WHERE code = ?"#)
+        sqlx::query_as(r#"SELECT * FROM countries WHERE code = ?"#)
             .bind(&country.code)
             .fetch_one(self.db.as_ref())
-            .await?;
-
-        Ok(CountryWithRegion { country, region })
+            .await
+            .map_err(Into::into)
     }
 }

@@ -55,25 +55,24 @@ impl UserService {
 
     pub async fn create(&self, user: &NewUser) -> DbResult<User> {
         let user_id = sqlx::query_scalar(
-                r#"
+            r#"
 		    INSERT INTO users (
-	            email, full_name, first_name, last_name, image_url, country_id, region_id, verified, locked
+	            email, full_name, first_name, last_name, image_url, country_id, verified, locked
 	        )
-	        VALUES (LOWER(?), LOWER(?), LOWER(?), LOWER(?), ?, ?, ?, ?, ?)
+	        VALUES (LOWER(?), LOWER(?), LOWER(?), LOWER(?), ?, ?, ?, ?)
 	        RETURNING id
 			"#,
-            )
-            .bind(&user.email)
-            .bind(&user.full_name)
-            .bind(&user.first_name)
-            .bind(&user.last_name)
-            .bind(&user.image_url)
-            .bind(user.country_id)
-            .bind(user.region_id)
-            .bind(user.verified)
-            .bind(user.locked)
-            .fetch_one(self.db.as_ref())
-            .await?;
+        )
+        .bind(&user.email)
+        .bind(&user.full_name)
+        .bind(&user.first_name)
+        .bind(&user.last_name)
+        .bind(&user.image_url)
+        .bind(user.country_id)
+        .bind(user.verified)
+        .bind(user.locked)
+        .fetch_one(self.db.as_ref())
+        .await?;
 
         self.find_by_id(user_id).await
     }

@@ -1,5 +1,5 @@
 use ip2location::{DB, Record};
-use std::{borrow::Cow, net::IpAddr};
+use std::net::IpAddr;
 
 const IPV6BIN: &str = "db/ip2location.BIN";
 
@@ -7,7 +7,6 @@ const IPV6BIN: &str = "db/ip2location.BIN";
 pub struct CountryDetails {
     pub name: Option<String>,
     pub code: Option<String>,
-    pub region: Option<String>,
 }
 
 pub fn get_country_details(ip: IpAddr) -> Option<CountryDetails> {
@@ -29,6 +28,5 @@ pub fn get_country_details(ip: IpAddr) -> Option<CountryDetails> {
     Some(CountryDetails {
         name: Some(country.long_name.to_string()),
         code: Some(country.short_name.to_string()),
-        region: rec.region.map(Cow::into_owned),
     })
 }
