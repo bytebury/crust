@@ -58,7 +58,7 @@ stripe listen --forward-to localhost:8080/webhooks/stripe
 ```
 
 ## IP Services
-> ![IMPORTANT]
+> [!IMPORTANT]
 > If you wish to use IP2Location LITE, you will need to download one of their databases and put it in `"db/ip2location.BIN"` location.
 
 We use [IP2Location LITE](https://lite.ip2location.com/database-download) for
