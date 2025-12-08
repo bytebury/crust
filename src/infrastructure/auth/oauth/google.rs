@@ -5,7 +5,7 @@ use oauth2::{
 };
 use serde::Deserialize;
 
-use crate::{domain::user::NewUser, infrastructure::auth::OAuthProvider};
+use crate::{domain::user::NewUser, infrastructure::auth::oauth::OAuthProvider};
 
 #[derive(Deserialize)]
 pub struct GoogleUser {

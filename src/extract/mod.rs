@@ -1,7 +1,7 @@
 use crate::{
     SharedState,
     domain::user::User,
-    infrastructure::jwt::{JwtService, user_claims::UserClaims},
+    infrastructure::auth::jwt::{JwtService, UserClaims},
 };
 use axum::{
     extract::{FromRef, FromRequestParts},

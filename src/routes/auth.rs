@@ -17,9 +17,11 @@ use crate::{
     SharedState,
     extract::real_ip::RealIp,
     infrastructure::{
-        audit,
-        auth::{OAuthProvider, google::GoogleOAuth},
-        jwt::{JwtService, user_claims::UserClaims},
+        audit::CountryDetails,
+        auth::{
+            jwt::{JwtService, user_claims::UserClaims},
+            oauth::{OAuthProvider, google::GoogleOAuth},
+        },
     },
     util::htmx::HTMX,
 };
@@ -50,10 +52,10 @@ async fn google_callback(
         .exchange_code_for_user(&params.code)
         .await?;
 
-    let ip: IpAddr = ip.parse().unwrap();
-    let country_details = audit::geolocation::get_country_details(ip).unwrap_or_default();
-
-    if let Ok(country) = state.country_service.create_or_get(&country_details).await {
+    if let Ok(ip) = ip.parse::<IpAddr>()
+        && let Ok(country_details) = CountryDetails::try_from(ip)
+        && let Ok(country) = state.country_service.create_or_get(&country_details).await
+    {
         user.country_id = Some(country.id);
         user.locked = country.locked;
     }

@@ -4,7 +4,7 @@ use sqlx::FromRow;
 
 use crate::{
     application::{Action, Can, Role},
-    infrastructure::auth::GoogleUser,
+    infrastructure::auth::oauth::GoogleUser,
     util::pagination::Paginatable,
 };
 

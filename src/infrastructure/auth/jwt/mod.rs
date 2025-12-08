@@ -7,6 +7,8 @@ use serde::{Serialize, de::DeserializeOwned};
 
 pub mod user_claims;
 
+pub use user_claims::*;
+
 pub struct JwtService {}
 
 impl JwtService {

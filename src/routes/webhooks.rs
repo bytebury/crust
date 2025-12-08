@@ -5,9 +5,11 @@ use axum::{
     routing::post,
 };
 use log::error;
-use stripe_webhooks::StripeEvent;
 
-use crate::{SharedState, infrastructure::payment::stripe::Stripe};
+use crate::{
+    SharedState,
+    infrastructure::payment::{Stripe, StripeEvent},
+};
 
 pub fn routes() -> Router<SharedState> {
     Router::new().route("/webhooks/stripe", post(stripe_webhook_listener))

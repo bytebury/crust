@@ -11,7 +11,7 @@ use tower_http::{
 
 use crate::{
     application::{CountryService, UserService},
-    infrastructure::{db::Database, payment::stripe::Stripe},
+    infrastructure::{db::Database, payment::Stripe},
 };
 
 pub mod application;

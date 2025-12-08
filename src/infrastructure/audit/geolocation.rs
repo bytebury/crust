@@ -21,24 +21,28 @@ pub struct CountryDetails {
     pub code: Option<String>,
 }
 
-pub fn get_country_details(ip: IpAddr) -> Option<CountryDetails> {
-    let db = DB::from_file(IPV6BIN).ok()?;
+impl TryFrom<IpAddr> for CountryDetails {
+    type Error = ip2location::error::Error;
 
-    let record = db.ip_lookup(ip).ok()?;
-    let rec = match record {
-        Record::LocationDb(rec) => rec,
-        _ => return None,
-    };
+    fn try_from(value: IpAddr) -> Result<Self, Self::Error> {
+        let db = DB::from_file(IPV6BIN)?;
 
-    let country = rec.country?;
+        let record = db.ip_lookup(value)?;
+        let rec = match record {
+            Record::LocationDb(rec) => rec,
+            _ => {
+                return Err(ip2location::error::Error::RecordNotFound);
+            }
+        };
 
-    // This means that we didn't find a country.
-    if country.long_name == "-" {
-        return None;
+        let country = match rec.country {
+            Some(country) => country,
+            None => return Err(ip2location::error::Error::RecordNotFound),
+        };
+
+        Ok(CountryDetails {
+            name: Some(country.long_name.to_string()),
+            code: Some(country.short_name.to_string()),
+        })
     }
-
-    Some(CountryDetails {
-        name: Some(country.long_name.to_string()),
-        code: Some(country.short_name.to_string()),
-    })
 }

@@ -8,8 +8,8 @@ use stripe::{
     CreateCheckoutSessionCustomerUpdate, CreateCheckoutSessionCustomerUpdateAddress,
     CreateCustomer, CustomerId,
 };
-use stripe_webhooks::{StripeEvent, StripeListener};
 
+use crate::infrastructure::payment::{StripeEvent, StripeListener};
 use crate::{AppInfo, DbPool, domain::user::User};
 
 #[derive(Clone)]
