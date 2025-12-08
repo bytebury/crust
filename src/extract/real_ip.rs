@@ -20,7 +20,12 @@ where
             .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
         let ip = if let Some(forwarded) = parts.headers.get("x-forwarded-for") {
             match forwarded.to_str() {
-                Ok(forwarded) => forwarded.split(',').next().unwrap().trim().to_string(),
+                Ok(forwarded) => forwarded
+                    .split(',')
+                    .next()
+                    .unwrap_or_default()
+                    .trim()
+                    .to_string(),
                 Err(_) => connect_info.ip().to_string(),
             }
         } else {

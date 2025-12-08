@@ -42,9 +42,12 @@ impl GoogleOAuth {
             .expect("Invalid auth endpoint URL.");
         let token_url = TokenUrl::new("https://www.googleapis.com/oauth2/v3/token".to_string())
             .expect("Invalid token endpoint URL.");
-        let redirect_url =
-            RedirectUrl::new(std::env::var("GOOGLE_CALLBACK_URL").unwrap().to_string())
-                .expect("Invalid redirect URL");
+        let redirect_url = RedirectUrl::new(
+            std::env::var("GOOGLE_CALLBACK_URL")
+                .expect("GOOGLE_CALLBACK_URL not provided")
+                .to_string(),
+        )
+        .expect("Invalid redirect URL");
         let revocation_url = RevocationUrl::new("https://oauth2.googleapis.com/revoke".to_string())
             .expect("Invalid revocation endpoint URL");
 

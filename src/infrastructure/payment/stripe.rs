@@ -45,11 +45,7 @@ impl Stripe {
             .map_err(|e| format!("Error processing event: {e}"))
     }
 
-    pub async fn checkout(
-        &self,
-        user: &User,
-        price_id: &str,
-    ) -> Result<stripe::CheckoutSession, String> {
+    pub async fn checkout(&self, user: &User, price_id: &str) -> Result<CheckoutSession, String> {
         let customer_id = self.create_customer(user).await?;
 
         let success_url = format!("{}/payments/successful", self.success_url);
@@ -78,7 +74,11 @@ impl Stripe {
             });
             params.expand = &["line_items", "line_items.data.price.product"];
 
-            CheckoutSession::create(&self.client, params).await.unwrap()
+            CheckoutSession::create(&self.client, params)
+                .await
+                .map_err(|_| {
+                    "Something went wrong with your checkout. Please contact us.".to_string()
+                })?
         };
 
         Ok(checkout_session)
