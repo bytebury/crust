@@ -1,5 +1,6 @@
 use crate::{
-    DbPool, DbResult,
+    DbPool,
+    error::DbResult,
     infrastructure::audit::geolocation::{Country, CountryDetails},
 };
 

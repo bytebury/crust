@@ -23,8 +23,6 @@ pub mod infrastructure;
 pub mod routes;
 pub mod util;
 
-pub use error::*;
-
 pub async fn start() {
     let app = initialize().await;
     let port = env::var("APP_PORT").unwrap_or_else(|_| "8080".to_string());

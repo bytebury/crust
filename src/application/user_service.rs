@@ -1,6 +1,7 @@
 use crate::{
-    DbPool, DbResult,
+    DbPool,
     domain::user::{NewUser, UpdateUser, User},
+    error::DbResult,
     util::pagination::{Paginatable, PaginatedResponse, Pagination},
 };
 
