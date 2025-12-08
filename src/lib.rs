@@ -63,7 +63,6 @@ async fn initialize() -> Router {
 
 type SharedState = Arc<AppState>;
 type DbPool = Arc<SqlitePool>;
-type DbResult<T> = Result<T, DatabaseError>;
 
 #[derive(Clone, Default)]
 pub struct AppInfo {
