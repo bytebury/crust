@@ -1,4 +1,5 @@
-use crate::{SharedState, domain::rbac::Role, extract::maybe_current_user::MaybeCurrentUser};
+use crate::application::Role;
+use crate::{SharedState, extract::maybe_current_user::MaybeCurrentUser};
 use askama::Template;
 use askama_web::WebTemplate;
 use axum::{Router, extract::State, response::IntoResponse, routing::get};

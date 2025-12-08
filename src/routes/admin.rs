@@ -1,7 +1,8 @@
+use crate::application::Role;
 use crate::{
     SharedState,
+    domain::Country,
     domain::user::{UpdateUser, User},
-    domain::{Country, rbac::Role},
     util::htmx::HTMX,
 };
 

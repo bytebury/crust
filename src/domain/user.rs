@@ -3,9 +3,9 @@ use serde::Serialize;
 use sqlx::FromRow;
 
 use crate::{
-    domain::rbac::{Action, Role},
+    application::{Action, Can, Role},
     infrastructure::auth::GoogleUser,
-    util::{pagination::Paginatable, rbac::Can},
+    util::pagination::Paginatable,
 };
 
 #[derive(Serialize, FromRow, Clone)]
