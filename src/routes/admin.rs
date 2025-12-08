@@ -1,7 +1,7 @@
 use crate::application::Role;
+use crate::infrastructure::audit::geolocation::Country;
 use crate::{
     SharedState,
-    domain::Country,
     domain::user::{UpdateUser, User},
     util::htmx::HTMX,
 };

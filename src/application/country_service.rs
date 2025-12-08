@@ -1,5 +1,6 @@
 use crate::{
-    DbPool, DbResult, domain::Country, infrastructure::audit::geolocation::CountryDetails,
+    DbPool, DbResult,
+    infrastructure::audit::geolocation::{Country, CountryDetails},
 };
 
 pub struct CountryService {
