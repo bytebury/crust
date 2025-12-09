@@ -1,3 +1,42 @@
+// APP DRAWER
+function openAppDrawer() {
+	const drawer = document.getElementById("app_drawer");
+	const underlay = document.getElementById("app_drawer_underlay");
+	drawer.style.transform = "translateX(0)";
+	underlay.style.display = "block";
+}
+
+function closeAppDrawer() {
+	const drawer = document.getElementById("app_drawer");
+	const underlay = document.getElementById("app_drawer_underlay");
+	drawer.style.transform = "translateX(100%)";
+	underlay.style.display = "none";
+}
+
+// MODAL
+document.addEventListener("closeModal", function () {
+	closeModal();
+});
+
+document.addEventListener("htmx:afterSwap", function (evt) {
+	if (evt.target.id === "modal") {
+		document.getElementById("modal_wrapper").style.display = "flex";
+	}
+});
+
+function closeModal() {
+	const modal = document.getElementById("modal_wrapper");
+
+	modal.classList.add("closing");
+
+	modal.addEventListener("animationend", function handleAnimationEnd() {
+		modal.classList.remove("closing");
+		modal.style.display = "none";
+		modal.removeEventListener("animationend", handleAnimationEnd);
+	});
+}
+
+// TOOLTIPS
 let activeTooltip = null;
 
 function showTooltip(event) {
