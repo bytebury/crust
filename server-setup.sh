@@ -7,7 +7,7 @@ PORT=$2
 EMAIL=$3
 
 if [ -z "$DOMAIN" ] || [ -z "$PORT" ]; then
-  echo "Usage: $0 domain port"
+  echo "Usage: $0 domain port email"
   exit 1
 fi
 
