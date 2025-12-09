@@ -47,9 +47,11 @@ async fn initialize() -> Router {
             CACHE_CONTROL,
             HeaderValue::from_static("public, max-age=31536000"),
         ));
+    let serve_seo = Router::new().fallback_service(ServeDir::new("public/seo"));
 
     Router::new()
         .merge(serve_static)
+        .merge(serve_seo)
         .merge(routes::homepage::routes())
         .merge(routes::auth::routes())
         .merge(routes::webhooks::routes())
