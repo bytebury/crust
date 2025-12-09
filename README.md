@@ -30,8 +30,8 @@ We use [Stripe](https://stripe.com) as our payment partner and
 > Running `./dev` will run the application in watch mode for you as well as run
 > any pending migrations!
 
-1. Clone the repository `git clone git@github.com:bytebury/crust.git`
-2. Run the development server `cd ./crust && ./dev.sh` in your terminal
+1. Clone the repository `git clone git@github.com:bytebury/tea.git`
+2. Run the development server `cd ./tea && ./dev.sh` in your terminal
 
 This will run all of your migrations as well as generate a `.env` file in your
 root directory. Open it up and change the environment variables to your liking.
