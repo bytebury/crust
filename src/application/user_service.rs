@@ -1,9 +1,6 @@
+use crate::domain::user::{NewUser, UpdateUser, User};
 use crate::prelude::*;
-use crate::{
-    DbPool,
-    domain::user::{NewUser, UpdateUser, User},
-    util::pagination::{Paginatable, PaginatedResponse, Pagination},
-};
+use crate::util::pagination::*;
 
 pub struct UserService {
     db: DbPool,

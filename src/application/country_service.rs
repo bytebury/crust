@@ -1,8 +1,5 @@
+use crate::infrastructure::audit::geolocation::{Country, CountryDetails};
 use crate::prelude::*;
-use crate::{
-    DbPool,
-    infrastructure::audit::geolocation::{Country, CountryDetails},
-};
 
 pub struct CountryService {
     db: DbPool,

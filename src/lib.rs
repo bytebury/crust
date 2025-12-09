@@ -1,8 +1,8 @@
+use crate::prelude::*;
 use axum::{
     Router,
     http::{HeaderValue, header::CACHE_CONTROL},
 };
-use sqlx::SqlitePool;
 use std::{env, net::SocketAddr, sync::Arc};
 use tokio::net::TcpListener;
 use tower_http::{
@@ -61,9 +61,6 @@ async fn initialize() -> Router {
         .with_state(state)
         .layer(CompressionLayer::new())
 }
-
-type SharedState = Arc<AppState>;
-type DbPool = Arc<SqlitePool>;
 
 #[derive(Clone, Default)]
 pub struct AppInfo {
