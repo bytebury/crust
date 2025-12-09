@@ -20,6 +20,7 @@ pub mod error;
 pub mod extract;
 pub mod filters;
 pub mod infrastructure;
+pub mod prelude;
 pub mod routes;
 pub mod util;
 

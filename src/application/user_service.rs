@@ -1,7 +1,7 @@
+use crate::prelude::*;
 use crate::{
     DbPool,
     domain::user::{NewUser, UpdateUser, User},
-    error::DbResult,
     util::pagination::{Paginatable, PaginatedResponse, Pagination},
 };
 
@@ -14,7 +14,7 @@ impl UserService {
         Self { db }
     }
 
-    pub async fn find_by_id(&self, user_id: i64) -> DbResult<User> {
+    pub async fn find_by_id(&self, user_id: i64) -> Result<User> {
         sqlx::query_as(r#"SELECT * FROM users_view WHERE id = ?"#)
             .bind(user_id)
             .fetch_one(self.db.as_ref())
@@ -22,7 +22,7 @@ impl UserService {
             .map_err(Into::into)
     }
 
-    pub async fn find_by_email(&self, email: &str) -> DbResult<Option<User>> {
+    pub async fn find_by_email(&self, email: &str) -> Result<Option<User>> {
         sqlx::query_as(r#"SELECT * FROM users_view WHERE email = LOWER(?)"#)
             .bind(email)
             .fetch_optional(self.db.as_ref())
@@ -30,7 +30,7 @@ impl UserService {
             .map_err(Into::into)
     }
 
-    pub async fn update(&self, user: &UpdateUser) -> DbResult<User> {
+    pub async fn update(&self, user: &UpdateUser) -> Result<User> {
         let _ = sqlx::query(r#"UPDATE users SET role = ?, locked = ? WHERE id = ?"#)
             .bind(&user.role)
             .bind(user.locked)
@@ -54,7 +54,7 @@ impl UserService {
         .unwrap()
     }
 
-    pub async fn create(&self, user: &NewUser) -> DbResult<User> {
+    pub async fn create(&self, user: &NewUser) -> Result<User> {
         let user_id = sqlx::query_scalar(
             r#"
 		    INSERT INTO users (

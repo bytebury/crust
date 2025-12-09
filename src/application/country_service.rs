@@ -1,6 +1,6 @@
+use crate::prelude::*;
 use crate::{
     DbPool,
-    error::DbResult,
     infrastructure::audit::geolocation::{Country, CountryDetails},
 };
 
@@ -13,7 +13,7 @@ impl CountryService {
         Self { db }
     }
 
-    pub async fn find_by_id(&self, id: i64) -> DbResult<Country> {
+    pub async fn find_by_id(&self, id: i64) -> Result<Country> {
         sqlx::query_as(r#"SELECT * FROM countries WHERE id = ?"#)
             .bind(id)
             .fetch_one(self.db.as_ref())
@@ -21,7 +21,7 @@ impl CountryService {
             .map_err(Into::into)
     }
 
-    pub async fn find_by_name(&self, name: &str) -> DbResult<Country> {
+    pub async fn find_by_name(&self, name: &str) -> Result<Country> {
         sqlx::query_as(r#"SELECT * FROM countries WHERE LOWER(name) = LOWER(?)"#)
             .bind(name)
             .fetch_one(self.db.as_ref())
@@ -29,7 +29,7 @@ impl CountryService {
             .map_err(Into::into)
     }
 
-    pub async fn find_by_code(&self, code: &str) -> DbResult<Country> {
+    pub async fn find_by_code(&self, code: &str) -> Result<Country> {
         sqlx::query_as(r#"SELECT * FROM countries WHERE LOWER(code) = LOWER(?)"#)
             .bind(code)
             .fetch_one(self.db.as_ref())
@@ -49,7 +49,7 @@ impl CountryService {
         .unwrap_or_default()
     }
 
-    pub async fn lock(&self, id: i64) -> DbResult<()> {
+    pub async fn lock(&self, id: i64) -> Result<()> {
         let _ = sqlx::query(r#"UPDATE countries SET locked = 1 WHERE id = ?"#)
             .bind(id)
             .execute(self.db.as_ref())
@@ -57,7 +57,7 @@ impl CountryService {
         Ok(())
     }
 
-    pub async fn unlock(&self, id: i64) -> DbResult<()> {
+    pub async fn unlock(&self, id: i64) -> Result<()> {
         let _ = sqlx::query(r#"UPDATE countries SET locked = 0 WHERE id = ?"#)
             .bind(id)
             .execute(self.db.as_ref())
@@ -65,7 +65,7 @@ impl CountryService {
         Ok(())
     }
 
-    pub async fn create_or_get(&self, country: &CountryDetails) -> DbResult<Country> {
+    pub async fn create_or_get(&self, country: &CountryDetails) -> Result<Country> {
         let _ = sqlx::query(r#"INSERT INTO countries (name, code) VALUES (?, ?)"#)
             .bind(&country.name)
             .bind(&country.code)

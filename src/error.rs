@@ -1,39 +1,38 @@
 use log::error;
 
-pub type DbResult<T> = Result<T, DbError>;
+pub type Result<T> = std::result::Result<T, Error>;
 
 #[derive(Debug)]
-pub enum DbError {
+pub enum Error {
     NotFound(String),
     NotUnique(String),
     Other,
 }
 
-impl std::fmt::Display for DbError {
+impl std::fmt::Display for Error {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         match self {
-            DbError::NotFound(msg) => write!(f, "{msg}"),
-            DbError::NotUnique(msg) => write!(f, "{msg}"),
-            DbError::Other => write!(f, "Something went wrong. Please try again later."),
+            Error::Other => write!(f, "Something went wrong. Please try again later."),
+            msg => write!(f, "{msg}"),
         }
     }
 }
 
-impl From<sqlx::Error> for DbError {
+impl From<sqlx::Error> for Error {
     fn from(err: sqlx::Error) -> Self {
         match err {
-            sqlx::Error::RowNotFound => DbError::NotFound("Row not found".to_string()),
+            sqlx::Error::RowNotFound => Error::NotFound("Row not found".to_string()),
             sqlx::Error::Database(err) => {
                 if err.message().contains("UNIQUE") || err.code().unwrap_or_default() == "23505" {
-                    DbError::NotUnique(err.to_string())
+                    Error::NotUnique(err.to_string())
                 } else {
                     error!("Database error: {}", err);
-                    DbError::Other
+                    Error::Other
                 }
             }
             _ => {
                 error!("Database error: {}", err);
-                DbError::Other
+                Error::Other
             }
         }
     }
