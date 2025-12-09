@@ -1,6 +1,4 @@
-# crust 🍕
-
-> Proudly built in the [🍕 state](https://portal.ct.gov/).
+# tea 🧋
 
 Build like bytebury. The official template that we use for our websites, skip
 all the bootstrapping. We are not suggesting that this is
@@ -10,7 +8,8 @@ experience over processes and tools. Hence, running locally is a single command:
 `./dev.sh` and deploying is done automatically through
 GHA. By keeping local development simple, as well as our architecture, we can
 move fast &mdash; relying on Rust's speed to match on the
-server. It's how we built [Fun Banking](https://fun-banking.com),
+server. It's how we built [Fun Banking](https://fun-banking.com), [CTRunner](https://ctrunner.org),
+[Oolong](https://oolong.boba.sh)
 and continue to build more.
 
 ## Some Background
