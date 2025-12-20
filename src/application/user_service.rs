@@ -57,7 +57,7 @@ impl UserService {
 		    INSERT INTO users (
 	            email, full_name, first_name, last_name, image_url, country_id, verified, locked
 	        )
-	        VALUES (LOWER(?), LOWER(?), LOWER(?), LOWER(?), ?, ?, ?, ?)
+	        VALUES (LOWER(?), ?, ?, ?, ?, ?, ?, ?)
 	        RETURNING id
 			"#,
         )
