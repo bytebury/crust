@@ -8,7 +8,7 @@ trap "kill 0" EXIT
 if [ ! -f .env ]; then
   echo "🤖 .env not found. Generating..."
   cat >.env <<EOF
-APP_NAME="🧋 tea"
+APP_NAME="Tea"
 APP_WEBSITE_URL="http://localhost:8080"
 
 APP_PORT="8080"

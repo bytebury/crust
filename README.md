@@ -1,6 +1,6 @@
 # tea 🧋
 
-Build like bytebury. The official template that we use for our websites, skip
+Build like [bytebury](https://bytebury.com). The official template that we use for our websites, skip
 all the bootstrapping. We are not suggesting that this is
 the right way to create an application, this is just _our way_ and we're sharing
 with everybody. We favor simplicity in developer
@@ -30,7 +30,7 @@ we use [TailwindCSS](https://github.com/tailwindlabs/tailwindcss/releases/latest
 
 > [!NOTE]
 > Running `./dev` will run the application in watch mode for you as well as run
-> any pending migrations!
+> any pending migrations! It is all you need to get started locally.
 
 1. Clone the repository `git clone git@github.com:bytebury/tea.git`
 2. Run the development server `cd ./tea && ./dev.sh` in your terminal

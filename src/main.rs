@@ -13,7 +13,7 @@ async fn main() {
         copy_assets();
     }
 
-    tea::start().await;
+    app::start().await;
 }
 
 fn is_dev() -> bool {

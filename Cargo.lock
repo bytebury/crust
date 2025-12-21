@@ -54,6 +54,31 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a23eb6b1614318a8071c9b2521f36b424b2c83db5eb3a0fead4a6c0809af6e61"
 
 [[package]]
+name = "app"
+version = "0.1.0"
+dependencies = [
+ "askama",
+ "askama_web",
+ "async-stripe",
+ "async-trait",
+ "axum",
+ "axum-extra",
+ "chrono",
+ "dotenv",
+ "ip2location",
+ "jsonwebtoken",
+ "log",
+ "oauth2",
+ "reqwest",
+ "serde",
+ "simple_logger",
+ "sqlx",
+ "stripe-webhooks",
+ "tokio",
+ "tower-http",
+]
+
+[[package]]
 name = "askama"
 version = "0.14.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2960,31 +2985,6 @@ checksum = "8e1d1b10ced5ca923a1fcb8d03e96b8d3268065d724548c0211415ff6ac6bac4"
 dependencies = [
  "core-foundation-sys",
  "libc",
-]
-
-[[package]]
-name = "tea"
-version = "0.1.0"
-dependencies = [
- "askama",
- "askama_web",
- "async-stripe",
- "async-trait",
- "axum",
- "axum-extra",
- "chrono",
- "dotenv",
- "ip2location",
- "jsonwebtoken",
- "log",
- "oauth2",
- "reqwest",
- "serde",
- "simple_logger",
- "sqlx",
- "stripe-webhooks",
- "tokio",
- "tower-http",
 ]
 
 [[package]]

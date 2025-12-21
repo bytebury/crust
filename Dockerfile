@@ -51,7 +51,7 @@ RUN apt-get update && apt-get install -y \
 	&& apt-get clean
 
 # Copy compiled binary and assets
-COPY --from=builder /app/target/release/tea ./app
+COPY --from=builder /app/target/release/app ./app
 COPY --from=builder /app/templates ./templates
 COPY --from=builder /app/migrations ./migrations
 COPY --from=builder /app/public ./public
