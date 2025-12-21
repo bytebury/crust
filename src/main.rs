@@ -24,7 +24,7 @@ fn is_dev() -> bool {
 /// This is useful for development, so we can have unminified versions
 /// that are not tracked by git and not used in production
 fn copy_assets() {
-    for dir in &["public/styles", "public/scripts"] {
+    for dir in &["public/scripts"] {
         let path = Path::new(dir);
         if !path.is_dir() {
             continue;

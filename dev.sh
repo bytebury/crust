@@ -1,20 +1,25 @@
-# Check for the .env file; otherwise create one
+#!/bin/bash
+set -e
+
+# Kill all child processes when the script exits (Ctrl+C)
+trap "kill 0" EXIT
+
+# ───── Check for .env ─────
 if [ ! -f .env ]; then
   echo "🤖 .env not found. Generating..."
   cat >.env <<EOF
 APP_NAME="🧋 tea"
-APP_WEBSITE_URL="http://localhost:8080" # or https://yourdomain.com
-APP_PORT="8080"
+APP_WEBSITE_URL="http://localhost:8080"
 
+APP_PORT="8080"
 DATABASE_URL="sqlite://db/database.db"
 
 JWT_SECRET="SOMETHING-TOP-SECRET"
-
 GOOGLE_CLIENT_ID="ADD_YOUR_CLIENT_ID"
 GOOGLE_CLIENT_SECRET="ADD_YOUR_SECRET"
 GOOGLE_CALLBACK_URL="http://localhost:8080/auth/google/callback"
 
-COOKIE_URL="localhost:8080" # or .yourdomain.com
+COOKIE_URL="localhost:8080"
 
 STRIPE_SECRET="ADD_YOUR_STRIPE_SECRET"
 STRIPE_WEBHOOK_SECRET="ADD_YOUR_STRIPE_WEBHOOK_SECRET"
@@ -25,15 +30,15 @@ else
   echo "✅ .env file found."
 fi
 
-# Check for the database file if it does not exist
+# ───── Check for SQLite DB ─────
 if [ ! -f ./db/database.db ]; then
   echo "🤖 database not found. Generating..."
-  mkdir ./db
+  mkdir -p ./db
   touch ./db/database.db
   echo "✅ database.db generated."
 else
   echo "✅ database file found."
 fi
 
-# Start the development server with cargo watch
-cargo watch -x run
+echo "🦀 Starting Rust dev server..."
+cargo watch -s "tailwindcss -c ./tailwind.config.js -i ./public/styles/main.css -o ./public/styles/main.local.css; cargo run"

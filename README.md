@@ -23,6 +23,8 @@ various server sizes, so you'll notice some deployment workflows for
 DigitalOcean (feel free to change that to your liking).
 We use [Stripe](https://stripe.com) as our payment partner and
 [Google](https://google.com) for our OAuth (extensible).
+You will also need to install [TailwindCSS](https://github.com/tailwindlabs/tailwindcss/releases/latest). As,
+we use [TailwindCSS](https://github.com/tailwindlabs/tailwindcss/releases/latest) to build out stylesheets.
 
 ## Getting Started
 

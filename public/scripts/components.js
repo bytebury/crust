@@ -52,7 +52,8 @@ function showTooltip(event) {
 	const windowWidth = window.innerWidth;
 
 	const finalTop = rect.bottom + window.scrollY + 4;
-	const preferredLeft = rect.left + scrollX + rect.width / 2 - tooltipRect.width / 2;
+	const preferredLeft = rect.left + scrollX + rect.width / 2 -
+		tooltipRect.width / 2;
 
 	let finalLeft;
 
@@ -82,4 +83,12 @@ function initTooltips() {
 	}
 }
 
-initTooltips();
+document.addEventListener("DOMContentLoaded", function () {
+	// Initialize tooltips when the page loads.
+	initTooltips();
+});
+
+// Every time that there's a swap, we need to reinitialize the tooltips.
+document.body.addEventListener("htmx:afterSwap", function (event) {
+	initTooltips();
+});
