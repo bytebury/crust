@@ -1,4 +1,4 @@
-use crate::application::Role;
+use crate::application::rbac::Role;
 use crate::infrastructure::audit::geolocation::Country;
 use crate::{
     SharedState,

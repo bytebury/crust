@@ -1,3 +1,4 @@
+use crate::application::rbac::Role;
 use crate::domain::user::{NewUser, UpdateUser, User};
 use crate::prelude::*;
 use crate::util::pagination::*;
@@ -52,12 +53,21 @@ impl UserService {
     }
 
     pub async fn create(&self, user: &NewUser) -> Result<User> {
+        let mut role = Role::User;
+        let num_users: i64 = sqlx::query_scalar("SELECT COUNT(*) FROM users")
+            .fetch_one(self.db.as_ref())
+            .await?;
+
+        if num_users == 0 {
+            role = Role::Admin;
+        }
+
         let user_id = sqlx::query_scalar(
             r#"
 		    INSERT INTO users (
-	            email, full_name, first_name, last_name, image_url, country_id, verified, locked
+	            email, full_name, first_name, last_name, image_url, country_id, verified, locked, role
 	        )
-	        VALUES (LOWER(?), ?, ?, ?, ?, ?, ?, ?)
+	        VALUES (LOWER(?), ?, ?, ?, ?, ?, ?, ?, ?)
 	        RETURNING id
 			"#,
         )
@@ -69,6 +79,7 @@ impl UserService {
         .bind(user.country_id)
         .bind(user.verified)
         .bind(user.locked)
+        .bind(role)
         .fetch_one(self.db.as_ref())
         .await?;
 

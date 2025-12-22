@@ -1,18 +1,18 @@
-<header class="flex-col items-center gap-2">
-	<img class="avatar" src="{{ user.image_url }}" alt="Profile image" width="64" height="64" />
-	<div style="text-align: center">
-		<h1 class="flex gap-2 items-center">
+<header class="flex flex-col items-center gap-2">
+	<img src="{{ user.image_url }}" alt="Profile image" width="64" height="64" />
+	<div class="text-center">
+		<h1 class="flex gap-2 items-center justify-center">
 			{{ user.full_name | title }} {% if user.role == Role::Admin %}
-			<div class="pill admin">Admin</div>
+			<div class="pill bg-blue-600 text-white">Admin</div>
 			{% endif %}
 		</h1>
-		<p class="muted">Signed up at: {{ user.created_at }}</p>
+		<p class="muted text-sm">Signed up at: {{ user.created_at }}</p>
 	</div>
 	<div class="flex items-center gap-2">
 		{% if let Some(country_code) = user.country_code %} {% if let Some(country_name) =
 		user.country_name %}
 		<img
-			class="flag"
+			class="border"
 			src="/assets/images/flags/{{ country_code | lower }}.svg"
 			alt="{{ country_name }}'s flag"
 			width="24"
@@ -23,7 +23,7 @@
 </header>
 <form
 	id="edit_user_form"
-	class="flex-col"
+	class="flex flex-col gap-4"
 	hx-patch="/admin/users/{{ user.id }}"
 	hx-select="#edit_user_form"
 >
@@ -50,7 +50,7 @@
 			<option value="admin" {% if user.is_admin() %}selected{% endif %}>Admin</option>
 		</select>
 	</div>
-	<div class="flex gap-2 form-actions">
+	<div class="flex gap-2">
 		<button class="btn success" type="submit">Update</button>
 		<button class="btn outline-hover" type="reset" onclick="closeModal()">Close</button>
 	</div>

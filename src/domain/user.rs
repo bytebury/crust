@@ -3,7 +3,7 @@ use serde::Serialize;
 use sqlx::FromRow;
 
 use crate::{
-    application::{Action, Can, Role},
+    application::rbac::{Action, Can, Role},
     infrastructure::auth::oauth::GoogleUser,
     util::pagination::Paginatable,
 };

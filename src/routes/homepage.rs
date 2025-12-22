@@ -1,4 +1,4 @@
-use crate::application::Role;
+use crate::application::rbac::Role;
 use crate::{SharedState, extract::maybe_current_user::MaybeCurrentUser};
 use askama::Template;
 use askama_web::WebTemplate;
