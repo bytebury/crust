@@ -95,9 +95,10 @@ button.link {
 }
 
 #app_drawer {
-	@apply flex h-full w-4/5 max-w-sm p-4 z-50 bg-white;
+	@apply flex flex-col h-full w-4/5 max-w-sm p-4 z-50 bg-white;
 	border-top-left-radius: 12px;
 	border-bottom-left-radius: 12px;
+	transform: translateX(100%);
 }
 
 #modal_wrapper {
