@@ -15,12 +15,12 @@
 #         uses: actions/checkout@v2
 
 #       - name: Build Docker Image
-#         run: docker build --build-arg RUN_ID=${{ github.run_id }} -t APP_NAME .
+#         run: docker build --build-arg RUN_ID=${{ github.run_id }} -t app .
 
 #       - name: Save Docker Image
 #         run: |
-#           docker save APP_NAME -o ./APP_NAME.tar
-#           ls -lh ./APP_NAME.tar
+#           docker save app -o ./app.tar
+#           ls -lh ./app.tar
 
 #       - name: Upload Docker Image to DigitalOcean
 #         uses: appleboy/scp-action@v0.1.4
@@ -28,7 +28,7 @@
 #           host: ${{ secrets.DO_IP_ADDR }}
 #           username: ${{ secrets.DO_USERNAME }}
 #           key: ${{ secrets.DO_SSH_KEY }}
-#           source: "./APP_NAME.tar"
+#           source: "./app.tar"
 #           target: "~/APP_NAME"
 
 #       - name: Deploy on server
@@ -40,8 +40,8 @@
 #           script: |
 #							mkdir -p ~/APP_NAME
 
-#             docker load -i ~/APP_NAME/APP_NAME.tar
-#             rm ~/APP_NAME/APP_NAME.tar
+#             docker load -i ~/APP_NAME/app.tar
+#             rm ~/APP_NAME/app.tar
 
 #             docker rm -f APP_NAME_container || true
 #             docker container prune -f
@@ -56,6 +56,6 @@
 #                 -v $(pwd)/db:/app/db \
 #                 -v $(pwd)/.env:/app/.env \
 #                 -e APP_VERSION=${{ github.run_id }} \
-#                 --name APP_NAME_container APP_NAME
+#                 --name APP_NAME_container app
 
 #             docker system prune -a --volumes -f
