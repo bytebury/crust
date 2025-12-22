@@ -10,7 +10,7 @@
 		{% include "_partials/navbar.html" %}
 		<main>
 			<div class="container">
-				<section class="card flex-col">
+				<section class="card flex flex-col gap-4">
 					<h1>Manage Users</h1>
 					<form>
 						<div class="form-control">
@@ -74,11 +74,9 @@
 														>Locked</span
 													>{% endif %}
 												</div>
-												<a
-													style="margin: 2px 0"
-													href="mailto:{{ user.email }}"
-													>{{ user.email }}</a
-												>
+												<a href="mailto:{{ user.email }}" class="my-1 mx-0">
+													{{ user.email }}
+												</a>
 												{% if let Some(country_name) = user.country_name %}
 												<div>{{ country_name }}</div>
 												{% endif %}
