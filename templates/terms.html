@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<title>{{ shared.app_info.name }}</title>
+		<meta name="description" content="A template application." />
+		{% include "_partials/meta.html" %} {% include "_partials/scripts.html" %}
+	</head>
+	<body>
+		{% include "_partials/navbar.html" %}
+		<main>
+			<div class="container">
+				<article id="terms" class="card flex flex-col gap-4 home-container w-full py-16">
+					<h1 class="text-3xl">Terms & Conditions for {{ shared.app_info.name }}</h1>
+					<p><strong>Effective Date:</strong> January 01, 2026</p>
+
+					<section class="flex flex-col gap-4">
+						<h2 class="font-extrabold text-2xl">1. Acceptance of Terms</h2>
+						<p>
+							By accessing or using {{ shared.app_info.name }} (“the Service”), you
+							agree to be bound by these Terms and Conditions (“Terms”). If you do not
+							agree to these Terms, you may not use the Service.
+						</p>
+					</section>
+
+					<section class="flex flex-col gap-4">
+						<h2 class="font-extrabold text-2xl">2. Description of Service</h2>
+						<p>
+							{{ shared.app_info.name }} is an educational platform designed to
+							simulate banking, financial literacy, and classroom economy concepts.
+							The Service is intended for educational purposes only and does not
+							represent real banking, financial, or investment services.
+						</p>
+					</section>
+
+					<section class="flex flex-col gap-4">
+						<h2 class="font-extrabold text-2xl">3. Eligibility</h2>
+						<p>
+							{{ shared.app_info.name }} is intended for use by educators, schools,
+							students, and guardians. If you are under the age of 18, you may only
+							use the Service with permission and supervision of a parent, guardian,
+							or educator.
+						</p>
+					</section>
+
+					<section class="flex flex-col gap-4">
+						<h2 class="font-extrabold text-2xl">4. Accounts</h2>
+						<p>
+							You are responsible for maintaining the confidentiality of your account
+							credentials and for all activity that occurs under your account. You
+							agree to provide accurate and up-to-date information when creating an
+							account.
+						</p>
+					</section>
+
+					<section class="flex flex-col gap-4">
+						<h2 class="font-extrabold text-2xl">5. Acceptable Use</h2>
+						<p>You agree not to:</p>
+						<ul class="list-disc ml-8">
+							<li>Use the Service for any unlawful purpose</li>
+							<li>
+								Attempt to gain unauthorized access to the Service or its systems
+							</li>
+							<li>Disrupt, abuse, or interfere with the Service</li>
+							<li>Upload malicious code or harmful content</li>
+						</ul>
+						<p>
+							COMPANY_NAME reserves the right to determine, at its sole discretion,
+							whether usage violates these Terms.
+						</p>
+					</section>
+
+					<section class="flex flex-col gap-4">
+						<h2 class="font-extrabold text-2xl">6. Right to Revoke Access</h2>
+						<p>
+							COMPANY_NAME reserves the right to suspend or revoke access to {{
+							shared.app_info.name }} at any time, for any reason, or for no reason,
+							with or without notice. This includes, but is not limited to, violations
+							of these Terms, misuse of the Service, or operational decisions.
+						</p>
+					</section>
+
+					<section class="flex flex-col gap-4">
+						<h2 class="font-extrabold text-2xl">7. Data &amp; Privacy</h2>
+						<p>
+							{{ shared.app_info.name }} may collect limited information necessary to
+							operate the Service. We do not sell personal data. Usage of the Service
+							is also governed by our Privacy Policy (if applicable).
+						</p>
+					</section>
+
+					<section class="flex flex-col gap-4">
+						<h2 class="font-extrabold text-2xl">8. Intellectual Property</h2>
+						<p>
+							All content, software, logos, and trademarks associated with {{
+							shared.app_info.name }} are the property of COMPANY_NAME and may not be
+							copied, modified, or redistributed without written permission.
+						</p>
+					</section>
+
+					<section class="flex flex-col gap-4">
+						<h2 class="font-extrabold text-2xl">9. Service Availability</h2>
+						<p>
+							The Service is provided “as is” and “as available.” COMPANY_NAME does
+							not guarantee uninterrupted or error-free operation and may modify or
+							discontinue the Service at any time.
+						</p>
+					</section>
+
+					<section class="flex flex-col gap-4">
+						<h2 class="font-extrabold text-2xl">10. Limitation of Liability</h2>
+						<p>
+							To the maximum extent permitted by law, COMPANY_NAME shall not be liable
+							for any indirect, incidental, or consequential damages arising from the
+							use or inability to use the Service.
+						</p>
+					</section>
+
+					<section class="flex flex-col gap-4">
+						<h2 class="font-extrabold text-2xl">11. Indemnification</h2>
+						<p>
+							You agree to indemnify and hold harmless COMPANY_NAME from any claims,
+							damages, or expenses arising from your use of the Service or violation
+							of these Terms.
+						</p>
+					</section>
+
+					<section class="flex flex-col gap-4">
+						<h2 class="font-extrabold text-2xl">12. Changes to Terms</h2>
+						<p>
+							COMPANY_NAME reserves the right to update or modify these Terms at any
+							time. Continued use of the Service after changes constitutes acceptance
+							of the updated Terms.
+						</p>
+					</section>
+
+					<section class="flex flex-col gap-4">
+						<h2 class="font-extrabold text-2xl">13. Governing Law</h2>
+						<p>
+							These Terms are governed by the laws of the United States and the
+							applicable laws of the state in which COMPANY_NAME operates, without
+							regard to conflict of law principles.
+						</p>
+					</section>
+
+					<section class="flex flex-col gap-4">
+						<h2 class="font-extrabold text-2xl">14. Marketing and Promotion</h2>
+						<p>
+							You grant COMPANY_NAME a non-exclusive, royalty-free license to use your
+							profile photo and school or organization logo for marketing and
+							promotional purposes. If you wish to have this content removed, please
+							contact
+							<a href="mailto:email+{{ shared.app_info.name }}@gmail.com" class="link"
+								>email+{{ shared.app_info.name }}@gmail.com</a
+							>.
+						</p>
+					</section>
+
+					<section class="flex flex-col gap-4">
+						<h2 class="font-extrabold text-2xl">15. Cookies and Analytics</h2>
+						<p>
+							{{ shared.app_info.name }} uses cookies and similar technologies,
+							including Google Analytics, to analyze traffic and improve user
+							experience. By using the Service, you consent to the collection of data
+							regarding your usage patterns.
+						</p>
+					</section>
+
+					<section class="flex flex-col gap-4">
+						<h2 class="font-extrabold text-2xl">16. User-Generated Content</h2>
+						<p>
+							COMPANY_NAME is not responsible for any content, data, or information
+							entered into the Service by users. You are solely responsible for
+							ensuring that any content you upload or input is appropriate, lawful,
+							and does not violate the rights of any third party.
+						</p>
+					</section>
+
+					<section class="flex flex-col gap-4">
+						<h2 class="font-extrabold text-2xl">17. Contact Information</h2>
+						<p>
+							For questions or support regarding these Terms or the Service, contact:
+						</p>
+						<p>
+							<strong>Email:</strong>
+							<a
+								href="mailto:email+{{ shared.app_info.name }}@gmail.com"
+								class="link"
+							>
+								email+{{ shared.app_info.name }}@gmail.com </a
+							><br />
+							<strong>Company:</strong> COMPANY_NAME
+						</p>
+					</section>
+				</article>
+			</div>
+		</main>
+		{% include "_partials/footer.html" %}
+	</body>
+</html>

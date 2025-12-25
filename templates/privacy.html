@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<title>{{ shared.app_info.name }}</title>
+		<meta name="description" content="A template application." />
+		{% include "_partials/meta.html" %} {% include "_partials/scripts.html" %}
+	</head>
+	<body>
+		{% include "_partials/navbar.html" %}
+		<main>
+			<div class="container">
+				<article id="privacy" class="card flex flex-col gap-4 home-container w-full py-16">
+					<h1 class="text-3xl">Privacy Policy for {{ shared.app_info.name }}</h1>
+					<p><strong>Effective Date:</strong> January 01, 2026</p>
+
+					<p>
+						{{ shared.app_info.name }} (“we,” “our,” or “us”) values your privacy. This
+						Privacy Policy explains how we collect, use, store, and protect information
+						when you use {{ shared.app_info.name }}, a classroom economy web application
+						designed for teachers and students.
+					</p>
+
+					<p>
+						By using {{ shared.app_info.name }}, you agree to the collection and use of
+						information in accordance with this policy.
+					</p>
+
+					<h2 class="font-extrabold text-2xl">1. Information We Collect</h2>
+					<p>We may collect the following types of information:</p>
+					<ul class="list-disc ml-8">
+						<li>
+							<strong>Account Information:</strong>
+							Name, email address, role (teacher or student), and class or school
+							name.
+						</li>
+						<li>
+							<strong>Profile Information:</strong>
+							Usernames and optional profile images uploaded by users.
+						</li>
+						<li>
+							<strong>Usage Data:</strong>
+							Interactions with the platform, features used, and general activity
+							needed to operate and improve {{ shared.app_info.name }}.
+						</li>
+						<li>
+							<strong>Technical Data:</strong>
+							IP address, browser type, and device information for security and
+							performance purposes.
+						</li>
+					</ul>
+
+					<h2 class="font-extrabold text-2xl">2. How We Use Your Information</h2>
+					<p>We use collected information to:</p>
+					<ul class="list-disc ml-8">
+						<li>Operate and maintain the {{ shared.app_info.name }} platform</li>
+						<li>Provide classroom economy features and tools</li>
+						<li>Improve functionality, performance, and user experience</li>
+						<li>Communicate with users about updates or support</li>
+						<li>Ensure platform safety and prevent abuse</li>
+					</ul>
+
+					<h2 class="font-extrabold text-2xl">
+						3. Marketing and Promotional Use of Profile Images
+					</h2>
+					<p>
+						{{ shared.app_info.name }} may use publicly visible profile images,
+						usernames, school names, or logos for marketing and promotional purposes,
+						including but not limited to:
+					</p>
+					<ul class="list-disc ml-8">
+						<li>Website content</li>
+						<li>Social media</li>
+						<li>Promotional materials</li>
+						<li>Product showcases or examples</li>
+					</ul>
+					<p>These materials will never include sensitive personal data.</p>
+
+					<h3 class="font-extrabold text-xl">Opt-Out</h3>
+					<p>
+						If you do not want your profile image or related identifiers used for
+						marketing, you may opt out at any time by contacting us at:
+					</p>
+					<p>
+						<a href="mailto:support@{{ shared.app_info.name }}.app"
+							>support@{{ shared.app_info.name }}.app</a
+						>
+					</p>
+					<p>
+						Upon request, we will promptly stop using your image or identifiable content
+						for marketing purposes.
+					</p>
+
+					<h2 class="font-extrabold text-2xl">4. Student Privacy</h2>
+					<p>
+						{{ shared.app_info.name }} is intended for classroom use under teacher
+						supervision. We do not knowingly collect unnecessary personal information
+						from students. Teachers are responsible for ensuring student usage complies
+						with school and district policies.
+					</p>
+
+					<h2 class="font-extrabold text-2xl">5. Data Sharing</h2>
+					<p>We do not sell or rent personal information.</p>
+					<p>We may share information only when:</p>
+					<ul class="list-disc ml-8">
+						<li>Required by law</li>
+						<li>
+							Necessary to operate the platform (e.g., hosting or infrastructure
+							providers)
+						</li>
+						<li>
+							Protecting the rights, safety, or security of {{ shared.app_info.name }}
+							and its users
+						</li>
+					</ul>
+
+					<h2 class="font-extrabold text-2xl">6. Data Security</h2>
+					<p>
+						We take reasonable technical and organizational measures to protect your
+						information. However, no system is 100% secure, and we cannot guarantee
+						absolute security.
+					</p>
+
+					<h2 class="font-extrabold text-2xl">7. Data Retention</h2>
+					<p>
+						We retain user data only as long as necessary to operate {{
+						shared.app_info.name }} or comply with legal obligations. Accounts and
+						associated data may be deleted upon request.
+					</p>
+
+					<h2 class="font-extrabold text-2xl">8. Your Rights</h2>
+					<p>You may:</p>
+					<ul class="list-disc ml-8">
+						<li>Request access to your data</li>
+						<li>Request corrections or deletion</li>
+						<li>Opt out of marketing usage as described above</li>
+					</ul>
+					<p>
+						To exercise these rights, contact us at
+						<a href="mailto:support@{{ shared.app_info.name }}.app"
+							>support@{{ shared.app_info.name }}.app</a
+						>.
+					</p>
+
+					<h2 class="font-extrabold text-2xl">9. Changes to This Policy</h2>
+					<p>
+						We may update this Privacy Policy from time to time. Updates will be posted
+						within the application or on our website with a revised effective date.
+					</p>
+
+					<h2 class="font-extrabold text-2xl">10. Contact Us</h2>
+					<p>
+						If you have any questions or concerns about this Privacy Policy, please
+						contact:
+					</p>
+					<p>
+						<strong>{{ shared.app_info.name }} Support</strong><br />
+						<a href="mailto:email+{{ shared.app_info.name }}@gmail.com" class="link"
+							>email+{{ shared.app_info.name }}@gmail.com</a
+						>
+					</p>
+				</article>
+			</div>
+		</main>
+		{% include "_partials/footer.html" %}
+	</body>
+</html>

@@ -7,7 +7,10 @@ use axum::{Router, extract::State, response::IntoResponse, routing::get};
 use crate::routes::SharedContext;
 
 pub fn routes() -> Router<SharedState> {
-    Router::new().route("/", get(homepage))
+    Router::new()
+        .route("/", get(homepage))
+        .route("/terms", get(terms))
+        .route("/privacy", get(privacy))
 }
 
 #[derive(Template, WebTemplate)]
@@ -19,6 +22,18 @@ struct HomepageTemplate {
 #[derive(Template, WebTemplate)]
 #[template(path = "dashboard.html")]
 struct DashboardTemplate {
+    shared: SharedContext,
+}
+
+#[derive(Template, WebTemplate)]
+#[template(path = "privacy.html")]
+struct PrivacyTemplate {
+    shared: SharedContext,
+}
+
+#[derive(Template, WebTemplate)]
+#[template(path = "terms.html")]
+struct TermsTemplate {
     shared: SharedContext,
 }
 
@@ -35,5 +50,23 @@ async fn homepage(
             shared: SharedContext::new(&state.app_info, None),
         }
         .into_response(),
+    }
+}
+
+async fn terms(
+    State(state): State<SharedState>,
+    MaybeCurrentUser(user): MaybeCurrentUser,
+) -> TermsTemplate {
+    TermsTemplate {
+        shared: SharedContext::new(&state.app_info, user),
+    }
+}
+
+async fn privacy(
+    State(state): State<SharedState>,
+    MaybeCurrentUser(user): MaybeCurrentUser,
+) -> PrivacyTemplate {
+    PrivacyTemplate {
+        shared: SharedContext::new(&state.app_info, user),
     }
 }
