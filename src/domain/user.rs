@@ -22,7 +22,7 @@ pub struct User {
     pub country_id: Option<i64>,
     pub country_code: Option<String>,
     pub country_name: Option<String>,
-    pub country_locked: bool,
+    pub country_locked: Option<bool>,
     pub locked: bool,
     pub created_at: NaiveDateTime,
     pub updated_at: NaiveDateTime,

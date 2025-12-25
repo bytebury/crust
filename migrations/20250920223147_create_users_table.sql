@@ -1,5 +1,5 @@
 CREATE TABLE users (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id INTEGER PRIMARY KEY,
     email TEXT NOT NULL UNIQUE,
     first_name TEXT NOT NULL,
     last_name TEXT,
@@ -17,7 +17,19 @@ CREATE TABLE users (
 CREATE INDEX idx_users_email ON users(email);
 
 CREATE VIEW users_view AS
-SELECT u.*,
+SELECT u.id,
+       u.email,
+       u.first_name,
+       u.last_name,
+       u.full_name,
+       u.image_url,
+       u.role,
+       u.stripe_customer_id,
+       u.country_id,
+       u.verified,
+       u.locked,
+       u.created_at,
+       u.updated_at,
        c.name as country_name,
        c.code as country_code,
        c.locked as country_locked

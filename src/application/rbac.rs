@@ -10,6 +10,16 @@ pub enum Role {
     Admin,
 }
 
+impl From<String> for Role {
+    fn from(value: String) -> Self {
+        match value.as_str() {
+            "user" => Role::User,
+            "admin" => Role::Admin,
+            _ => Role::User,
+        }
+    }
+}
+
 #[derive(Debug, PartialEq, Eq, Hash)]
 pub enum Action {
     Read,

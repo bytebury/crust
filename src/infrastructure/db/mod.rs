@@ -1,16 +1,14 @@
 use log::info;
-use sqlx::{Connection, SqlitePool, migrate::Migrator, sqlite::SqlitePoolOptions};
-
-static MIGRATOR: Migrator = sqlx::migrate!("./migrations");
+use sqlx::{Connection, SqlitePool, sqlite::SqlitePoolOptions};
 
 pub struct Database {}
 
 impl Database {
     pub async fn initialize() -> SqlitePool {
-        let database_url = "sqlite://db/database.db";
+        let database_url = std::env::var("DATABASE_URL").expect("DATABASE_URL must be set");
 
         {
-            let mut conn = sqlx::SqliteConnection::connect(database_url)
+            let mut conn = sqlx::SqliteConnection::connect(&database_url)
                 .await
                 .expect("Failed to connect to database for setup");
 
@@ -32,14 +30,11 @@ impl Database {
                     Ok(())
                 })
             })
-            .connect(database_url)
+            .connect(&database_url)
             .await
             .expect("Failed to connect to database.");
 
-        // --- Run migrations ---
-        MIGRATOR.run(&pool).await.expect("Failed to run migrations");
-
-        info!("🎉 Database connected and migrations run successfully.");
+        info!("🎉 Database connected successfully.");
 
         pool
     }

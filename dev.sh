@@ -36,8 +36,12 @@ if [ ! -f ./db/database.db ]; then
   mkdir -p ./db
   touch ./db/database.db
   echo "✅ database.db generated."
+  sqlx migrate run
+  echo "✅ migrations completed."
 else
   echo "✅ database file found."
+  sqlx migrate run
+  echo "✅ migrations completed."
 fi
 
 echo "🦀 Starting Rust dev server..."
