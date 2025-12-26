@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<title>{{ shared.app_info.name }} | Manage Announcements</title>
+		<meta name="description" content="Manage announcements for {{ shared.app_info.name }}." />
+		<link rel="canonical" href="{{ shared.app_info.website_url }}" />
+		{% include "_partials/meta.html" %} {% include "_partials/scripts.html" %}
+	</head>
+	<body>
+		{% include "_partials/navbar.html" %}
+		<main>
+			<div class="container">
+				<section class="card flex flex-col gap-4">
+					<div class="flex items-center justify-between">
+						<h1 class="text-xl">Manage Announcements</h1>
+						<button
+							hx-get="/admin/announcements/new"
+							hx-target="#modal"
+							class="btn success text-sm"
+						>
+							Create
+						</button>
+					</div>
+					<div id="announcements_list" class="table-responsive">
+						<table>
+							<thead>
+								<tr>
+									<th>Announcement</th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for announcement in announcements %}
+								<tr>
+									<td>
+										<div class="flex items-center gap-2">
+											{{ announcement.content | markdown | safe }} {% if
+											announcement.active.is_checked() %}
+											<div class="pill active">Active</div>
+											{% endif %}
+										</div>
+									</td>
+									<td>
+										<div class="flex justify-end gap-2 pr-4">
+											<button>
+												<svg
+													xmlns="http://www.w3.org/2000/svg"
+													width="24"
+													height="24"
+													viewBox="0 0 24 24"
+													data-tooltip="Update announcement"
+													hx-get="/admin/announcements/{{ announcement.id }}/edit"
+													hx-target="#modal"
+												>
+													<g
+														fill="none"
+														stroke="currentColor"
+														stroke-linecap="round"
+														stroke-linejoin="round"
+														stroke-width="2"
+													>
+														<path d="M14 3v4a1 1 0 0 0 1 1h4" />
+														<path
+															d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2"
+														/>
+														<path
+															d="m10 18l5-5a1.414 1.414 0 0 0-2-2l-5 5v2z"
+														/>
+													</g>
+												</svg>
+											</button>
+											<button
+												hx-delete="/admin/announcements/{{ announcement.id }}"
+												hx-confirm="Are you sure you want to delete this announcement?"
+												data-tooltip="Delete announcement"
+												class="text-red-700"
+											>
+												<svg
+													xmlns="http://www.w3.org/2000/svg"
+													width="20"
+													height="20"
+													viewBox="0 0 24 24"
+													aria-label="delete"
+												>
+													<path
+														fill="none"
+														stroke="currentColor"
+														stroke-linecap="round"
+														stroke-linejoin="round"
+														stroke-width="2"
+														d="M4 7h16m-10 4v6m4-6v6M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2l1-12M9 7V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3"
+													/>
+												</svg>
+											</button>
+										</div>
+									</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+							<caption>
+								Delete announcements to remove them from the system.
+							</caption>
+						</table>
+					</div>
+				</section>
+			</div>
+		</main>
+		{% include "_partials/footer.html" %}
+	</body>
+</html>

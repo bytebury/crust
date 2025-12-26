@@ -90,6 +90,56 @@ button.link {
 	@apply text-gray-700;
 }
 
+.switch {
+	@apply flex items-center gap-2;
+}
+
+.switch label input[type="checkbox"] {
+	display: none;
+}
+
+.switch label:has(input) {
+	@apply border-2 border-gray-300;
+	display: flex;
+	align-items: center;
+	position: relative;
+	width: 52px !important;
+	height: 28px !important;
+	border-radius: 20px;
+	transition-duration: 500ms;
+	transition-timing-function: ease;
+	cursor: pointer;
+}
+
+.switch label:has(input:not(:checked))::before {
+	position: absolute;
+	left: 3px;
+	top: 4px;
+	content: "";
+	height: 16px;
+	width: 16px;
+	background: #5a5a5a;
+	border-radius: 100%;
+}
+
+.switch label:has(input:checked) {
+	@apply bg-accent border-accent;
+}
+
+.switch label:has(input:checked)::before {
+	@apply text-accent;
+	position: absolute;
+	text-align: center;
+	right: 0;
+	font-size: 16px;
+	padding-top: 1px;
+	content: "\2713";
+	height: 24px;
+	width: 24px;
+	background: white;
+	border-radius: 100%;
+}
+
 #app_drawer_underlay {
 	@apply fixed h-full w-full bg-gray-600/20 z-40;
 }
@@ -193,6 +243,10 @@ table caption {
 
 .pill {
 	@apply text-xs px-1 py-0.5 rounded-md;
+}
+
+.pill.active {
+	@apply bg-green-100 text-green-800;
 }
 
 button.btn {

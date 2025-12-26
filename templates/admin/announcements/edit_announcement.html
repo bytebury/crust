@@ -1,0 +1,18 @@
+<header>
+	<h1>Update Announcement</h1>
+	<span class="text-sm muted">Update this announcement.</span>
+</header>
+<form
+	id="announcement_form"
+	hx-patch="/admin/announcements/{{ form.id }}"
+	hx-select="#announcement_form"
+>
+	<input type="hidden" name="id" value="{{ form.id }}" required />
+	{% include "admin/announcements/_announcement_form.html" %}
+</form>
+<div class="form-actions">
+	<button form="announcement_form" class="btn success" type="submit">Update</button>
+	<button form="announcement_form" class="btn outline-hover" type="reset" onclick="closeModal()">
+		Close
+	</button>
+</div>

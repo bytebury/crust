@@ -1,0 +1,19 @@
+{% if let Some(error_message) = error_message %}
+<div id="error_message" class="error-message">{{ error_message }}</div>
+{% endif %}
+<div class="form-control">
+	<label for="announcement_content">Content</label>
+	<textarea id="announcement_content" name="content" required>{{ form.content }}</textarea>
+</div>
+<div class="form-control">
+	<div class="switch">
+		<label>
+			{% if let Some(checkbox) = form.active %} {% if checkbox.is_checked() %}
+			<input id="announcement_active" name="active" type="checkbox" checked="true" />
+			{% else %}
+			<input id="announcement_active" name="active" type="checkbox" />
+			{% endif %} {% endif %}
+		</label>
+		<label for="announcement_active" class="font-extrabold cursor-pointer">Active</label>
+	</div>
+</div>

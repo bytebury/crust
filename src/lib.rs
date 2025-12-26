@@ -58,6 +58,7 @@ async fn initialize() -> Router {
         .merge(routes::webhooks::routes())
         .merge(routes::payments::routes())
         .merge(routes::admin::routes())
+        .merge(routes::blog::routes())
         .with_state(state)
         .layer(CompressionLayer::new())
 }
@@ -84,6 +85,8 @@ pub struct AppState {
     pub stripe: Stripe,
     pub user_service: UserService,
     pub country_service: CountryService,
+    pub blog_service: BlogService,
+    pub announcement_service: AnnouncementService,
 }
 
 impl AppState {
@@ -92,6 +95,8 @@ impl AppState {
             stripe: Stripe::new(&app_info, db.clone()),
             user_service: UserService::new(db.clone()),
             country_service: CountryService::new(db.clone()),
+            blog_service: BlogService::new(db.clone()),
+            announcement_service: AnnouncementService::new(db.clone()),
             app_info,
         }
     }

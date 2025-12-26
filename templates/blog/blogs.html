@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<title>{{ shared.app_info.name }} | Blog</title>
+		<meta
+			name="description"
+			content="Welcome to the {{ shared.app_info.name }} blog. Find insightful articles about various topics."
+		/>
+		{% include "_partials/meta.html" %} {% include "_partials/scripts.html" %}
+	</head>
+	<body>
+		{% include "_partials/navbar.html" %}
+		<main>
+			<div class="container">
+				{% if let Some(user) = shared.current_user %} {% if user.is_admin() %}
+				<div class="flex items-end justify-end">
+					<button hx-get="/blog/create" hx-target="#modal" class="btn success text-sm">
+						Create Post
+					</button>
+				</div>
+				{% endif %} {% endif %}
+				<div class="flex flex-col gap-4 text-center mt-8">
+					<div class="flex flex-col gap-2">
+						<h1 class="text-3xl sm:text-4xl">The {{ shared.app_info.name }} Blog</h1>
+						{% if blogs.len() == 0 %}
+						<div class="muted text-lg">There are no posts yet, check back later!</div>
+						{% else %}
+						<div class="muted text-lg">
+							The latest updates on all {{ shared.app_info.name }}'s products and
+							topics
+						</div>
+						{% endif %}
+					</div>
+				</div>
+				<div class="mt-12">
+					<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+						{% for blog in blogs %}
+						<a
+							href="/blog/{{ blog.slug }}"
+							class="flex flex-col gap-4 justify-between card shadow-[0_0_5px] shadow-transparent hover:shadow-accent duration-200 transition-shadow"
+						>
+							<div class="flex flex-col gap-4">
+								<img
+									class="w-full rounded-2xl max-h-[219px]"
+									src="{{ blog.image_url }}"
+									alt="Blog Image"
+									height="219"
+								/>
+								<h1 class="text-2xl">{{ blog.title }}</h1>
+							</div>
+							<div class="text-lg">Read Full Article &rarr;</div>
+						</a>
+						{% endfor %}
+					</div>
+				</div>
+			</div>
+		</main>
+		{% include "_partials/footer.html" %}
+	</body>
+</html>

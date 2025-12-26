@@ -1,0 +1,13 @@
+<header>
+	<h1>Create Announcement</h1>
+	<span class="text-sm muted">This will publish on the website publically.</span>
+</header>
+<form id="announcement_form" hx-put="/admin/announcements" hx-select="#announcement_form">
+	{% include "admin/announcements/_announcement_form.html" %}
+</form>
+<div class="form-actions">
+	<button form="announcement_form" class="btn success" type="submit">Publish</button>
+	<button form="announcement_form" class="btn outline-hover" type="reset" onclick="closeModal()">
+		Close
+	</button>
+</div>

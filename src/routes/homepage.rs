@@ -1,10 +1,6 @@
-use crate::application::rbac::Role;
-use crate::{SharedState, extract::maybe_current_user::MaybeCurrentUser};
-use askama::Template;
-use askama_web::WebTemplate;
+use crate::extract::maybe_current_user::MaybeCurrentUser;
+use crate::prelude::*;
 use axum::{Router, extract::State, response::IntoResponse, routing::get};
-
-use crate::routes::SharedContext;
 
 pub fn routes() -> Router<SharedState> {
     Router::new()
@@ -43,7 +39,11 @@ async fn homepage(
 ) -> impl IntoResponse {
     match user {
         Some(user) => DashboardTemplate {
-            shared: SharedContext::new(&state.app_info, Some(user)),
+            shared: SharedContext::new_with_announcement(
+                &state.app_info,
+                Some(user),
+                &state.announcement_service.find_latest().await,
+            ),
         }
         .into_response(),
         None => HomepageTemplate {

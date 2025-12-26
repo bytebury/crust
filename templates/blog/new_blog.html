@@ -1,0 +1,13 @@
+<header>
+	<h1>Create a Blog</h1>
+	<span class="text-sm muted">This will publish on the blogs publically.</span>
+</header>
+<form id="blog_form" hx-put="/blog" hx-select="#blog_form">
+	{% include "blog/_blog_form.html" %}
+</form>
+<div class="form-actions">
+	<button form="blog_form" class="btn success" type="submit">Publish</button>
+	<button form="blog_form" class="btn outline-hover" type="reset" onclick="closeModal()">
+		Close
+	</button>
+</div>

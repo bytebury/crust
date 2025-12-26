@@ -1,13 +1,11 @@
-use crate::application::rbac::Role;
 use crate::infrastructure::audit::geolocation::Country;
+use crate::prelude::*;
 use crate::{
-    SharedState,
     domain::user::{UpdateUser, User},
     util::htmx::HTMX,
 };
 
-use askama::Template;
-use askama_web::WebTemplate;
+use axum::routing::{delete, put};
 use axum::{
     Form, Router,
     extract::{Path, Query, State},
@@ -15,11 +13,9 @@ use axum::{
     routing::{get, patch},
 };
 use reqwest::StatusCode;
-use serde::Deserialize;
 
 use crate::{
     extract::admin_user::AdminUser,
-    routes::SharedContext,
     util::pagination::{PaginatedResponse, Pagination},
 };
 
@@ -33,6 +29,15 @@ pub fn routes() -> Router<SharedState> {
             "/admin/countries/{id}/lock-or-unlock",
             patch(lock_or_unlock_country),
         )
+        .route("/admin/announcements", get(announcements))
+        .route("/admin/announcements", put(new_announcement))
+        .route("/admin/announcements/{id}", delete(delete_announcement))
+        .route(
+            "/admin/announcements/{id}/edit",
+            get(edit_announcement_page),
+        )
+        .route("/admin/announcements/{id}", patch(edit_announcement))
+        .route("/admin/announcements/new", get(new_announcement_page))
 }
 
 #[derive(Deserialize)]
@@ -66,6 +71,27 @@ struct UpdateUserForm {
 struct AdminCountriesTemplate {
     shared: SharedContext,
     countries: Vec<Country>,
+}
+
+#[derive(Template, WebTemplate)]
+#[template(path = "admin/announcements/announcements.html")]
+struct AnnouncementsTemplate {
+    shared: SharedContext,
+    announcements: Vec<Announcement>,
+}
+
+#[derive(Template, WebTemplate)]
+#[template(path = "admin/announcements/new_announcement.html")]
+struct NewAnnouncementTemplate {
+    form: NewAnnouncement,
+    error_message: Option<String>,
+}
+
+#[derive(Template, WebTemplate)]
+#[template(path = "admin/announcements/edit_announcement.html")]
+struct EditAnnouncementTemplate {
+    form: EditAnnouncement,
+    error_message: Option<String>,
 }
 
 #[derive(Deserialize)]
@@ -154,4 +180,83 @@ async fn lock_or_unlock_country(
     };
 
     StatusCode::ACCEPTED
+}
+
+async fn announcements(
+    State(state): State<SharedState>,
+    AdminUser(user): AdminUser,
+) -> impl IntoResponse {
+    AnnouncementsTemplate {
+        shared: SharedContext::new(&state.app_info, Some(user)),
+        announcements: state
+            .announcement_service
+            .find_all()
+            .await
+            .unwrap_or_default(),
+    }
+}
+
+async fn new_announcement_page(AdminUser(_): AdminUser) -> impl IntoResponse {
+    NewAnnouncementTemplate {
+        form: NewAnnouncement::default(),
+        error_message: None,
+    }
+}
+
+async fn new_announcement(
+    State(state): State<SharedState>,
+    AdminUser(_): AdminUser,
+    Form(form): Form<NewAnnouncement>,
+) -> impl IntoResponse {
+    match state.announcement_service.create(&form).await {
+        Ok(_) => HTMX::refresh().into_response(),
+        Err(err) => NewAnnouncementTemplate {
+            form,
+            error_message: Some(err.to_string()),
+        }
+        .into_response(),
+    }
+}
+
+async fn edit_announcement_page(
+    State(state): State<SharedState>,
+    AdminUser(_): AdminUser,
+    Path(id): Path<i64>,
+) -> impl IntoResponse {
+    match state.announcement_service.find_by_id(id).await {
+        Ok(announcement) => EditAnnouncementTemplate {
+            form: announcement.into(),
+            error_message: None,
+        }
+        .into_response(),
+        Err(err) => EditAnnouncementTemplate {
+            form: EditAnnouncement::default(),
+            error_message: Some(err.to_string()),
+        }
+        .into_response(),
+    }
+}
+
+async fn edit_announcement(
+    State(state): State<SharedState>,
+    AdminUser(_): AdminUser,
+    Form(form): Form<EditAnnouncement>,
+) -> impl IntoResponse {
+    match state.announcement_service.update(&form).await {
+        Ok(_) => HTMX::refresh().into_response(),
+        Err(err) => EditAnnouncementTemplate {
+            form,
+            error_message: Some(err.to_string()),
+        }
+        .into_response(),
+    }
+}
+
+async fn delete_announcement(
+    State(state): State<SharedState>,
+    AdminUser(_): AdminUser,
+    Path(id): Path<i64>,
+) -> impl IntoResponse {
+    let _ = state.announcement_service.delete(id).await;
+    HTMX::refresh().into_response()
 }
