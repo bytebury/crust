@@ -13,7 +13,8 @@ impl std::fmt::Display for Error {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         match self {
             Error::Other => write!(f, "Something went wrong. Please try again later."),
-            msg => write!(f, "{msg}"),
+            Error::NotUnique(_) => write!(f, "That resource already exists."),
+            Error::NotFound(_) => write!(f, "The requested resource was not found."),
         }
     }
 }
