@@ -4,6 +4,7 @@ function openAppDrawer() {
 	const underlay = document.getElementById("app_drawer_underlay");
 	drawer.style.transform = "translateX(0)";
 	underlay.style.display = "block";
+	hideTooltip();
 }
 
 function closeAppDrawer() {
@@ -90,5 +91,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // Every time that there's a swap, we need to reinitialize the tooltips.
 document.body.addEventListener("htmx:afterSwap", function (event) {
+	hideTooltip();
 	initTooltips();
 });
