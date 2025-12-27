@@ -2,7 +2,7 @@
 	<h1>Create a Blog</h1>
 	<span class="text-sm muted">This will publish on the blogs publically.</span>
 </header>
-<form id="blog_form" hx-put="/blog" hx-select="#blog_form">
+<form id="form" hx-swap="outerHTML" hx-put="/blog" hx-select="#form">
 	{% include "blog/_blog_form.html" %}
 </form>
 <div class="form-actions">

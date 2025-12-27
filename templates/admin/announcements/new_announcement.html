@@ -2,7 +2,7 @@
 	<h1>Create Announcement</h1>
 	<span class="text-sm muted">This will publish on the website publically.</span>
 </header>
-<form id="announcement_form" hx-put="/admin/announcements" hx-select="#announcement_form">
+<form id="form" hx-swap="outerHTML" hx-put="/admin/announcements" hx-select="#form">
 	{% include "admin/announcements/_announcement_form.html" %}
 </form>
 <div class="form-actions">
